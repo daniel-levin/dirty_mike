@@ -1,0 +1,6 @@
+[package]
+name = "dirty_mike"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
