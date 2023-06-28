@@ -2,5 +2,7 @@
 name = "dirty_mike"
 version = "0.1.0"
 edition = "2021"
+description = "Mapping file formats to idiomatic Rust code"
+license = "Unlicense"
 
 [dependencies]
