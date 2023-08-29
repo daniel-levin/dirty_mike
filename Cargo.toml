@@ -6,3 +6,4 @@ description = "Mapping file formats to idiomatic Rust code"
 license = "Unlicense"
 
 [dependencies]
+io-uring = "0.6"
