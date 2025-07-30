@@ -1,21 +1,28 @@
 use perf_event::events::Hardware;
 use perf_event::{Builder, Group};
 
-pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<T> {
+#[derive(Debug)]
+pub struct Topdown<T> {
+    pub result: T,
+    pub branch_misses: u64,
+}
+
+pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<Topdown<T>> {
     let mut group = Group::new()?;
-    let cycles = group.add(&Builder::new(Hardware::BRANCH_MISSES))?;
+    let branch_misses = group.add(&Builder::new(Hardware::BRANCH_MISSES))?;
 
     group.enable()?;
-    let res = f();
+    let result = f();
     group.disable()?;
 
     let counts = group.read()?;
 
-    let bm = counts[&cycles];
+    let branch_misses = counts[&branch_misses];
 
-    dbg!(bm);
-
-    Ok(res)
+    Ok(Topdown {
+        branch_misses,
+        result,
+    })
 }
 
 #[cfg(test)]
@@ -42,14 +49,16 @@ mod tests {
         let mut sorted_data = shuffled_data.clone();
         sorted_data.sort();
 
-        let res = topdown(move || {
+        let sorted_res = topdown(move || {
             work(&sorted_data);
         })
         .unwrap();
 
-        let res = topdown(move || {
+        let unsorted_res = topdown(move || {
             work(&shuffled_data);
         })
         .unwrap();
+
+        assert!(unsorted_res.branch_misses > sorted_res.branch_misses * 100);
     }
 }
