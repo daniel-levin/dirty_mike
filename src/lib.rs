@@ -1,5 +1,7 @@
+use perf_event::ReadFormat;
 use perf_event::events::Hardware;
 use perf_event::{Builder, Group};
+use std::time::Duration;
 
 #[derive(Debug)]
 pub struct Topdown<T> {
@@ -10,10 +12,16 @@ pub struct Topdown<T> {
     pub cache_misses: Option<u64>,
     pub stalled_cycles_frontend: Option<u64>,
     pub stalled_cycles_backend: Option<u64>,
+
+    pub time_enabled: Option<Duration>,
+    pub time_running: Option<Duration>,
 }
 
 pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<Topdown<T>> {
-    let mut group = Group::new()?;
+    let mut gb = Group::builder();
+    gb.read_format(ReadFormat::all());
+
+    let mut group = gb.build_group()?;
 
     let cpu_cycles = group.add(&Builder::new(Hardware::CPU_CYCLES)).ok();
     let instructions = group.add(&Builder::new(Hardware::INSTRUCTIONS)).ok();
@@ -42,6 +50,8 @@ pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<Topdown<T>> {
             .and_then(|c| counts.get(&c).map(|entry| entry.value())),
         stalled_cycles_backend: stalled_cycles_backend
             .and_then(|c| counts.get(&c).map(|entry| entry.value())),
+        time_running: counts.time_running(),
+        time_enabled: counts.time_enabled(),
     })
 }
 
