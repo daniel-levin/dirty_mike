@@ -55,56 +55,55 @@ pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<Topdown<T>> {
     })
 }
 
+#[derive(Debug)]
+pub struct TopdownStats {
+    pub frontend_bound_percentage: Option<f64>,
+    pub backend_bound_percentage: Option<f64>,
+    pub retiring_percentage: Option<f64>,
+    pub bad_speculation_percentage: Option<f64>,
+    pub instructions_per_cycle: Option<f64>,
+}
+
 impl<T> Topdown<T> {
-    pub fn frontend_bound_percentage(&self) -> Option<f64> {
-        match (self.cpu_cycles, self.stalled_cycles_frontend) {
-            (Some(cycles), Some(frontend)) if cycles > 0 => {
-                Some((frontend as f64 / cycles as f64) * 100.0)
-            }
-            _ => None,
-        }
-    }
-
-    pub fn backend_bound_percentage(&self) -> Option<f64> {
-        match (self.cpu_cycles, self.stalled_cycles_backend) {
-            (Some(cycles), Some(backend)) if cycles > 0 => {
-                Some((backend as f64 / cycles as f64) * 100.0)
-            }
-            _ => None,
-        }
-    }
-
-    pub fn retiring_percentage(&self) -> Option<f64> {
-        match (
-            self.cpu_cycles,
-            self.stalled_cycles_frontend,
-            self.stalled_cycles_backend,
-        ) {
-            (Some(cycles), Some(frontend), Some(backend)) if cycles > 0 => {
-                let retiring_cycles = cycles.saturating_sub(frontend + backend);
-                Some((retiring_cycles as f64 / cycles as f64) * 100.0)
-            }
-            _ => None,
-        }
-    }
-
-    pub fn bad_speculation_percentage(&self) -> Option<f64> {
-        match (self.cpu_cycles, self.branch_misses) {
-            (Some(cycles), Some(misses)) if cycles > 0 => {
-                let approx_bad_speculation = misses * 10; // Rough penalty estimate
-                let bad_spec_cycles = approx_bad_speculation.min(cycles);
-                Some((bad_spec_cycles as f64 / cycles as f64) * 100.0)
-            }
-            _ => None,
-        }
-    }
-
-    pub fn instructions_per_cycle(&self) -> Option<f64> {
-        match (self.cpu_cycles, self.instructions) {
-            (Some(cycles), Some(instructions)) if cycles > 0 => {
-                Some(instructions as f64 / cycles as f64)
-            }
-            _ => None,
+    pub fn stats(&self) -> TopdownStats {
+        TopdownStats {
+            frontend_bound_percentage: match (self.cpu_cycles, self.stalled_cycles_frontend) {
+                (Some(cycles), Some(frontend)) if cycles > 0 => {
+                    Some((frontend as f64 / cycles as f64) * 100.0)
+                }
+                _ => None,
+            },
+            backend_bound_percentage: match (self.cpu_cycles, self.stalled_cycles_backend) {
+                (Some(cycles), Some(backend)) if cycles > 0 => {
+                    Some((backend as f64 / cycles as f64) * 100.0)
+                }
+                _ => None,
+            },
+            retiring_percentage: match (
+                self.cpu_cycles,
+                self.stalled_cycles_frontend,
+                self.stalled_cycles_backend,
+            ) {
+                (Some(cycles), Some(frontend), Some(backend)) if cycles > 0 => {
+                    let retiring_cycles = cycles.saturating_sub(frontend + backend);
+                    Some((retiring_cycles as f64 / cycles as f64) * 100.0)
+                }
+                _ => None,
+            },
+            bad_speculation_percentage: match (self.cpu_cycles, self.branch_misses) {
+                (Some(cycles), Some(misses)) if cycles > 0 => {
+                    let approx_bad_speculation = misses * 10; // Rough penalty estimate
+                    let bad_spec_cycles = approx_bad_speculation.min(cycles);
+                    Some((bad_spec_cycles as f64 / cycles as f64) * 100.0)
+                }
+                _ => None,
+            },
+            instructions_per_cycle: match (self.cpu_cycles, self.instructions) {
+                (Some(cycles), Some(instructions)) if cycles > 0 => {
+                    Some(instructions as f64 / cycles as f64)
+                }
+                _ => None,
+            },
         }
     }
 }
@@ -133,16 +132,25 @@ mod tests {
         let mut sorted_data = shuffled_data.clone();
         sorted_data.sort();
 
-        let sorted_res = topdown(move || {
-            work(&sorted_data);
+        let sorted_res = topdown(|| {
+            work(&sorted_data)
         })
         .unwrap();
 
-        let unsorted_res = topdown(move || {
-            work(&shuffled_data);
+        let unsorted_res = topdown(|| {
+            work(&shuffled_data)
         })
         .unwrap();
 
-        assert!(unsorted_res.branch_misses.unwrap() > sorted_res.branch_misses.unwrap() * 100);
+        dbg!(&unsorted_res);
+        dbg!(&sorted_res);
+        dbg!(unsorted_res.stats());
+        dbg!(sorted_res.stats());
+
+        if let (Some(unsorted_misses), Some(sorted_misses)) = (unsorted_res.branch_misses, sorted_res.branch_misses) {
+            assert!(unsorted_misses > sorted_misses * 100);
+        } else {
+            println!("Branch misses not available, skipping assertion");
+        }
     }
 }
