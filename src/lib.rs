@@ -21,23 +21,35 @@ pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<T> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use rand::prelude::SliceRandom;
 
     #[test]
-    fn a() {
-        let res = topdown(|| {
+    fn measure_branch_misses() {
+        fn work(data: &[i32]) -> u64 {
             let mut sum = 0u64;
-            for i in 0..10000 {
-                if i % 3 == 0 {
-                    sum = sum.wrapping_add(i * 17);
-                } else if i % 5 == 0 {
-                    sum = sum.wrapping_sub(i / 2);
-                } else if i % 7 == 0 {
-                    sum = sum.wrapping_mul(2);
-                } else {
-                    sum = sum.wrapping_add(i.wrapping_pow(2) % 1000);
+            for &value in data {
+                if value >= 16384 {
+                    sum = sum.wrapping_add(value as u64);
                 }
             }
             sum
-        }).unwrap();
+        }
+
+        let mut shuffled_data: Vec<i32> = (0..32768).collect();
+        let mut rng = rand::rng();
+        shuffled_data.shuffle(&mut rng);
+
+        let mut sorted_data = shuffled_data.clone();
+        sorted_data.sort();
+
+        let res = topdown(move || {
+            work(&sorted_data);
+        })
+        .unwrap();
+
+        let res = topdown(move || {
+            work(&shuffled_data);
+        })
+        .unwrap();
     }
 }
