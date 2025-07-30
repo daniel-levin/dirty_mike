@@ -4,31 +4,27 @@ use perf_event::{Builder, Group};
 #[derive(Debug)]
 pub struct Topdown<T> {
     pub result: T,
-    pub cpu_cycles: u64,
-    pub instructions: u64,
-    pub branch_misses: u64,
-    pub cache_misses: u64,
-    pub stalled_cycles_frontend: u64,
-    pub stalled_cycles_backend: u64,
+    pub cpu_cycles: Option<u64>,
+    pub instructions: Option<u64>,
+    pub branch_misses: Option<u64>,
+    pub cache_misses: Option<u64>,
+    pub stalled_cycles_frontend: Option<u64>,
+    pub stalled_cycles_backend: Option<u64>,
 }
 
 pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<Topdown<T>> {
     let mut group = Group::new()?;
-    let cpu_cycles = group.add(&Builder::new(Hardware::CPU_CYCLES))?;
-    let instructions = group.add(&Builder::new(Hardware::INSTRUCTIONS))?;
-    let branch_misses = group.add(&Builder::new(Hardware::BRANCH_MISSES))?;
-    let cache_misses = group.add(&Builder::new(Hardware::CACHE_MISSES))?;
-    // Try to add stalled cycles counters, fallback to 0 if not available
+
+    let cpu_cycles = group.add(&Builder::new(Hardware::CPU_CYCLES)).ok();
+    let instructions = group.add(&Builder::new(Hardware::INSTRUCTIONS)).ok();
+    let branch_misses = group.add(&Builder::new(Hardware::BRANCH_MISSES)).ok();
+    let cache_misses = group.add(&Builder::new(Hardware::CACHE_MISSES)).ok();
     let stalled_cycles_frontend = group
         .add(&Builder::new(Hardware::STALLED_CYCLES_FRONTEND))
-        .unwrap_or_else(|_| {
-            group.add(&Builder::new(Hardware::CPU_CYCLES)).unwrap() // Dummy counter
-        });
+        .ok();
     let stalled_cycles_backend = group
         .add(&Builder::new(Hardware::STALLED_CYCLES_BACKEND))
-        .unwrap_or_else(|_| {
-            group.add(&Builder::new(Hardware::CPU_CYCLES)).unwrap() // Dummy counter
-        });
+        .ok();
 
     group.enable()?;
     let result = f();
@@ -38,61 +34,68 @@ pub fn topdown<T, F: Fn() -> T>(f: F) -> std::io::Result<Topdown<T>> {
 
     Ok(Topdown {
         result,
-        cpu_cycles: counts[&cpu_cycles],
-        instructions: counts[&instructions],
-        branch_misses: counts[&branch_misses],
-        cache_misses: counts[&cache_misses],
-        stalled_cycles_frontend: counts
-            .get(&stalled_cycles_frontend)
-            .map(|ge| ge.value())
-            .unwrap_or(0),
-        stalled_cycles_backend: counts
-            .get(&stalled_cycles_backend)
-            .map(|ge| ge.value())
-            .unwrap_or(0),
+        cpu_cycles: cpu_cycles.and_then(|c| counts.get(&c).map(|entry| entry.value())),
+        instructions: instructions.and_then(|c| counts.get(&c).map(|entry| entry.value())),
+        branch_misses: branch_misses.and_then(|c| counts.get(&c).map(|entry| entry.value())),
+        cache_misses: cache_misses.and_then(|c| counts.get(&c).map(|entry| entry.value())),
+        stalled_cycles_frontend: stalled_cycles_frontend
+            .and_then(|c| counts.get(&c).map(|entry| entry.value())),
+        stalled_cycles_backend: stalled_cycles_backend
+            .and_then(|c| counts.get(&c).map(|entry| entry.value())),
     })
 }
 
 impl<T> Topdown<T> {
-    pub fn frontend_bound_percentage(&self) -> f64 {
-        if self.cpu_cycles == 0 {
-            return 0.0;
+    pub fn frontend_bound_percentage(&self) -> Option<f64> {
+        match (self.cpu_cycles, self.stalled_cycles_frontend) {
+            (Some(cycles), Some(frontend)) if cycles > 0 => {
+                Some((frontend as f64 / cycles as f64) * 100.0)
+            }
+            _ => None,
         }
-        (self.stalled_cycles_frontend as f64 / self.cpu_cycles as f64) * 100.0
     }
 
-    pub fn backend_bound_percentage(&self) -> f64 {
-        if self.cpu_cycles == 0 {
-            return 0.0;
+    pub fn backend_bound_percentage(&self) -> Option<f64> {
+        match (self.cpu_cycles, self.stalled_cycles_backend) {
+            (Some(cycles), Some(backend)) if cycles > 0 => {
+                Some((backend as f64 / cycles as f64) * 100.0)
+            }
+            _ => None,
         }
-        (self.stalled_cycles_backend as f64 / self.cpu_cycles as f64) * 100.0
     }
 
-    pub fn retiring_percentage(&self) -> f64 {
-        if self.cpu_cycles == 0 {
-            return 0.0;
+    pub fn retiring_percentage(&self) -> Option<f64> {
+        match (
+            self.cpu_cycles,
+            self.stalled_cycles_frontend,
+            self.stalled_cycles_backend,
+        ) {
+            (Some(cycles), Some(frontend), Some(backend)) if cycles > 0 => {
+                let retiring_cycles = cycles.saturating_sub(frontend + backend);
+                Some((retiring_cycles as f64 / cycles as f64) * 100.0)
+            }
+            _ => None,
         }
-        let retiring_cycles = self
-            .cpu_cycles
-            .saturating_sub(self.stalled_cycles_frontend + self.stalled_cycles_backend);
-        (retiring_cycles as f64 / self.cpu_cycles as f64) * 100.0
     }
 
-    pub fn bad_speculation_percentage(&self) -> f64 {
-        if self.cpu_cycles == 0 {
-            return 0.0;
+    pub fn bad_speculation_percentage(&self) -> Option<f64> {
+        match (self.cpu_cycles, self.branch_misses) {
+            (Some(cycles), Some(misses)) if cycles > 0 => {
+                let approx_bad_speculation = misses * 10; // Rough penalty estimate
+                let bad_spec_cycles = approx_bad_speculation.min(cycles);
+                Some((bad_spec_cycles as f64 / cycles as f64) * 100.0)
+            }
+            _ => None,
         }
-        // Approximate bad speculation as branch misses impact
-        let approx_bad_speculation = self.branch_misses * 10; // Rough penalty estimate
-        let bad_spec_cycles = approx_bad_speculation.min(self.cpu_cycles);
-        (bad_spec_cycles as f64 / self.cpu_cycles as f64) * 100.0
     }
 
-    pub fn instructions_per_cycle(&self) -> f64 {
-        if self.cpu_cycles == 0 {
-            return 0.0;
+    pub fn instructions_per_cycle(&self) -> Option<f64> {
+        match (self.cpu_cycles, self.instructions) {
+            (Some(cycles), Some(instructions)) if cycles > 0 => {
+                Some(instructions as f64 / cycles as f64)
+            }
+            _ => None,
         }
-        self.instructions as f64 / self.cpu_cycles as f64
     }
 }
 
@@ -130,6 +133,6 @@ mod tests {
         })
         .unwrap();
 
-        assert!(unsorted_res.branch_misses > sorted_res.branch_misses * 100);
+        assert!(unsorted_res.branch_misses.unwrap() > sorted_res.branch_misses.unwrap() * 100);
     }
 }
