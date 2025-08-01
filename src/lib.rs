@@ -142,11 +142,6 @@ mod tests {
         })
         .unwrap();
 
-        dbg!(&unsorted_res);
-        dbg!(&sorted_res);
-        dbg!(unsorted_res.stats());
-        dbg!(sorted_res.stats());
-
         if let (Some(unsorted_misses), Some(sorted_misses)) = (unsorted_res.branch_misses, sorted_res.branch_misses) {
             assert!(unsorted_misses > sorted_misses * 100);
         } else {
