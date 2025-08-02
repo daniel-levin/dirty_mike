@@ -132,17 +132,13 @@ mod tests {
         let mut sorted_data = shuffled_data.clone();
         sorted_data.sort();
 
-        let sorted_res = topdown(|| {
-            work(&sorted_data)
-        })
-        .unwrap();
+        let sorted_res = topdown(|| work(&sorted_data)).unwrap();
 
-        let unsorted_res = topdown(|| {
-            work(&shuffled_data)
-        })
-        .unwrap();
+        let unsorted_res = topdown(|| work(&shuffled_data)).unwrap();
 
-        if let (Some(unsorted_misses), Some(sorted_misses)) = (unsorted_res.branch_misses, sorted_res.branch_misses) {
+        if let (Some(unsorted_misses), Some(sorted_misses)) =
+            (unsorted_res.branch_misses, sorted_res.branch_misses)
+        {
             assert!(unsorted_misses > sorted_misses * 100);
         } else {
             println!("Branch misses not available, skipping assertion");
