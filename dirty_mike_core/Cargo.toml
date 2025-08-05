@@ -1,0 +1,9 @@
+[package]
+name = "dirty_mike_core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+perf-event2 = "0.7.4"
+dirty_mike_derive = { version = "0.1", path = "../dirty_mike_derive" }
+thiserror = "2"

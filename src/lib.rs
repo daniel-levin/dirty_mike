@@ -3,6 +3,9 @@ use perf_event::events::Hardware;
 use perf_event::{Builder, Group};
 use std::time::Duration;
 
+pub mod x86;
+pub use dirty_mike_derive::Scope;
+
 #[derive(Debug)]
 pub struct Topdown<T> {
     pub result: T,

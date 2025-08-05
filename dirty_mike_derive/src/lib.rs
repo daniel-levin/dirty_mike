@@ -8,9 +8,9 @@ pub fn derive_scope(input: TokenStream) -> TokenStream {
     let name = &input.ident;
 
     let expanded = quote! {
-        impl Scope for #name {
-            fn scope(&self) -> &'static str {
-                stringify!(#name)
+        impl ::dirty_mike_core::Scope for #name {
+            fn measure<T, F: Fn() -> T>(f: F) -> Result<(T, Self), ::dirty_mike_core::ScopeError> {
+                todo!();
             }
         }
     };
