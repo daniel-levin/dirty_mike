@@ -2,11 +2,13 @@
 name = "dirty_mike_derive"
 version = "0.1.0"
 edition = "2024"
+description = "Quick and dirty self-instrumentation for Rust"
+license = "Unlicense"
 
 [lib]
 proc-macro = true
 
 [dependencies]
-syn = { version = "2.0", features = ["full"] }
-quote = "1.0"
-proc-macro2 = "1.0"
+syn = { version = "2", features = ["full"] }
+quote = "1"
+proc-macro2 = "1"

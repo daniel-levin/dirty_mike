@@ -4,7 +4,7 @@ members = [ "dirty_mike_core","dirty_mike_derive"]
 
 [package]
 name = "dirty_mike"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Quick and dirty self-instrumentation for Rust"
 license = "Unlicense"
