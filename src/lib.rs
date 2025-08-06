@@ -139,6 +139,9 @@ mod tests {
 
         let unsorted_res = topdown(|| work(&shuffled_data)).unwrap();
 
+        dbg!(&sorted_res);
+        dbg!(&unsorted_res);
+
         if let (Some(unsorted_misses), Some(sorted_misses)) =
             (unsorted_res.branch_misses, sorted_res.branch_misses)
         {
