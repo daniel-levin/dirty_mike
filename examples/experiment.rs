@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Use a timeout to avoid blocking forever
         match sampled.next_blocking(Some(Duration::from_millis(500))) {
             Some(sample) => {
-                println!("Got event {}!", i);
+                println!("Got event {}! of type {}", i, sample.ty());
                 match sample.parse_record() {
                     Ok(record) => println!("Event record: {:?}", record),
                     Err(e) => println!("Failed to parse record: {}", e),
@@ -39,6 +39,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("Error or timeout waiting for event");
             }
         }
+
+                dbg!(sampled.read_full());
     }
 
     sampled.disable()?;
