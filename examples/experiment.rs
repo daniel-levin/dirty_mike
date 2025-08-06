@@ -1,22 +1,48 @@
-use perf_event::{Builder, events, Group, ReadFormat};
+use perf_event::{Builder, events};
 use std::thread;
 use std::time::Duration;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tracepoint = events::Tracepoint::with_name("sched/sched_switch")?;
-    let cpu_cycles = events::Hardware::INSTRUCTIONS;
 
-    let mut group = Group::new()?;
+    // Create a single event (not group) with sampling
+    let event = Builder::new(tracepoint).context_switch(true).build()?;
+    let mut sampled = event.sampled(128)?; // Create sampled version with 128-entry buffer
+    
+    sampled.enable()?;
+    println!("Monitoring sched_switch events...");
 
-    let cc = group.add(&Builder::new(cpu_cycles))?;
+    // Create work in a separate thread to generate context switches
+    let work_handle = thread::spawn(|| {
+        for i in 0..5 {
+            println!("Worker thread iteration: {}", i);
+            thread::sleep(Duration::from_millis(100));
+            thread::yield_now();
+        }
+    });
+    work_handle.join().unwrap();
 
-    group.enable()?;
-    println!("poes");
-    group.disable()?;
+    // Read events from the main thread
+    for i in 0..10 {
+        println!("Waiting for event {}...", i);
+        
+        // Use a timeout to avoid blocking forever
+        match sampled.next_blocking(Some(Duration::from_millis(500))) {
+            Some(sample) => {
+                println!("Got event {}!", i);
+                match sample.parse_record() {
+                    Ok(record) => println!("Event record: {:?}", record),
+                    Err(e) => println!("Failed to parse record: {}", e),
+                }
+            }
+            None => {
+                println!("Error or timeout waiting for event");
+            }
+        }
+    }
 
-    let counts = group.read()?;
-
-    dbg!(counts);
-
+    sampled.disable()?;
+    
+    println!("Done monitoring");
     Ok(())
 }
