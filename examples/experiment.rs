@@ -1,32 +1,31 @@
-use perf_event::{Builder, Group, events};
+use perf_event::{Builder, events};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let group = Group::builder().context_switch(true).build_group()?;
+    /*let tp = events::Tracepoint::with_name("block/block_rq_complete")?;*/
+    let tp = events::Hardware::CPU_CYCLES;
 
-    let ctr = group.into_counter();
+    let mut sampler = Builder::new(tp)
+        .sample_period(1000)
+        .build()?
+        .sampled(8192)?;
 
-    let mut sampled = ctr.sampled(128)?;
+    sampler.enable()?;
 
-    sampled.enable()?;
-
-    for i in 0..10 {
-        println!("Waiting for event {}...", i);
-        match sampled.next_blocking(Some(std::time::Duration::from_millis(500))) {
-            Some(sample) => {
-                println!("got sample of type {}", sample.ty());
-
-                match sample.parse_record() {
-                    Ok(record) => println!("Event record: {:?}", record),
-                    Err(e) => eprintln!("Failed to parse record: {}", e),
+    for _i in 0..100 {
+        match sampler.next_blocking(Some(std::time::Duration::from_millis(1200))) {
+            Some(sample) => match sample.parse_record() {
+                Ok(record) => {
+                    println!("Event record: {:#?}", &record);
                 }
-            }
+                Err(e) => eprintln!("Failed to parse record: {}", e),
+            },
             None => {
                 eprintln!("timeout");
             }
         }
     }
 
-    sampled.disable()?;
+    sampler.disable()?;
 
     Ok(())
 }
