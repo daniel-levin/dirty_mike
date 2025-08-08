@@ -1,7 +1,3 @@
-[workspace]
-resolver = "2"
-members = [ "dirty_mike_core","dirty_mike_derive"]
-
 [package]
 name = "dirty_mike"
 version = "0.1.1"
