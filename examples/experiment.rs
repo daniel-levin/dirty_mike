@@ -8,20 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .any_pid()
         .one_cpu(1)
         .include_kernel()
-        .inherit(true)
-        .sample_id_all(true)
-        .exclude_guest(true)
-        .sample(
-            SampleFlag::RAW
-                | SampleFlag::IP
-                | SampleFlag::TID
-                | SampleFlag::TIME
-                | SampleFlag::CPU
-                | SampleFlag::PERIOD
-                | SampleFlag::RAW
-                | SampleFlag::IDENTIFIER,
-        )
-        .read_format(ReadFormat::ID | ReadFormat::LOST)
+        .sample(SampleFlag::RAW)
         .sample_period(1)
         .build()?
         .sampled(8192)?;
