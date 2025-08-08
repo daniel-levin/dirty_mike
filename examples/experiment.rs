@@ -1,11 +1,16 @@
-use perf_event::{Builder, SampleFlag, events};
+use perf_event::{Builder, ReadFormat, SampleFlag, events};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let tp = events::Tracepoint::with_name("block/block_rq_complete")?;
     //let tp = events::Hardware::CPU_CYCLES;
 
     let mut sampler = Builder::new(tp)
-        //.include_kernel()
+        .any_pid()
+        .one_cpu(1)
+        .include_kernel()
+        .inherit(true)
+        .sample_id_all(true)
+        .exclude_guest(true)
         .sample(
             SampleFlag::RAW
                 | SampleFlag::IP
@@ -16,7 +21,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 | SampleFlag::RAW
                 | SampleFlag::IDENTIFIER,
         )
-        .sample_period(1_000)
+        .read_format(ReadFormat::ID | ReadFormat::LOST)
+        .sample_period(1)
         .build()?
         .sampled(8192)?;
 
