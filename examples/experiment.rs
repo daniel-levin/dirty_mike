@@ -1,42 +1,31 @@
 use perf_event::{Builder, events};
-use std::thread;
-use std::time::Duration;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let event = Builder::new(events::Software::CONTEXT_SWITCHES)
-        .context_switch(true)
-        .build()?;
-    let mut sampled = event.sampled(128)?;
+    /*let tp = events::Tracepoint::with_name("block/block_rq_complete")?;*/
+    let tp = events::Hardware::CPU_CYCLES;
 
-    sampled.enable()?;
-    println!("Monitoring sched_switch events...");
+    let mut sampler = Builder::new(tp)
+        .sample_period(1_000)
+        .build()?
+        .sampled(8192)?;
 
-    for i in 0..10 {
-        println!("Waiting for event {}...", i);
+    sampler.enable()?;
 
-        match sampled.next_record() {
-            Some(sample) => {
-                let x = sample.to_vec();
-                println!(
-                    "Got event {}! of type {} with size {}",
-                    i,
-                    sample.ty(),
-                    x.len()
-                );
-                match sample.parse_record() {
-                    Ok(record) => println!("Event record: {:?}", record),
-                    Err(e) => println!("Failed to parse record: {}", e),
+    for i in 0..100 {
+        match sampler.next_blocking(None) {
+            Some(sample) => match sample.parse_record() {
+                Ok(record) => {
+                    println!("Event record {i}: {:#?}", &record);
                 }
-            }
+                Err(e) => eprintln!("Failed to parse record: {}", e),
+            },
             None => {
-                println!("Error or timeout waiting for event");
+                eprintln!("timeout");
             }
         }
-        thread::sleep(Duration::from_millis(100));
     }
 
-    sampled.disable()?;
+    sampler.disable()?;
 
-    println!("Done monitoring");
     Ok(())
 }
