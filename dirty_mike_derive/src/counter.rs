@@ -1,13 +1,36 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{
-    Data, DataStruct, DeriveInput, Error, Field, Fields, FieldsNamed, Ident, Type, TypePath,
+    Attribute, Data, DataStruct, DeriveInput, Error, Field, Fields, FieldsNamed, Ident, Meta, Type,
+    TypePath,
 };
 
 struct CounterField {
     name: Ident,
     counter_ident: Ident,
     ty: TypePath,
+    hardware_attr: Option<String>,
+}
+
+fn parse_hardware_attribute(attrs: &[Attribute]) -> Result<Option<String>, Error> {
+    for attr in attrs {
+        if attr.path().is_ident("hardware") {
+            match &attr.meta {
+                Meta::List(list) => {
+                    let tokens = &list.tokens;
+                    let token_str = tokens.to_string();
+                    return Ok(Some(token_str));
+                }
+                _ => {
+                    return Err(Error::new_spanned(
+                        attr,
+                        "hardware attribute must have a value like #[hardware(CPU_CYCLES)]",
+                    ));
+                }
+            }
+        }
+    }
+    Ok(None)
 }
 
 fn obtain_counter_fields(fields: FieldsNamed) -> Result<Vec<CounterField>, Error> {
@@ -23,11 +46,13 @@ fn obtain_counter_fields(fields: FieldsNamed) -> Result<Vec<CounterField>, Error
 
         let name = ident.unwrap();
         let counter_ident = quote::format_ident!("{}_counter", &name);
+        let hardware_attr = parse_hardware_attribute(&attrs)?;
 
         counters.push(CounterField {
             name,
             ty: tp,
             counter_ident,
+            hardware_attr,
         });
     }
 
@@ -57,13 +82,20 @@ fn add_counters_to_group(counter_fields: &[CounterField]) -> proc_macro2::TokenS
     let mut add_counter = vec![];
 
     for CounterField {
-        name,
         counter_ident,
+        hardware_attr,
         ..
     } in counter_fields
     {
+        let hardware_event = if let Some(attr_value) = hardware_attr {
+            let tokens: proc_macro2::TokenStream = attr_value.parse().unwrap();
+            quote! { Hardware::#tokens }
+        } else {
+            quote! { Hardware::CPU_CYCLES }
+        };
+
         add_counter.push(quote! {
-            let #counter_ident = group.add(&Builder::new(Hardware::CPU_CYCLES)).unwrap();
+            let #counter_ident = group.add(&Builder::new(#hardware_event)).unwrap();
         });
     }
 
