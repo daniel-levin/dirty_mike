@@ -7,4 +7,7 @@ pub struct BasicHardwareCounters {
 
     #[hardware(INSTRUCTIONS)]
     pub instructions: usize,
+
+    #[hardware(BRANCH_MISSES)]
+    pub branch_misses: usize,
 }

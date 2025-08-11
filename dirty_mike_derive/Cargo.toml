@@ -14,4 +14,4 @@ quote = "1"
 proc-macro2 = "1"
 
 [dev-dependencies]
-trybuild = "1.0"
+trybuild = "1"
