@@ -1,0 +1,5 @@
+error: counters should not contain references
+ --> tests/ui/lifetimes.rs:4:22
+  |
+4 | struct LifetimeStruct<'a> {
+  |                      ^^^^

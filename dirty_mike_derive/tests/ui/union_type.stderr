@@ -1,0 +1,8 @@
+error: must not be a union - counters are only supported on structs
+ --> tests/ui/union_type.rs:4:1
+  |
+4 | / union MyUnion {
+5 | |     field1: u32,
+6 | |     field2: f32,
+7 | | }
+  | |_^

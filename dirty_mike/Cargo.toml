@@ -1,0 +1,17 @@
+[package]
+name = "dirty_mike"
+version = "0.1.1"
+edition = "2024"
+description = "Quick and dirty self-instrumentation for Rust"
+license = "Unlicense"
+
+[dependencies]
+perf-event2 = "0.7.4"
+dirty_mike_derive = { version = "0.1", path = "../dirty_mike_derive" }
+dirty_mike_core = { version = "0.1", path = "../dirty_mike_core" }
+thiserror = "2"
+
+[dev-dependencies]
+rand = "0.9.2"
+serde_json = "1.0.142"
+toml = { version = "0.9.4", features = ["serde"] }
