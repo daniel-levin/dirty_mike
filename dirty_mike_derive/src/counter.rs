@@ -6,6 +6,7 @@ use syn::{
 
 struct CounterField {
     name: Ident,
+    counter_ident: Ident,
     ty: TypePath,
 }
 
@@ -20,26 +21,54 @@ fn obtain_counter_fields(fields: FieldsNamed) -> Result<Vec<CounterField>, Error
             return Err(Error::new_spanned(ty, "counters do not support this type"));
         };
 
+        let name = ident.unwrap();
+        let counter_ident = quote::format_ident!("{}_counter", &name);
+
         counters.push(CounterField {
-            name: ident.unwrap(),
+            name,
             ty: tp,
+            counter_ident,
         });
     }
 
     Ok(counters)
 }
 
-fn all_fields_set_to_zero(counter_fields: Vec<CounterField>) -> proc_macro2::TokenStream {
-    let mut assign_zeros = vec![];
+fn all_fields_set(counter_fields: &[CounterField]) -> proc_macro2::TokenStream {
+    let mut assignments = vec![];
 
-    for CounterField { name, .. } in counter_fields {
-        assign_zeros.push(quote! {
-            #name: 0
+    for CounterField {
+        name,
+        counter_ident,
+        ..
+    } in counter_fields
+    {
+        assignments.push(quote! {
+            #name: *&counts[& #counter_ident]
         });
     }
 
     quote! {
-        #(#assign_zeros),*
+        #(#assignments),*
+    }
+}
+
+fn add_counters_to_group(counter_fields: &[CounterField]) -> proc_macro2::TokenStream {
+    let mut add_counter = vec![];
+
+    for CounterField {
+        name,
+        counter_ident,
+        ..
+    } in counter_fields
+    {
+        add_counter.push(quote! {
+            let #counter_ident = group.add(&Builder::new(Hardware::CPU_CYCLES)).unwrap();
+        });
+    }
+
+    quote! {
+        #(#add_counter);*
     }
 }
 
@@ -92,13 +121,15 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     };
 
     let counters = obtain_counter_fields(fields)?;
-    let set_fields_to_zero = all_fields_set_to_zero(counters);
+    let set_fields = all_fields_set(&counters);
 
     let mk_struct = quote! {
         let counter = #name {
-            #set_fields_to_zero
+            #set_fields
         };
     };
+
+    let add_counters = add_counters_to_group(&counters);
 
     let expanded = quote! {
         impl ::dirty_mike_core::Counter for #name {
@@ -108,6 +139,8 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
                 let mut gb = Group::builder();
                 gb.read_format(ReadFormat::all());
                 let mut group = gb.build_group().unwrap();
+
+                #add_counters
 
                 group.enable().unwrap();
                 let result = f();

@@ -3,13 +3,13 @@ use crate::Counter;
 #[derive(Debug, Counter)]
 pub struct BasicHardwareCounters {
     #[hardware(CPU_CYCLES)]
-    pub cycles: usize,
+    pub cycles: u64,
 
     #[hardware(INSTRUCTIONS)]
-    pub instructions: usize,
+    pub instructions: u64,
 
     #[hardware(BRANCH_MISSES)]
-    pub branch_misses: usize,
+    pub branch_misses: u64,
 }
 
 #[cfg(test)]
