@@ -1,11 +1,51 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{Data, DataStruct, DeriveInput, Error, Fields, FieldsNamed};
+use syn::{
+    Data, DataStruct, DeriveInput, Error, Field, Fields, FieldsNamed, Ident, Type, TypePath,
+};
+
+struct CounterField {
+    name: Ident,
+    ty: TypePath,
+}
+
+fn obtain_counter_fields(fields: FieldsNamed) -> Result<Vec<CounterField>, Error> {
+    let mut counters = vec![];
+
+    for Field {
+        attrs, ident, ty, ..
+    } in fields.named
+    {
+        let Type::Path(tp) = ty else {
+            return Err(Error::new_spanned(ty, "counters do not support this type"));
+        };
+
+        counters.push(CounterField {
+            name: ident.unwrap(),
+            ty: tp,
+        });
+    }
+
+    Ok(counters)
+}
+
+fn all_fields_set_to_zero(counter_fields: Vec<CounterField>) -> proc_macro2::TokenStream {
+    let mut assign_zeros = vec![];
+
+    for CounterField { name, .. } in counter_fields {
+        assign_zeros.push(quote! {
+            #name: 0
+        });
+    }
+
+    quote! {
+        #(#assign_zeros),*
+    }
+}
 
 pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     let name = &input.ident;
 
-    // Check for lifetimes first (more specific than generic parameters)
     if !input.generics.lifetimes().collect::<Vec<_>>().is_empty() {
         return Err(Error::new_spanned(
             &input.generics,
@@ -13,7 +53,6 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         ));
     }
 
-    // Check for generic parameters
     if !input.generics.params.is_empty() {
         return Err(Error::new_spanned(
             &input.generics,
@@ -21,7 +60,6 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         ));
     }
 
-    // Check that this is a struct (not enum or union)
     let fields = match input.data {
         Data::Struct(DataStruct {
             fields: Fields::Named(named_fields),
@@ -53,6 +91,15 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         use perf_event::{Builder, Group};
     };
 
+    let counters = obtain_counter_fields(fields)?;
+    let set_fields_to_zero = all_fields_set_to_zero(counters);
+
+    let mk_struct = quote! {
+        let counter = #name {
+            #set_fields_to_zero
+        };
+    };
+
     let expanded = quote! {
         impl ::dirty_mike_core::Counter for #name {
             fn measure<T, F: Fn() -> T>(f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
@@ -68,11 +115,9 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
 
                 let counts = group.read().unwrap();
 
-                dbg!(counts);
+                #mk_struct
 
-
-
-                todo!();
+                Ok((result, counter))
             }
         }
     };

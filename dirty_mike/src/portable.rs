@@ -19,7 +19,6 @@ mod tests {
     use rand::prelude::SliceRandom;
 
     #[test]
-    #[ignore]
     fn measure_branch_misses() {
         fn work(data: &[i32]) -> u64 {
             let mut sum = 0u64;
@@ -39,6 +38,8 @@ mod tests {
         sorted_data.sort();
 
         let sorted_res = BasicHardwareCounters::measure(|| work(&sorted_data)).unwrap();
+
+        dbg!(sorted_res);
 
         let unsorted_res = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
     }
