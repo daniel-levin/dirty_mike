@@ -1,8 +1,8 @@
 use thiserror::Error;
 
 #[derive(Debug, Error)]
-pub enum ScopeError {}
+pub enum CounterError {}
 
-pub trait Scope: Sized + Send + Sync + 'static {
-    fn measure<T, F: Fn() -> T>(f: F) -> Result<(T, Self), ScopeError>;
+pub trait Counter: Sized + Send + Sync + 'static {
+    fn measure<T, F: Fn() -> T>(f: F) -> Result<(T, Self), CounterError>;
 }
