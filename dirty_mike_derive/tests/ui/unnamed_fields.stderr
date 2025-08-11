@@ -1,0 +1,5 @@
+error: all fields must be named in counters
+ --> tests/ui/unnamed_fields.rs:4:1
+  |
+4 | struct S(usize);
+  | ^^^^^^^^^^^^^^^^
