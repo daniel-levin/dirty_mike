@@ -165,7 +165,7 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
 
     let expanded = quote! {
         impl ::dirty_mike_core::Counter for #name {
-            fn measure<T, F: Fn() -> T>(f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
+            fn measure<T, F: FnOnce() -> T>(mut f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
                 #imports
 
                 let mut gb = Group::builder();

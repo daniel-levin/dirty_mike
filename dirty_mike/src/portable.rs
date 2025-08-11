@@ -10,6 +10,12 @@ pub struct BasicHardwareCounters {
 
     #[hardware(BRANCH_MISSES)]
     pub branch_misses: u64,
+
+    #[hardware(BRANCH_INSTRUCTIONS)]
+    pub branch_instructions: u64,
+
+    #[hardware(CACHE_MISSES)]
+    pub cache_misses: u64,
 }
 
 #[cfg(test)]
@@ -39,8 +45,8 @@ mod tests {
 
         let sorted_res = BasicHardwareCounters::measure(|| work(&sorted_data)).unwrap();
 
-        dbg!(sorted_res);
-
         let unsorted_res = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
+
+        dbg!(unsorted_res);
     }
 }
