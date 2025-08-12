@@ -43,10 +43,8 @@ mod tests {
         let mut sorted_data = shuffled_data.clone();
         sorted_data.sort();
 
-        let sorted_res = BasicHardwareCounters::measure(|| work(&sorted_data)).unwrap();
+        let _sorted_res = BasicHardwareCounters::measure(|| work(&sorted_data)).unwrap();
 
-        let unsorted_res = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
-
-        dbg!(unsorted_res);
+        let _unsorted_res = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
     }
 }

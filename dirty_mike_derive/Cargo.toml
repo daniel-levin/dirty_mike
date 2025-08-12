@@ -14,4 +14,7 @@ quote = "1"
 proc-macro2 = "1"
 
 [dev-dependencies]
+dirty_mike = { version = "0.1", path = "../dirty_mike" }
+dirty_mike_core = { version = "0.1", path = "../dirty_mike_core" }
 trybuild = "1"
+perf-event2 = "0.7.4"

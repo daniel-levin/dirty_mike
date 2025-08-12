@@ -8,7 +8,7 @@ use syn::{
 struct CounterField {
     name: Ident,
     counter_ident: Ident,
-    ty: TypePath,
+    _ty: TypePath,
     hardware_attr: Option<String>,
 }
 
@@ -50,7 +50,7 @@ fn obtain_counter_fields(fields: FieldsNamed) -> Result<Vec<CounterField>, Error
 
         counters.push(CounterField {
             name,
-            ty: tp,
+            _ty: tp,
             counter_ident,
             hardware_attr,
         });

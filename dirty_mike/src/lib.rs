@@ -5,6 +5,7 @@ use std::time::Duration;
 
 pub mod portable;
 pub mod x86;
+pub use dirty_mike_core::Counter;
 pub use dirty_mike_derive::Counter;
 
 #[derive(Debug)]
