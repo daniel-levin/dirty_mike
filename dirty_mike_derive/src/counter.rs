@@ -22,6 +22,22 @@ enum CounterField {
 }
 
 impl CounterField {
+    pub fn extraction(&self) -> proc_macro2::TokenStream {
+        match self {
+            Self::Counter {
+                name,
+                spec: EventSpec::Hardware(s),
+            } => {
+                let counter_name = quote::format_ident!("{}_counter", name);
+                let as_ident = quote::format_ident!("{}", s);
+                quote! {
+                    #name: counts[& #counter_name]
+                }
+            }
+            _ => todo!(),
+        }
+    }
+
     pub fn enablement(&self) -> Option<proc_macro2::TokenStream> {
         match self {
             Self::Counter {
@@ -31,7 +47,7 @@ impl CounterField {
                 let counter_name = quote::format_ident!("{}_counter", name);
                 let as_ident = quote::format_ident!("{}", s);
                 Some(quote! {
-                    let #counter_name = Builder::new(Hardware:: #as_ident)
+                    let #counter_name = group.add(&Builder::new(Hardware:: #as_ident)).unwrap();
                 })
             }
             _ => None,
@@ -463,6 +479,12 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         }
     }
 
+    let counter_extractions = cs
+        .counter_fields
+        .iter()
+        .map(|f| f.extraction())
+        .collect::<Vec<_>>();
+
     let expanded = quote! {
         impl ::dirty_mike_core::Counter for #name {
             fn measure<T, F: FnOnce() -> T>(mut f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
@@ -480,7 +502,11 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
 
                 let counts = group.read().unwrap();
 
-                Ok((result, todo!()))
+                let counter = #name {
+                    #(#counter_extractions),*
+                };
+
+                Ok((result, counter))
             }
         }
     };
