@@ -1,16 +1,31 @@
+use dirty_mike::Counter;
+use std::time::Duration;
+
+#[derive(Debug, Counter)]
+pub struct Basic {
+    #[hardware(CPU_CYCLES)]
+    pub cycles: u64,
+
+    #[time_running]
+    pub running: Duration,
+
+    #[time_enabled]
+    pub enabled: Duration,
+}
+
 fn main() {
-    let work1 = dirty_mike::topdown(|| {
+    let work1 = Basic::measure(|| {
         let _v: serde_json::Value = serde_json::from_str(DATA).unwrap();
     })
     .unwrap();
 
-    let work2 = dirty_mike::topdown(|| {
+    let work2 = Basic::measure(|| {
         let _v: toml::Value = toml::from_str(DATA_TOML).unwrap();
     })
     .unwrap();
 
-    dbg!(work1.stats());
-    dbg!(work2.stats());
+    dbg!(work1);
+    dbg!(work2);
 }
 
 static DATA: &str = r#"

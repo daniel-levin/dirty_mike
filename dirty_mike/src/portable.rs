@@ -1,4 +1,5 @@
 use crate::Counter;
+use std::time::Duration;
 
 #[derive(Debug, Counter)]
 pub struct BasicHardwareCounters {
@@ -19,6 +20,12 @@ pub struct BasicHardwareCounters {
 
     #[hardware(REF_CPU_CYCLES)]
     pub ref_cpu_cycles: u64,
+
+    #[time_running]
+    pub running: Duration,
+
+    #[time_enabled]
+    pub enabled: Duration,
 }
 
 #[cfg(test)]
