@@ -87,14 +87,14 @@ impl CounterField {
                             ));
                         }
 
-                        let event_selector = parse_hex(parts[0]).map_err(|_| {
+                        let event_selector = hex8(parts[0]).map_err(|_| {
                             Error::new_spanned(
                                 &attr,
                                 "first intel parameter must be a valid u8 hex value (0x..)",
                             )
                         })?;
 
-                        let mask = parse_hex(parts[1]).map_err(|_| {
+                        let mask = hex8(parts[1]).map_err(|_| {
                             Error::new_spanned(
                                 &attr,
                                 "second intel parameter must be a valid u8 hex value (0x..)",
@@ -156,9 +156,14 @@ fn is_valid_hardware_event(event: &str) -> bool {
     )
 }
 
-fn parse_hex(s: &str) -> Result<u8, Box<dyn std::error::Error>> {
+fn hex8(s: &str) -> Result<u8, Box<dyn std::error::Error>> {
     if s.starts_with("0x") || s.starts_with("0X") {
-        u8::from_str_radix(&s[2..], 16).map_err(Into::into)
+        let hex_str = &s[2..];
+        let bytes = hex::decode(hex_str)?;
+        if bytes.len() != 1 {
+            return Err(format!("hex value '{}' must represent exactly one byte", s).into());
+        }
+        Ok(bytes[0])
     } else {
         Err("hex values must start with 0x or 0X".into())
     }
@@ -196,6 +201,191 @@ mod inner_tests {
         } else {
             panic!("Expected Intel counter field");
         }
+    }
+
+    #[test]
+    fn test_different_hardware_events() {
+        let tests = vec![
+            ("CPU_CYCLES", "CPU_CYCLES"),
+            ("INSTRUCTIONS", "INSTRUCTIONS"),
+            ("CACHE_REFERENCES", "CACHE_REFERENCES"),
+            ("CACHE_MISSES", "CACHE_MISSES"),
+            ("BRANCH_INSTRUCTIONS", "BRANCH_INSTRUCTIONS"),
+            ("BRANCH_MISSES", "BRANCH_MISSES"),
+            ("BUS_CYCLES", "BUS_CYCLES"),
+            ("STALLED_CYCLES_FRONTEND", "STALLED_CYCLES_FRONTEND"),
+            ("STALLED_CYCLES_BACKEND", "STALLED_CYCLES_BACKEND"),
+            ("REF_CPU_CYCLES", "REF_CPU_CYCLES"),
+        ];
+
+        for (event, expected) in tests {
+            let test_str = format!(
+                r#"
+                {{
+                    #[hardware({})]
+                    counter: u64,
+                }}
+                "#,
+                event
+            );
+
+            let fields: FieldsNamed = syn::parse_str(&test_str).unwrap();
+            let cs = CounterSpec::from_named_fields(fields).unwrap();
+
+            assert_eq!(cs.counter_fields.len(), 1);
+            if let CounterField::Counter {
+                spec: EventSpec::Hardware(hw_event),
+                ..
+            } = &cs.counter_fields[0]
+            {
+                assert_eq!(hw_event, expected);
+            } else {
+                panic!("Expected hardware counter field for {}", event);
+            }
+        }
+    }
+
+    #[test]
+    fn test_different_intel_hex_values() {
+        let tests = vec![
+            ("0x00, 0x01", 0x00, 0x01),
+            ("0x89, 0xFF", 0x89, 0xFF),
+            ("0xAB, 0xCD", 0xAB, 0xCD),
+            ("0x12, 0x34", 0x12, 0x34),
+            ("0XFF, 0X00", 0xFF, 0x00), // Test uppercase 0X
+        ];
+
+        for (hex_str, expected_selector, expected_mask) in tests {
+            let test_str = format!(
+                r#"
+                {{
+                    #[intel({})]
+                    counter: u64,
+                }}
+                "#,
+                hex_str
+            );
+
+            let fields: FieldsNamed = syn::parse_str(&test_str).unwrap();
+            let cs = CounterSpec::from_named_fields(fields).unwrap();
+
+            assert_eq!(cs.counter_fields.len(), 1);
+            if let CounterField::Counter {
+                spec: EventSpec::Intel(selector, mask),
+                ..
+            } = &cs.counter_fields[0]
+            {
+                assert_eq!(
+                    *selector, expected_selector,
+                    "Selector mismatch for {}",
+                    hex_str
+                );
+                assert_eq!(*mask, expected_mask, "Mask mismatch for {}", hex_str);
+            } else {
+                panic!("Expected Intel counter field for {}", hex_str);
+            }
+        }
+    }
+
+    #[test]
+    fn test_time_fields() {
+        let test_str = r#"
+        {
+            #[time_enabled]
+            enabled_time: Duration,
+
+            #[time_running]
+            running_time: Duration,
+        }
+        "#;
+
+        let fields: FieldsNamed = syn::parse_str(test_str).unwrap();
+        let cs = CounterSpec::from_named_fields(fields).unwrap();
+
+        assert_eq!(cs.counter_fields.len(), 2);
+
+        assert!(matches!(cs.counter_fields[0], CounterField::TimeEnabled));
+        assert!(matches!(cs.counter_fields[1], CounterField::TimeRunning));
+    }
+
+    #[test]
+    fn test_mixed_field_types() {
+        let test_str = r#"
+        {
+            #[hardware(CPU_CYCLES)]
+            cpu_cycles: u64,
+
+            #[intel(0x89, 0xFF)]
+            branch_misses: u64,
+
+            #[time_enabled]
+            time_enabled: Duration,
+
+            #[time_running]
+            time_running: Duration,
+
+            #[hardware(INSTRUCTIONS)]
+            instructions: u64,
+        }
+        "#;
+
+        let fields: FieldsNamed = syn::parse_str(test_str).unwrap();
+        let cs = CounterSpec::from_named_fields(fields).unwrap();
+
+        assert_eq!(cs.counter_fields.len(), 5);
+
+        // Check CPU_CYCLES
+        if let CounterField::Counter {
+            spec: EventSpec::Hardware(event),
+            ..
+        } = &cs.counter_fields[0]
+        {
+            assert_eq!(event, "CPU_CYCLES");
+        } else {
+            panic!("Expected hardware counter field for CPU_CYCLES");
+        }
+
+        // Check Intel counter
+        if let CounterField::Counter {
+            spec: EventSpec::Intel(selector, mask),
+            ..
+        } = &cs.counter_fields[1]
+        {
+            assert_eq!(*selector, 0x89);
+            assert_eq!(*mask, 0xFF);
+        } else {
+            panic!("Expected Intel counter field");
+        }
+
+        // Check time fields
+        assert!(matches!(cs.counter_fields[2], CounterField::TimeEnabled));
+        assert!(matches!(cs.counter_fields[3], CounterField::TimeRunning));
+
+        // Check INSTRUCTIONS
+        if let CounterField::Counter {
+            spec: EventSpec::Hardware(event),
+            ..
+        } = &cs.counter_fields[4]
+        {
+            assert_eq!(event, "INSTRUCTIONS");
+        } else {
+            panic!("Expected hardware counter field for INSTRUCTIONS");
+        }
+    }
+
+    #[test]
+    fn test_hex8_function() {
+        // Test valid hex values
+        assert_eq!(hex8("0x00").unwrap(), 0x00);
+        assert_eq!(hex8("0xFF").unwrap(), 0xFF);
+        assert_eq!(hex8("0x89").unwrap(), 0x89);
+        assert_eq!(hex8("0XAB").unwrap(), 0xAB); // uppercase 0X
+
+        // Test invalid formats
+        assert!(hex8("123").is_err()); // no 0x prefix
+        assert!(hex8("0x").is_err()); // empty hex
+        assert!(hex8("0xGG").is_err()); // invalid hex chars
+        assert!(hex8("0x1234").is_err()); // too many bytes (2 bytes instead of 1)
     }
 }
 
@@ -244,6 +434,7 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     let cs = CounterSpec::from_named_fields(fields)?;
 
     Ok(quote! {}.into())
+
     /*
     let imports = quote! {
         use perf_event::ReadFormat;

@@ -12,6 +12,7 @@ proc-macro = true
 syn = { version = "2", features = ["full"] }
 quote = "1"
 proc-macro2 = "1"
+hex = "0.4.3"
 
 [dev-dependencies]
 dirty_mike = { version = "0.1", path = "../dirty_mike" }
