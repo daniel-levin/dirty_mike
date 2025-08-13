@@ -21,10 +21,7 @@ enum CounterField {
 impl CounterField {
     pub fn extraction(&self) -> proc_macro2::TokenStream {
         match self {
-            Self::Counter {
-                name,
-                spec: EventSpec::Hardware(_),
-            } => {
+            Self::Counter { name, .. } => {
                 let counter_name = quote::format_ident!("{}_counter", name);
                 quote! {
                     #name: counts[& #counter_name]
@@ -44,6 +41,16 @@ impl CounterField {
                 let as_ident = quote::format_ident!("{}", s);
                 Some(quote! {
                     let #counter_name = group.add(&Builder::new(Hardware:: #as_ident)).unwrap();
+                })
+            }
+            Self::Counter {
+                name,
+                spec: EventSpec::Intel(e, m),
+            } => {
+                let counter_name = quote::format_ident!("{}_counter", name);
+                let num: u64 = ((*m as u64) << 8) | (*e as u64);
+                Some(quote! {
+                    let #counter_name = group.add(&Builder::new(Raw::new( #num))).unwrap();
                 })
             }
             _ => None,
@@ -244,6 +251,7 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     let imports = quote! {
         use perf_event::ReadFormat;
         use perf_event::events::Hardware;
+        use perf_event::events::Raw;
         use perf_event::{Builder, Group};
     };
 
