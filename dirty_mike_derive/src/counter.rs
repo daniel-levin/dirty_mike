@@ -50,6 +50,17 @@ impl CounterField {
                     Meta::List(list) => {
                         let tokens = &list.tokens;
                         let token_str = tokens.to_string();
+
+                        if !is_valid_hardware_event(&token_str) {
+                            return Err(Error::new_spanned(
+                                attr,
+                                &format!(
+                                    "invalid hardware event '{}'. Valid events are: CPU_CYCLES, INSTRUCTIONS, CACHE_REFERENCES, CACHE_MISSES, BRANCH_INSTRUCTIONS, BRANCH_MISSES, BUS_CYCLES, STALLED_CYCLES_FRONTEND, STALLED_CYCLES_BACKEND, REF_CPU_CYCLES",
+                                    token_str
+                                ),
+                            ));
+                        }
+
                         return Ok(Self::Counter {
                             name: ident,
                             spec: EventSpec::Hardware(token_str),
@@ -129,6 +140,30 @@ impl CounterSpec {
     }
 }
 
+fn is_valid_hardware_event(event: &str) -> bool {
+    matches!(
+        event,
+        "CPU_CYCLES"
+            | "INSTRUCTIONS"
+            | "CACHE_REFERENCES"
+            | "CACHE_MISSES"
+            | "BRANCH_INSTRUCTIONS"
+            | "BRANCH_MISSES"
+            | "BUS_CYCLES"
+            | "STALLED_CYCLES_FRONTEND"
+            | "STALLED_CYCLES_BACKEND"
+            | "REF_CPU_CYCLES"
+    )
+}
+
+fn parse_hex(s: &str) -> Result<u8, Box<dyn std::error::Error>> {
+    if s.starts_with("0x") || s.starts_with("0X") {
+        u8::from_str_radix(&s[2..], 16).map_err(Into::into)
+    } else {
+        Err("hex values must start with 0x or 0X".into())
+    }
+}
+
 #[cfg(test)]
 mod inner_tests {
     use super::*;
@@ -161,35 +196,6 @@ mod inner_tests {
         } else {
             panic!("Expected Intel counter field");
         }
-    }
-}
-
-fn parse_hardware_attribute(attrs: &[Attribute]) -> Result<Option<String>, Error> {
-    for attr in attrs {
-        if attr.path().is_ident("hardware") {
-            match &attr.meta {
-                Meta::List(list) => {
-                    let tokens = &list.tokens;
-                    let token_str = tokens.to_string();
-                    return Ok(Some(token_str));
-                }
-                _ => {
-                    return Err(Error::new_spanned(
-                        attr,
-                        "hardware attribute must have a value like #[hardware(CPU_CYCLES)]",
-                    ));
-                }
-            }
-        }
-    }
-    Ok(None)
-}
-
-fn parse_hex(s: &str) -> Result<u8, Box<dyn std::error::Error>> {
-    if s.starts_with("0x") || s.starts_with("0X") {
-        u8::from_str_radix(&s[2..], 16).map_err(Into::into)
-    } else {
-        Err("hex values must start with 0x or 0X".into())
     }
 }
 
@@ -234,6 +240,8 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
             ));
         }
     };
+
+    let cs = CounterSpec::from_named_fields(fields)?;
 
     Ok(quote! {}.into())
     /*

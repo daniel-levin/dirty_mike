@@ -1,0 +1,5 @@
+error: first intel parameter must be a valid u8 hex value (0x..)
+ --> tests/ui/invalid_intel_decimal.rs:5:5
+  |
+5 |     #[intel(137, 255)]
+  |     ^^^^^^^^^^^^^^^^^^
