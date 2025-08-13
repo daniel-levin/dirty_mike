@@ -3,7 +3,7 @@ use syn::{DeriveInput, parse_macro_input};
 
 mod counter;
 
-#[proc_macro_derive(Counter, attributes(hardware))]
+#[proc_macro_derive(Counter, attributes(hardware, intel, time_enabled, time_running))]
 pub fn derive_counter(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 

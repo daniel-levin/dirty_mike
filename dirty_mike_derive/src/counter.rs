@@ -5,11 +5,163 @@ use syn::{
     TypePath,
 };
 
-struct CounterField {
-    name: Ident,
-    counter_ident: Ident,
-    _ty: TypePath,
-    hardware_attr: Option<String>,
+#[derive(Debug)]
+enum EventSpec {
+    Hardware(String),
+
+    Intel(u8, u8),
+}
+
+#[derive(Debug)]
+enum CounterField {
+    Counter { name: Ident, spec: EventSpec },
+
+    TimeEnabled,
+
+    TimeRunning,
+}
+
+impl CounterField {
+    pub fn extract_from_field(
+        Field {
+            attrs, ident, ty, ..
+        }: Field,
+    ) -> Result<Self, Error> {
+        let ident = ident.unwrap();
+
+        let Type::Path(tp) = &ty else {
+            return Err(Error::new_spanned(ty, "counters do not support this type"));
+        };
+
+        if attrs.is_empty() {
+            return Err(Error::new_spanned(
+                ty,
+                "every field must have an attribute with a usage",
+            ));
+        }
+
+        for attr in attrs {
+            if attr.path().is_ident("time_enabled") {
+                return Ok(Self::TimeEnabled);
+            } else if attr.path().is_ident("time_running") {
+                return Ok(Self::TimeRunning);
+            } else if attr.path().is_ident("hardware") {
+                match &attr.meta {
+                    Meta::List(list) => {
+                        let tokens = &list.tokens;
+                        let token_str = tokens.to_string();
+                        return Ok(Self::Counter {
+                            name: ident,
+                            spec: EventSpec::Hardware(token_str),
+                        });
+                    }
+                    _ => {
+                        return Err(Error::new_spanned(
+                            attr,
+                            "hardware attribute must have a value like #[hardware(CPU_CYCLES)]",
+                        ));
+                    }
+                }
+            } else if attr.path().is_ident("intel") {
+                match &attr.meta {
+                    Meta::List(list) => {
+                        let tokens = &list.tokens;
+                        let token_str = tokens.to_string();
+
+                        let parts: Vec<&str> = token_str.split(',').map(|s| s.trim()).collect();
+                        if parts.len() != 2 {
+                            return Err(Error::new_spanned(
+                                attr,
+                                "intel attribute must have exactly two values like #[intel(0x89, 0xFF)]",
+                            ));
+                        }
+
+                        let event_selector = parse_hex(parts[0]).map_err(|_| {
+                            Error::new_spanned(
+                                &attr,
+                                "first intel parameter must be a valid u8 hex value (0x..)",
+                            )
+                        })?;
+
+                        let mask = parse_hex(parts[1]).map_err(|_| {
+                            Error::new_spanned(
+                                &attr,
+                                "second intel parameter must be a valid u8 hex value (0x..)",
+                            )
+                        })?;
+
+                        return Ok(Self::Counter {
+                            name: ident,
+                            spec: EventSpec::Intel(event_selector, mask),
+                        });
+                    }
+                    _ => {
+                        return Err(Error::new_spanned(
+                            attr,
+                            "intel attribute must have values like #[intel(0x89, 0xFF)]",
+                        ));
+                    }
+                }
+            }
+        }
+
+        Err(Error::new_spanned(
+            ident,
+            "no known attributes designating a purpose for this field",
+        ))
+    }
+}
+
+#[derive(Debug, Default)]
+struct CounterSpec {
+    counter_fields: Vec<CounterField>,
+}
+
+impl CounterSpec {
+    fn from_named_fields(fields: FieldsNamed) -> Result<Self, Error> {
+        let mut cs = Self::default();
+
+        for f in fields.named {
+            cs.counter_fields.push(CounterField::extract_from_field(f)?);
+        }
+
+        Ok(cs)
+    }
+}
+
+#[cfg(test)]
+mod inner_tests {
+    use super::*;
+
+    static S1: &str = r#"
+    {
+        #[hardware(CPU_CYCLES)]
+        a: u64,
+
+        #[intel(0x89, 0xFF)]
+        br_misp_exec_all_branches: u64,
+    }
+    "#;
+
+    #[test]
+    fn extract_counter_spec() {
+        let s1: FieldsNamed = syn::parse_str(S1).unwrap();
+
+        let cs = CounterSpec::from_named_fields(s1).unwrap();
+
+        assert_eq!(cs.counter_fields.len(), 2);
+
+        if let CounterField::Counter {
+            spec: EventSpec::Intel(selector, mask),
+            ..
+        } = &cs.counter_fields[1]
+        {
+            assert_eq!(*selector, 0x89);
+            assert_eq!(*mask, 0xFF);
+        } else {
+            panic!("Expected Intel counter field");
+        }
+    }
 }
 
 fn parse_hardware_attribute(attrs: &[Attribute]) -> Result<Option<String>, Error> {
@@ -33,74 +185,11 @@ fn parse_hardware_attribute(attrs: &[Attribute]) -> Result<Option<String>, Error
     Ok(None)
 }
 
-fn obtain_counter_fields(fields: FieldsNamed) -> Result<Vec<CounterField>, Error> {
-    let mut counters = vec![];
-
-    for Field {
-        attrs, ident, ty, ..
-    } in fields.named
-    {
-        let Type::Path(tp) = ty else {
-            return Err(Error::new_spanned(ty, "counters do not support this type"));
-        };
-
-        let name = ident.unwrap();
-        let counter_ident = quote::format_ident!("{}_counter", &name);
-        let hardware_attr = parse_hardware_attribute(&attrs)?;
-
-        counters.push(CounterField {
-            name,
-            _ty: tp,
-            counter_ident,
-            hardware_attr,
-        });
-    }
-
-    Ok(counters)
-}
-
-fn all_fields_set(counter_fields: &[CounterField]) -> proc_macro2::TokenStream {
-    let mut assignments = vec![];
-
-    for CounterField {
-        name,
-        counter_ident,
-        ..
-    } in counter_fields
-    {
-        assignments.push(quote! {
-            #name: *&counts[& #counter_ident]
-        });
-    }
-
-    quote! {
-        #(#assignments),*
-    }
-}
-
-fn add_counters_to_group(counter_fields: &[CounterField]) -> proc_macro2::TokenStream {
-    let mut add_counter = vec![];
-
-    for CounterField {
-        counter_ident,
-        hardware_attr,
-        ..
-    } in counter_fields
-    {
-        let hardware_event = if let Some(attr_value) = hardware_attr {
-            let tokens: proc_macro2::TokenStream = attr_value.parse().unwrap();
-            quote! { Hardware::#tokens }
-        } else {
-            quote! { Hardware::CPU_CYCLES }
-        };
-
-        add_counter.push(quote! {
-            let #counter_ident = group.add(&Builder::new(#hardware_event)).unwrap();
-        });
-    }
-
-    quote! {
-        #(#add_counter);*
+fn parse_hex(s: &str) -> Result<u8, Box<dyn std::error::Error>> {
+    if s.starts_with("0x") || s.starts_with("0X") {
+        u8::from_str_radix(&s[2..], 16).map_err(Into::into)
+    } else {
+        Err("hex values must start with 0x or 0X".into())
     }
 }
 
@@ -146,6 +235,8 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         }
     };
 
+    Ok(quote! {}.into())
+    /*
     let imports = quote! {
         use perf_event::ReadFormat;
         use perf_event::events::Hardware;
@@ -188,4 +279,5 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     };
 
     Ok(TokenStream::from(expanded))
+    */
 }
