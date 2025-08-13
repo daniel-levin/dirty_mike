@@ -13,9 +13,9 @@ enum EventSpec {
 enum CounterField {
     Counter { name: Ident, spec: EventSpec },
 
-    TimeEnabled,
+    TimeEnabled { name: Ident },
 
-    TimeRunning,
+    TimeRunning { name: Ident },
 }
 
 impl CounterField {
@@ -76,9 +76,9 @@ impl CounterField {
 
         for attr in attrs {
             if attr.path().is_ident("time_enabled") {
-                return Ok(Self::TimeEnabled);
+                return Ok(Self::TimeEnabled { name: ident });
             } else if attr.path().is_ident("time_running") {
-                return Ok(Self::TimeRunning);
+                return Ok(Self::TimeRunning { name: ident });
             } else if attr.path().is_ident("hardware") {
                 match &attr.meta {
                     Meta::List(list) => {
@@ -149,6 +149,30 @@ impl CounterSpec {
 
         for f in fields.named {
             cs.counter_fields.push(CounterField::extract_from_field(f)?);
+        }
+
+        let mut first_enabled_count = false;
+        let mut first_running_count = false;
+
+        for cf in cs.counter_fields.iter() {
+            if let CounterField::TimeEnabled { name } = &cf {
+                if first_enabled_count {
+                    return Err(Error::new(
+                        name.span(),
+                        "at most one time_enabled field is allowed",
+                    ));
+                }
+                first_enabled_count = true;
+            }
+            if let CounterField::TimeRunning { name } = &cf {
+                if first_running_count {
+                    return Err(Error::new(
+                        name.span(),
+                        "at most one time_running field is allowed",
+                    ));
+                }
+                first_running_count = true;
+            }
         }
 
         Ok(cs)
@@ -359,7 +383,156 @@ mod inner_tests {
 
         assert_eq!(cs.counter_fields.len(), 2);
 
-        assert!(matches!(cs.counter_fields[0], CounterField::TimeEnabled));
-        assert!(matches!(cs.counter_fields[1], CounterField::TimeRunning));
+        assert!(matches!(
+            cs.counter_fields[0],
+            CounterField::TimeEnabled { .. }
+        ));
+        assert!(matches!(
+            cs.counter_fields[1],
+            CounterField::TimeRunning { .. }
+        ));
+    }
+
+    #[test]
+    fn test_raw_counter_hex_formats() {
+        let tests = vec![
+            ("0x1234", 0x1234),
+            ("0XABCD", 0xABCD),
+            ("0xff89", 0xff89),
+            ("0xFF89", 0xFF89),
+            ("deadbeef", 0xdeadbeef),
+            ("0", 0x0),
+            ("1", 0x1),
+            ("0x0", 0x0),
+            ("0x1", 0x1),
+            ("0xFFFFFFFFFFFFFFFF", 0xFFFFFFFFFFFFFFFF),
+        ];
+
+        for (hex_str, expected_value) in tests {
+            let test_str = format!(
+                r#"
+                {{
+                    #[raw({})]
+                    counter: u64,
+                }}
+                "#,
+                hex_str
+            );
+
+            let fields: FieldsNamed = syn::parse_str(&test_str).unwrap();
+            let cs = CounterSpec::from_named_fields(fields).unwrap();
+
+            assert_eq!(cs.counter_fields.len(), 1);
+            if let CounterField::Counter {
+                spec: EventSpec::Raw(id),
+                ..
+            } = &cs.counter_fields[0]
+            {
+                assert_eq!(*id, expected_value, "Failed for hex string: {}", hex_str);
+            } else {
+                panic!("Expected raw counter field for {}", hex_str);
+            }
+        }
+    }
+
+    #[test]
+    fn test_multiple_raw_counters() {
+        let test_str = r#"
+        {
+            #[raw(0x1111)]
+            counter1: u64,
+
+            #[raw(0x2222)]
+            counter2: u64,
+
+            #[raw(BEEF)]
+            counter3: u64,
+
+            #[raw(0xCAFE)]
+            counter4: u64,
+        }
+        "#;
+
+        let fields: FieldsNamed = syn::parse_str(test_str).unwrap();
+        let cs = CounterSpec::from_named_fields(fields).unwrap();
+
+        assert_eq!(cs.counter_fields.len(), 4);
+
+        let expected_values = vec![0x1111, 0x2222, 0xBEEF, 0xCAFE];
+
+        for (i, expected) in expected_values.into_iter().enumerate() {
+            if let CounterField::Counter {
+                spec: EventSpec::Raw(id),
+                ..
+            } = &cs.counter_fields[i]
+            {
+                assert_eq!(*id, expected, "Counter {} mismatch", i);
+            } else {
+                panic!("Expected raw counter field at index {}", i);
+            }
+        }
+    }
+
+    #[test]
+    fn test_mixed_counter_types() {
+        let test_str = r#"
+        {
+            #[hardware(CPU_CYCLES)]
+            cycles: u64,
+
+            #[raw(0x8000)]
+            raw_counter: u64,
+
+            #[time_enabled]
+            enabled: Duration,
+
+            #[raw(0xFF)]
+            another_raw: u64,
+        }
+        "#;
+
+        let fields: FieldsNamed = syn::parse_str(test_str).unwrap();
+        let cs = CounterSpec::from_named_fields(fields).unwrap();
+
+        assert_eq!(cs.counter_fields.len(), 4);
+
+        // Check hardware counter
+        if let CounterField::Counter {
+            spec: EventSpec::Hardware(event),
+            ..
+        } = &cs.counter_fields[0]
+        {
+            assert_eq!(event, "CPU_CYCLES");
+        } else {
+            panic!("Expected hardware counter at index 0");
+        }
+
+        // Check first raw counter
+        if let CounterField::Counter {
+            spec: EventSpec::Raw(id),
+            ..
+        } = &cs.counter_fields[1]
+        {
+            assert_eq!(*id, 0x8000);
+        } else {
+            panic!("Expected raw counter at index 1");
+        }
+
+        // Check time field
+        assert!(matches!(
+            cs.counter_fields[2],
+            CounterField::TimeEnabled { .. }
+        ));
+
+        // Check second raw counter
+        if let CounterField::Counter {
+            spec: EventSpec::Raw(id),
+            ..
+        } = &cs.counter_fields[3]
+        {
+            assert_eq!(*id, 0xFF);
+        } else {
+            panic!("Expected raw counter at index 3");
+        }
     }
 }

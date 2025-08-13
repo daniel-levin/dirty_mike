@@ -1,0 +1,5 @@
+error: at most one time_running field is allowed
+ --> tests/ui/duplicate_time_running.rs:9:5
+  |
+9 |     running2: std::time::Duration,
+  |     ^^^^^^^^
