@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod skl_tests {
     use crate::Counter;
+    use std::time::Duration;
 
     #[test]
     fn test_basic_intel() {
@@ -8,6 +9,12 @@ mod skl_tests {
         pub struct S {
             #[raw(0x13C)]
             pub cpu_clk_thread_unhalted_ref_xclk: u64,
+
+            #[time_running]
+            pub running: Duration,
+
+            #[time_enabled]
+            pub enabled: Duration,
         }
 
         let (_, counts) = S::measure(|| {
@@ -20,5 +27,7 @@ mod skl_tests {
         .unwrap();
 
         assert!(counts.cpu_clk_thread_unhalted_ref_xclk > 2000);
+        assert!(counts.running.as_nanos() > 0);
+        assert!(counts.enabled.as_nanos() > 0);
     }
 }

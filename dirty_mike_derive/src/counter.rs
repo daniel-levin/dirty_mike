@@ -27,7 +27,12 @@ impl CounterField {
                     #name: counts[& #counter_name]
                 }
             }
-            _ => todo!(),
+            Self::TimeEnabled { name } => quote! {
+                #name: counts.time_enabled().unwrap()
+            },
+            Self::TimeRunning { name } => quote! {
+                #name: counts.time_running().unwrap()
+            },
         }
     }
 
