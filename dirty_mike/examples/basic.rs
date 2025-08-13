@@ -37,8 +37,14 @@ fn main() {
 
     println!("Performance metrics:");
     println!("JSON parsing:");
-    println!("  cycles/b: {:.2}", json_counters.cycles as f64 / json_size as f64);
-    println!("  instructions/b: {:.2}", json_counters.instructions as f64 / json_size as f64);
+    println!(
+        "  cycles/b: {:.2}",
+        json_counters.cycles as f64 / json_size as f64
+    );
+    println!(
+        "  instructions/b: {:.2}",
+        json_counters.instructions as f64 / json_size as f64
+    );
     println!("  total cycles: {}", json_counters.cycles);
     println!("  total instructions: {}", json_counters.instructions);
     println!("  time running: {:?}", json_counters.running);
@@ -46,8 +52,14 @@ fn main() {
     println!();
 
     println!("TOML parsing:");
-    println!("  cycles/b: {:.2}", toml_counters.cycles as f64 / toml_size as f64);
-    println!("  instructions/b: {:.2}", toml_counters.instructions as f64 / toml_size as f64);
+    println!(
+        "  cycles/b: {:.2}",
+        toml_counters.cycles as f64 / toml_size as f64
+    );
+    println!(
+        "  instructions/b: {:.2}",
+        toml_counters.instructions as f64 / toml_size as f64
+    );
     println!("  total cycles: {}", toml_counters.cycles);
     println!("  total instructions: {}", toml_counters.instructions);
     println!("  time running: {:?}", toml_counters.running);
@@ -55,13 +67,25 @@ fn main() {
     println!();
 
     println!("Comparison (JSON vs TOML):");
-    println!("  cycles/b (JSON): {:.2}", json_counters.cycles as f64 / json_size as f64);
-    println!("  cycles/b (TOML): {:.2}", toml_counters.cycles as f64 / toml_size as f64);
-    println!("  instructions/b (JSON): {:.2}", json_counters.instructions as f64 / json_size as f64);
-    println!("  instructions/b (TOML): {:.2}", toml_counters.instructions as f64 / toml_size as f64);
+    println!(
+        "  cycles/b (JSON): {:.2}",
+        json_counters.cycles as f64 / json_size as f64
+    );
+    println!(
+        "  cycles/b (TOML): {:.2}",
+        toml_counters.cycles as f64 / toml_size as f64
+    );
+    println!(
+        "  instructions/b (JSON): {:.2}",
+        json_counters.instructions as f64 / json_size as f64
+    );
+    println!(
+        "  instructions/b (TOML): {:.2}",
+        toml_counters.instructions as f64 / toml_size as f64
+    );
     println!("  time running (JSON): {:?}", json_counters.running);
     println!("  time running (TOML): {:?}", toml_counters.running);
-    
+
     let json_efficiency = json_counters.instructions as f64 / json_counters.cycles as f64;
     let toml_efficiency = toml_counters.instructions as f64 / toml_counters.cycles as f64;
     println!("  IPC (JSON): {:.2}", json_efficiency);
