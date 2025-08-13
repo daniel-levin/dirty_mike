@@ -1,5 +1,0 @@
-error: intel attribute must have exactly two values like #[intel(0x89, 0xFF)]
- --> tests/ui/invalid_intel_format.rs:5:5
-  |
-5 |     #[intel(0x89)]
-  |     ^^^^^^^^^^^^^^

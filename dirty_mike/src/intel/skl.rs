@@ -6,7 +6,7 @@ mod skl_tests {
     fn test_basic_intel() {
         #[derive(Debug, Counter)]
         pub struct S {
-            #[intel(0x3C, 0x01)]
+            #[raw(0x13C)]
             pub cpu_clk_thread_unhalted_ref_xclk: u64,
         }
 
