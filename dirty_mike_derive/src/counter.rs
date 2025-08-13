@@ -1,9 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{
-    Attribute, Data, DataStruct, DeriveInput, Error, Field, Fields, FieldsNamed, Ident, Meta, Type,
-    TypePath,
-};
+use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, FieldsNamed, Ident, Meta, Type};
 
 #[derive(Debug)]
 enum EventSpec {
@@ -26,10 +23,9 @@ impl CounterField {
         match self {
             Self::Counter {
                 name,
-                spec: EventSpec::Hardware(s),
+                spec: EventSpec::Hardware(_),
             } => {
                 let counter_name = quote::format_ident!("{}_counter", name);
-                let as_ident = quote::format_ident!("{}", s);
                 quote! {
                     #name: counts[& #counter_name]
                 }
@@ -61,7 +57,7 @@ impl CounterField {
     ) -> Result<Self, Error> {
         let ident = ident.unwrap();
 
-        let Type::Path(tp) = &ty else {
+        let Type::Path(_tp) = &ty else {
             return Err(Error::new_spanned(ty, "counters do not support this type"));
         };
 
@@ -86,7 +82,7 @@ impl CounterField {
                         if !is_valid_hardware_event(&token_str) {
                             return Err(Error::new_spanned(
                                 attr,
-                                &format!(
+                                format!(
                                     "invalid hardware event '{}'. Valid events are: CPU_CYCLES, INSTRUCTIONS, CACHE_REFERENCES, CACHE_MISSES, BRANCH_INSTRUCTIONS, BRANCH_MISSES, BUS_CYCLES, STALLED_CYCLES_FRONTEND, STALLED_CYCLES_BACKEND, REF_CPU_CYCLES",
                                     token_str
                                 ),
@@ -199,6 +195,101 @@ fn hex8(s: &str) -> Result<u8, Box<dyn std::error::Error>> {
     } else {
         Err("hex values must start with 0x or 0X".into())
     }
+}
+
+pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
+    let name = &input.ident;
+
+    if !input.generics.lifetimes().collect::<Vec<_>>().is_empty() {
+        return Err(Error::new_spanned(
+            &input.generics,
+            "counters should not contain references",
+        ));
+    }
+
+    if !input.generics.params.is_empty() {
+        return Err(Error::new_spanned(
+            &input.generics,
+            "counters must not contain generics",
+        ));
+    }
+
+    let fields = match input.data {
+        Data::Struct(DataStruct {
+            fields: Fields::Named(named_fields),
+            ..
+        }) => named_fields,
+        Data::Enum(_) => {
+            return Err(Error::new_spanned(
+                &input,
+                "must not be an enum - counters are only supported on structs",
+            ));
+        }
+        Data::Union(_) => {
+            return Err(Error::new_spanned(
+                &input,
+                "must not be a union - counters are only supported on structs",
+            ));
+        }
+        _ => {
+            return Err(Error::new_spanned(
+                &input,
+                "all fields must be named in counters",
+            ));
+        }
+    };
+
+    let cs = CounterSpec::from_named_fields(fields)?;
+
+    let imports = quote! {
+        use perf_event::ReadFormat;
+        use perf_event::events::Hardware;
+        use perf_event::{Builder, Group};
+    };
+
+    let mut counter_enablements = vec![];
+
+    for spec in cs.counter_fields.iter() {
+        if let Some(enablement) = spec.enablement() {
+            counter_enablements.push(enablement);
+        }
+    }
+
+    let counter_extractions = cs
+        .counter_fields
+        .iter()
+        .map(|f| f.extraction())
+        .collect::<Vec<_>>();
+
+    let expanded = quote! {
+        impl ::dirty_mike_core::Counter for #name {
+            fn measure<T, F: FnOnce() -> T>(mut f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
+                #imports
+
+                let mut gb = Group::builder();
+                gb.read_format(ReadFormat::all());
+                let mut group = gb.build_group().unwrap();
+
+                #(#counter_enablements);* ;
+
+                group.enable().unwrap();
+                let result = f();
+                group.disable().unwrap();
+
+                let counts = group.read().unwrap();
+
+                let counter = #name {
+                    #(#counter_extractions),*
+                };
+
+                Ok((result, counter))
+            }
+        }
+    };
+
+    //panic!("{}", expanded.to_string());
+
+    Ok(expanded.into())
 }
 
 #[cfg(test)]
@@ -419,99 +510,4 @@ mod inner_tests {
         assert!(hex8("0xGG").is_err()); // invalid hex chars
         assert!(hex8("0x1234").is_err()); // too many bytes (2 bytes instead of 1)
     }
-}
-
-pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
-    let name = &input.ident;
-
-    if !input.generics.lifetimes().collect::<Vec<_>>().is_empty() {
-        return Err(Error::new_spanned(
-            &input.generics,
-            "counters should not contain references",
-        ));
-    }
-
-    if !input.generics.params.is_empty() {
-        return Err(Error::new_spanned(
-            &input.generics,
-            "counters must not contain generics",
-        ));
-    }
-
-    let fields = match input.data {
-        Data::Struct(DataStruct {
-            fields: Fields::Named(named_fields),
-            ..
-        }) => named_fields,
-        Data::Enum(_) => {
-            return Err(Error::new_spanned(
-                &input,
-                "must not be an enum - counters are only supported on structs",
-            ));
-        }
-        Data::Union(_) => {
-            return Err(Error::new_spanned(
-                &input,
-                "must not be a union - counters are only supported on structs",
-            ));
-        }
-        _ => {
-            return Err(Error::new_spanned(
-                &input,
-                "all fields must be named in counters",
-            ));
-        }
-    };
-
-    let cs = CounterSpec::from_named_fields(fields)?;
-
-    let imports = quote! {
-        use perf_event::ReadFormat;
-        use perf_event::events::Hardware;
-        use perf_event::{Builder, Group};
-    };
-
-    let mut counter_enablements = vec![];
-
-    for spec in cs.counter_fields.iter() {
-        if let Some(enablement) = spec.enablement() {
-            counter_enablements.push(enablement);
-        }
-    }
-
-    let counter_extractions = cs
-        .counter_fields
-        .iter()
-        .map(|f| f.extraction())
-        .collect::<Vec<_>>();
-
-    let expanded = quote! {
-        impl ::dirty_mike_core::Counter for #name {
-            fn measure<T, F: FnOnce() -> T>(mut f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
-                #imports
-
-                let mut gb = Group::builder();
-                gb.read_format(ReadFormat::all());
-                let mut group = gb.build_group().unwrap();
-
-                #(#counter_enablements);* ;
-
-                group.enable().unwrap();
-                let result = f();
-                group.disable().unwrap();
-
-                let counts = group.read().unwrap();
-
-                let counter = #name {
-                    #(#counter_extractions),*
-                };
-
-                Ok((result, counter))
-            }
-        }
-    };
-
-    //panic!("{}", expanded.to_string());
-
-    Ok(expanded.into())
 }

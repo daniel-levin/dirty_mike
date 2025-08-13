@@ -50,8 +50,6 @@ mod tests {
 
         let (_, unsorted_res) = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
 
-        dbg!(&sorted_res);
-
         assert!(sorted_res.branch_misses * 100 < unsorted_res.branch_misses);
     }
 }
