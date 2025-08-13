@@ -6,7 +6,7 @@ use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, FieldsNamed, Iden
 enum EventSpec {
     Hardware(String),
 
-    Intel(u8, u8),
+    Raw(u64),
 }
 
 #[derive(Debug)]
@@ -45,12 +45,11 @@ impl CounterField {
             }
             Self::Counter {
                 name,
-                spec: EventSpec::Intel(e, m),
+                spec: EventSpec::Raw(id),
             } => {
                 let counter_name = quote::format_ident!("{}_counter", name);
-                let num: u64 = ((*m as u64) << 8) | (*e as u64);
                 Some(quote! {
-                    let #counter_name = group.add(&Builder::new(Raw::new( #num))).unwrap();
+                    let #counter_name = group.add(&Builder::new(Raw::new( #id))).unwrap();
                 })
             }
             _ => None,
@@ -108,37 +107,23 @@ impl CounterField {
                         ));
                     }
                 }
-            } else if attr.path().is_ident("intel") {
+            } else if attr.path().is_ident("raw") {
                 match &attr.meta {
                     Meta::List(list) => {
                         let tokens = &list.tokens;
                         let token_str = tokens.to_string();
 
-                        let parts: Vec<&str> = token_str.split(',').map(|s| s.trim()).collect();
-                        if parts.len() != 2 {
-                            return Err(Error::new_spanned(
-                                attr,
-                                "intel attribute must have exactly two values like #[intel(0x89, 0xFF)]",
-                            ));
-                        }
+                        let mut bytes: [u8; 8] = [0; 8];
 
-                        let event_selector = hex8(parts[0]).map_err(|_| {
-                            Error::new_spanned(
-                                &attr,
-                                "first intel parameter must be a valid u8 hex value (0x..)",
-                            )
-                        })?;
+                        let id_array = hex::decode(token_str).unwrap();
 
-                        let mask = hex8(parts[1]).map_err(|_| {
-                            Error::new_spanned(
-                                &attr,
-                                "second intel parameter must be a valid u8 hex value (0x..)",
-                            )
-                        })?;
+                        bytes.copy_from_slice(&id_array);
+
+                        let id = u64::from_be_bytes(bytes);
 
                         return Ok(Self::Counter {
                             name: ident,
-                            spec: EventSpec::Intel(event_selector, mask),
+                            spec: EventSpec::Raw(id),
                         });
                     }
                     _ => {
@@ -189,19 +174,6 @@ fn is_valid_hardware_event(event: &str) -> bool {
             | "STALLED_CYCLES_BACKEND"
             | "REF_CPU_CYCLES"
     )
-}
-
-fn hex8(s: &str) -> Result<u8, Box<dyn std::error::Error>> {
-    if s.starts_with("0x") || s.starts_with("0X") {
-        let hex_str = &s[2..];
-        let bytes = hex::decode(hex_str)?;
-        if bytes.len() != 1 {
-            return Err(format!("hex value '{}' must represent exactly one byte", s).into());
-        }
-        Ok(bytes[0])
-    } else {
-        Err("hex values must start with 0x or 0X".into())
-    }
 }
 
 pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
@@ -309,7 +281,7 @@ mod inner_tests {
         #[hardware(CPU_CYCLES)]
         a: u64,
 
-        #[intel(0x89, 0xFF)]
+        #[raw(0xFF89)]
         br_misp_exec_all_branches: u64,
     }
     "#;
@@ -323,12 +295,11 @@ mod inner_tests {
         assert_eq!(cs.counter_fields.len(), 2);
 
         if let CounterField::Counter {
-            spec: EventSpec::Intel(selector, mask),
+            spec: EventSpec::Raw(id),
             ..
         } = &cs.counter_fields[1]
         {
-            assert_eq!(*selector, 0x89);
-            assert_eq!(*mask, 0xFF);
+            assert_eq!(*id, 0xFF89);
         } else {
             panic!("Expected Intel counter field");
         }
