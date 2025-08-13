@@ -22,6 +22,22 @@ enum CounterField {
 }
 
 impl CounterField {
+    pub fn enablement(&self) -> Option<proc_macro2::TokenStream> {
+        match self {
+            Self::Counter {
+                name,
+                spec: EventSpec::Hardware(s),
+            } => {
+                let counter_name = quote::format_ident!("{}_counter", name);
+                let as_ident = quote::format_ident!("{}", s);
+                Some(quote! {
+                    let #counter_name = Builder::new(Hardware:: #as_ident)
+                })
+            }
+            _ => None,
+        }
+    }
+
     pub fn extract_from_field(
         Field {
             attrs, ident, ty, ..
@@ -439,6 +455,14 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         use perf_event::{Builder, Group};
     };
 
+    let mut counter_enablements = vec![];
+
+    for spec in cs.counter_fields.iter() {
+        if let Some(enablement) = spec.enablement() {
+            counter_enablements.push(enablement);
+        }
+    }
+
     let expanded = quote! {
         impl ::dirty_mike_core::Counter for #name {
             fn measure<T, F: FnOnce() -> T>(mut f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
@@ -447,6 +471,8 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
                 let mut gb = Group::builder();
                 gb.read_format(ReadFormat::all());
                 let mut group = gb.build_group().unwrap();
+
+                #(#counter_enablements);* ;
 
                 group.enable().unwrap();
                 let result = f();
@@ -458,6 +484,8 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
             }
         }
     };
+
+    //panic!("{}", expanded.to_string());
 
     Ok(expanded.into())
 }
