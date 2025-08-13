@@ -433,25 +433,11 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
 
     let cs = CounterSpec::from_named_fields(fields)?;
 
-    Ok(quote! {}.into())
-
-    /*
     let imports = quote! {
         use perf_event::ReadFormat;
         use perf_event::events::Hardware;
         use perf_event::{Builder, Group};
     };
-
-    let counters = obtain_counter_fields(fields)?;
-    let set_fields = all_fields_set(&counters);
-
-    let mk_struct = quote! {
-        let counter = #name {
-            #set_fields
-        };
-    };
-
-    let add_counters = add_counters_to_group(&counters);
 
     let expanded = quote! {
         impl ::dirty_mike_core::Counter for #name {
@@ -462,21 +448,16 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
                 gb.read_format(ReadFormat::all());
                 let mut group = gb.build_group().unwrap();
 
-                #add_counters
-
                 group.enable().unwrap();
                 let result = f();
                 group.disable().unwrap();
 
                 let counts = group.read().unwrap();
 
-                #mk_struct
-
-                Ok((result, counter))
+                Ok((result, todo!()))
             }
         }
     };
 
-    Ok(TokenStream::from(expanded))
-    */
+    Ok(expanded.into())
 }
