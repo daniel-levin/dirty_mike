@@ -36,8 +36,6 @@ let (_, counts) = CyclesAndTime::measure(|| {
 assert!(counts.cpu_clk_thread_unhalted_ref_xclk > 2000);
 assert!(counts.running.as_nanos() > 0);
 assert!(counts.enabled.as_nanos() > 0);
-}
-
 ```
 
 ## Branch mispredict example
