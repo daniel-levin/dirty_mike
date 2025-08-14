@@ -40,7 +40,6 @@ assert!(counts.enabled.as_nanos() > 0);
 
 ## Branch mispredict example
 See `dirty_mike/examples/branch.rs`.
-This compares
 
 ### Sample Output (Non-release Mode)
 ```
