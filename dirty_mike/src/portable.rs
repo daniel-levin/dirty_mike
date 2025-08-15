@@ -35,6 +35,7 @@ mod tests {
     use rand::prelude::SliceRandom;
 
     #[test]
+    #[cfg_attr(feature = "ci", ignore = "requires perf_event_open capabilities")]
     fn measure_branch_misses() {
         fn work(data: &[i32]) -> u64 {
             let mut sum = 0u64;

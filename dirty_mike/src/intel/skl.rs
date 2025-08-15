@@ -4,6 +4,7 @@ mod skl_tests {
     use std::time::Duration;
 
     #[test]
+    #[cfg_attr(feature = "ci", ignore = "requires perf_event_open capabilities")]
     fn test_basic_intel() {
         #[derive(Debug, Counter)]
         pub struct S {
