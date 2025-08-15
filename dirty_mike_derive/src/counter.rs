@@ -45,7 +45,8 @@ impl CounterField {
                 let counter_name = quote::format_ident!("{}_counter", name);
                 let as_ident = quote::format_ident!("{}", s);
                 Some(quote! {
-                    let #counter_name = group.add(&Builder::new(Hardware:: #as_ident)).unwrap();
+                    let #counter_name = group.add(&Builder::new(Hardware:: #as_ident))
+                        .map_err(|error| CounterError::CannotAddHardwareCounter { name: #s, error })?;
                 })
             }
             Self::Counter {
@@ -54,7 +55,8 @@ impl CounterField {
             } => {
                 let counter_name = quote::format_ident!("{}_counter", name);
                 Some(quote! {
-                    let #counter_name = group.add(&Builder::new(Raw::new( #id))).unwrap();
+                    let #counter_name = group.add(&Builder::new(Raw::new( #id)))
+                        .map_err(|error| CounterError::CannotAddRawCounter { id: #id, error })?;
                 })
             }
             _ => None,
@@ -245,10 +247,11 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     let cs = CounterSpec::from_named_fields(fields)?;
 
     let imports = quote! {
-        use perf_event::ReadFormat;
-        use perf_event::events::Hardware;
-        use perf_event::events::Raw;
-        use perf_event::{Builder, Group};
+        use ::perf_event::ReadFormat;
+        use ::perf_event::events::Hardware;
+        use ::perf_event::events::Raw;
+        use ::perf_event::{Builder, Group};
+        use ::dirty_mike_core::CounterError;
     };
 
     let mut counter_enablements = vec![];
@@ -272,7 +275,7 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
 
                 let mut gb = Group::builder();
                 gb.read_format(ReadFormat::all());
-                let mut group = gb.build_group().unwrap();
+                let mut group = gb.build_group().map_err(CounterError::CannotOpenGroup)?;
 
                 #(#counter_enablements);* ;
 
