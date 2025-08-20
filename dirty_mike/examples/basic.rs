@@ -175,7 +175,7 @@ static DATA: &str = r#"
         "email": "alpha.bravo@example-domain-that-does-not-exist.com",
         "profile": {
           "firstName": "Alpha",
-          "lastName": "Bravo", 
+          "lastName": "Bravo",
           "bio": "This is a very long biographical description that contains lots of meaningless information about this fake user",
           "preferences": {
             "theme": "dark",
