@@ -42,6 +42,8 @@ assert!(counts.enabled.as_nanos() > 0);
 See `dirty_mike/examples/branch.rs`.
 
 ### Sample Output (Non-release Mode)
+Note that in release mode on x86, autovectorization and predication result in a rewrite of the inner loop as a sequence of branchless instructions, eliminating the differences.
+
 ```
  cargo r --example branch
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s

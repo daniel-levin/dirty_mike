@@ -17,6 +17,7 @@ pub struct BasicHardwareCounters {
     pub running: Duration,
 }
 
+#[inline(never)]
 fn add_up_only_some_values(data: &[i32]) -> u64 {
     let mut sum = 0u64;
     for &value in data {
