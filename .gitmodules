@@ -1,0 +1,3 @@
+[submodule "extern/perfmon"]
+	path = extern/perfmon
+	url = https://github.com/intel/perfmon.git
