@@ -14,6 +14,140 @@ fn bool_from_str<'de, D: serde::Deserializer<'de>>(d: D) -> Result<bool, D::Erro
 #[serde(rename_all = "PascalCase")]
 struct Header {}
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum Category {
+    #[serde(rename = "TMA")]
+    Tma,
+    #[serde(rename = "BW")]
+    Bandwidth,
+    #[serde(rename = "BW, IO")]
+    BandwidthIo,
+    #[serde(rename = "BW,IO")]
+    BandwidthIoNoSpace,
+    #[serde(rename = "BW, MC")]
+    BandwidthMc,
+    #[serde(rename = "CPI")]
+    Cpi,
+    #[serde(rename = "D-side")]
+    DataSide,
+    #[serde(rename = "Freq")]
+    Frequency,
+    #[serde(rename = "IO")]
+    Io,
+    #[serde(rename = "IO, BW")]
+    IoBandwidth,
+    #[serde(rename = "I-side")]
+    InstructionSide,
+    #[serde(rename = "Latency")]
+    Latency,
+    #[serde(rename = "MPI")]
+    Mpi,
+    #[serde(rename = "MPI, D-side")]
+    MpiDataSide,
+    #[serde(rename = "MPI, I-side")]
+    MpiInstructionSide,
+    #[serde(rename = "NUMA")]
+    Numa,
+    #[serde(rename = "Power")]
+    Power,
+    #[serde(rename = "Util")]
+    Utilization,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum ParentCategory {
+    #[serde(rename = "ALU_Op_Utilization")]
+    AluOpUtilization,
+    #[serde(rename = "Assists")]
+    Assists,
+    #[serde(rename = "Backend_Bound")]
+    BackendBound,
+    #[serde(rename = "Bad_Speculation")]
+    BadSpeculation,
+    #[serde(rename = "Branch_Mispredicts")]
+    BranchMispredicts,
+    #[serde(rename = "Branch_Resteers")]
+    BranchResteers,
+    #[serde(rename = "Code_STLB_Miss")]
+    CodeStlbMiss,
+    #[serde(rename = "Core_Bound")]
+    CoreBound,
+    #[serde(rename = "Divider")]
+    Divider,
+    #[serde(rename = "DRAM_Bound")]
+    DramBound,
+    #[serde(rename = "DTLB_Load")]
+    DtlbLoad,
+    #[serde(rename = "DTLB_Store")]
+    DtlbStore,
+    #[serde(rename = "Fetch_Bandwidth")]
+    FetchBandwidth,
+    #[serde(rename = "Fetch_Latency")]
+    FetchLatency,
+    #[serde(rename = "FP_Arith")]
+    FpArith,
+    #[serde(rename = "FP_Vector")]
+    FpVector,
+    #[serde(rename = "Frontend_Bound")]
+    FrontendBound,
+    #[serde(rename = "Heavy_Operations")]
+    HeavyOperations,
+    #[serde(rename = "ICache_Misses")]
+    ICacheMisses,
+    #[serde(rename = "IFetch_Bandwidth")]
+    IFetchBandwidth,
+    #[serde(rename = "IFetch_Latency")]
+    IFetchLatency,
+    #[serde(rename = "Int_Operations")]
+    IntOperations,
+    #[serde(rename = "ITLB_Misses")]
+    ItlbMisses,
+    #[serde(rename = "L1_Bound")]
+    L1Bound,
+    #[serde(rename = "L2_Bound")]
+    L2Bound,
+    #[serde(rename = "L3_Bound")]
+    L3Bound,
+    #[serde(rename = "Light_Operations")]
+    LightOperations,
+    #[serde(rename = "Load_Op_Utilization")]
+    LoadOpUtilization,
+    #[serde(rename = "Load_STLB_Miss")]
+    LoadStlbMiss,
+    #[serde(rename = "Machine_Clears")]
+    MachineClears,
+    #[serde(rename = "MEM_Bandwidth")]
+    MemBandwidth,
+    #[serde(rename = "MEM_Latency")]
+    MemLatency,
+    #[serde(rename = "Memory_Bound")]
+    MemoryBound,
+    #[serde(rename = "Microcode_Sequencer")]
+    MicrocodeSequencer,
+    #[serde(rename = "MITE")]
+    Mite,
+    #[serde(rename = "Other_Light_Ops")]
+    OtherLightOps,
+    #[serde(rename = "Ports_Utilization")]
+    PortsUtilization,
+    #[serde(rename = "Ports_Utilized_0")]
+    PortsUtilized0,
+    #[serde(rename = "Ports_Utilized_3m")]
+    PortsUtilized3m,
+    #[serde(rename = "Resource_Bound")]
+    ResourceBound,
+    #[serde(rename = "Retiring")]
+    Retiring,
+    #[serde(rename = "Serializing_Operation")]
+    SerializingOperation,
+    #[serde(rename = "Store_Bound")]
+    StoreBound,
+    #[serde(rename = "Store_Op_Utilization")]
+    StoreOpUtilization,
+    #[serde(rename = "Store_STLB_Miss")]
+    StoreStlbMiss,
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 struct Event {
@@ -55,6 +189,8 @@ struct Metric {
     level: usize,
     brief_description: String,
     events: Vec<EventAlias>,
+    category: Category,
+    parent_category: Option<ParentCategory>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
