@@ -12,7 +12,7 @@ fn dehex<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
 
 fn dedecimal<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
     let s = <&str>::deserialize(d)?;
-    Ok(u8::from_str_radix(s, 10).unwrap())
+    Ok(s.parse::<u8>().unwrap())
 }
 
 fn bool_from_str<'de, D: serde::Deserializer<'de>>(d: D) -> Result<bool, D::Error> {
