@@ -150,21 +150,27 @@ pub enum ParentCategory {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct Event {
+pub struct Event {
     #[serde(deserialize_with = "dehex")]
-    event_code: u8,
+    pub event_code: u8,
 
     #[serde(rename = "UMask", deserialize_with = "dehex")]
-    umask: u8,
+    pub umask: u8,
 
-    event_name: String,
+    pub event_name: String,
 
-    brief_description: String,
+    pub brief_description: String,
 
-    public_description: String,
+    pub public_description: String,
 
     #[serde(deserialize_with = "bool_from_str")]
-    any_thread: bool,
+    pub any_thread: bool,
+}
+
+impl Event {
+    pub fn raw(&self) -> u64 {
+        ((self.umask as u64) << 8) | (self.event_code as u64)
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -211,12 +217,27 @@ struct Metrics {
     pub metrics: Vec<Metric>,
 }
 
-fn main() {
-    let x = include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
-    let e: Events = serde_json::from_str(x).unwrap();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-    let y = include_str!("../../../extern/perfmon/SKL/metrics/skylake_metrics.json");
-    let m: Metrics = serde_json::from_str(y).unwrap();
+    #[test]
+    fn parses_metrics() {
+        let y = include_str!("../../../extern/perfmon/SKL/metrics/skylake_metrics.json");
+        let _: Metrics = serde_json::from_str(y).unwrap();
+    }
 
-    dbg!(m);
+    #[test]
+    fn event_code() {
+        let x = include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
+        let e: Events = serde_json::from_str(x).unwrap();
+
+        let evt = e
+            .events
+            .iter()
+            .find(|e| e.event_name == "DTLB_LOAD_MISSES.WALK_COMPLETED_2M_4M")
+            .unwrap();
+
+        assert_eq!(evt.raw(), 0x408);
+    }
 }
