@@ -183,6 +183,13 @@ struct EventAlias {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
+struct Constant {
+    name: String,
+    alias: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "PascalCase")]
 struct Metric {
     metric_name: String,
     legacy_name: String,
@@ -191,12 +198,16 @@ struct Metric {
     events: Vec<EventAlias>,
     category: Category,
     parent_category: Option<ParentCategory>,
+    base_formula: String,
+    formula: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 struct Metrics {
     pub header: Header,
+    #[serde(default)]
+    pub constants: Vec<Constant>,
     pub metrics: Vec<Metric>,
 }
 
