@@ -168,8 +168,10 @@ pub struct Event {
 }
 
 impl Event {
+    /// Vol. 3B 21-9
+    /// Layout of IA32_PERFEVTSELx MSRs
     pub fn raw(&self) -> u64 {
-        ((self.umask as u64) << 8) | (self.event_code as u64)
+        ((self.any_thread as u64) << 21) | ((self.umask as u64) << 8) | (self.event_code as u64)
     }
 }
 
@@ -253,6 +255,14 @@ mod tests {
             .find(|e| e.event_name == "INT_MISC.RECOVERY_CYCLES_ANY")
             .unwrap();
 
-        dbg!(evt);
+        assert_eq!(evt.raw(), 0x20010d);
+
+        let evt = e
+            .events
+            .iter()
+            .find(|e| e.event_name == "CPU_CLK_UNHALTED.THREAD_P_ANY")
+            .unwrap();
+
+        assert_eq!(evt.raw(), 0x20003c);
     }
 }
