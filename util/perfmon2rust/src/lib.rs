@@ -221,16 +221,18 @@ struct Metrics {
 mod tests {
     use super::*;
 
+    static SKL_METRICS: &str =
+        include_str!("../../../extern/perfmon/SKL/metrics/skylake_metrics.json");
+    static SKL_EVENTS: &str = include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
+
     #[test]
     fn parses_metrics() {
-        let y = include_str!("../../../extern/perfmon/SKL/metrics/skylake_metrics.json");
-        let _: Metrics = serde_json::from_str(y).unwrap();
+        let _: Metrics = serde_json::from_str(SKL_METRICS).unwrap();
     }
 
     #[test]
     fn event_code() {
-        let x = include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
-        let e: Events = serde_json::from_str(x).unwrap();
+        let e: Events = serde_json::from_str(SKL_EVENTS).unwrap();
 
         let evt = e
             .events
@@ -239,5 +241,18 @@ mod tests {
             .unwrap();
 
         assert_eq!(evt.raw(), 0x408);
+    }
+
+    #[test]
+    fn event_code_and_any_thread() {
+        let e: Events = serde_json::from_str(SKL_EVENTS).unwrap();
+
+        let evt = e
+            .events
+            .iter()
+            .find(|e| e.event_name == "INT_MISC.RECOVERY_CYCLES_ANY")
+            .unwrap();
+
+        dbg!(evt);
     }
 }
