@@ -205,8 +205,8 @@ pub struct Events {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct EventAlias {
-    name: String,
-    alias: String,
+    pub name: String,
+    pub alias: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
