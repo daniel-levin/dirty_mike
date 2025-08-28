@@ -1,6 +1,9 @@
+use quote::quote;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::path::Path;
+use std::str::FromStr;
 
 fn dehex<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
     let s = <&str>::deserialize(d)?;
@@ -270,19 +273,19 @@ impl EventDefinitions {
 #[derive(Debug)]
 pub struct CounterSpec {
     name: proc_macro2::Ident,
-    fields: Vec<(proc_macro2::Ident, u64)>,
+    fields: std::collections::HashSet<(proc_macro2::Ident, u64)>,
 }
 
 impl CounterSpec {
     pub fn new(metric: &Metric, event_defns: &EventDefinitions) -> anyhow::Result<Self> {
-        let mut fields = vec![];
+        let mut fields = HashSet::new();
 
         for ea in &metric.events {
             let Some(defn) = event_defns.lookup(ea) else {
                 anyhow::bail!("cannot find event definition for {}", ea.name);
             };
 
-            let name_to_use = defn.event_name.replace(".", "__");
+            let name_to_use = ea.name.replace(".", "__").replace(":", "_");
 
             let name = if name_to_use.chars().nth(0).unwrap().is_ascii_digit() {
                 quote::format_ident!("_{}", name_to_use)
@@ -290,7 +293,7 @@ impl CounterSpec {
                 quote::format_ident!("{}", name_to_use)
             };
 
-            fields.push((name, defn.raw()));
+            fields.insert((name, defn.raw()));
         }
 
         let name = if metric.metric_name.chars().nth(0).unwrap().is_ascii_digit() {
@@ -300,6 +303,26 @@ impl CounterSpec {
         };
 
         Ok(Self { name, fields })
+    }
+
+    pub fn as_rust_code(&self) -> proc_macro2::TokenStream {
+        let name = &self.name;
+        let mut fields = vec![];
+
+        for (name, raw) in self.fields.iter() {
+            let value = proc_macro2::Literal::from_str(&format!("0x{raw:x}")).unwrap();
+            fields.push(quote! {
+                #[raw(#value)]
+                #name: u64
+            });
+        }
+
+        quote! {
+            #[derive(Debug, Counter)]
+            pub struct #name {
+                #(#fields),*
+            }
+        }
     }
 }
 
@@ -318,13 +341,23 @@ mod tests {
 
         let metrics: Metrics = serde_json::from_str(SKL_METRICS)?;
 
+        let mut items = vec![];
+
         for metric in metrics
             .metrics
             .iter()
             .filter(|m| m.metric_name != "Info_System_Power")
         {
             let spec = CounterSpec::new(&metric, &ed)?;
+            items.push(spec.as_rust_code());
         }
+
+        let generated_code = quote! {
+            #(#items)*
+        }
+        .to_string();
+
+        println!("{}", generated_code);
 
         Ok(())
     }
