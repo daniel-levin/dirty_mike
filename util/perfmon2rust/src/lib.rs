@@ -1,8 +1,6 @@
-use quote::quote;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::Path;
-use std::str::FromStr;
 
 fn dehex<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
     let s = <&str>::deserialize(d)?;
@@ -224,6 +222,7 @@ pub struct Metric {
     pub level: usize,
     pub brief_description: String,
     pub events: Vec<EventAlias>,
+    pub constants: Vec<Constant>,
     pub category: Category,
     pub parent_category: Option<ParentCategory>,
     pub base_formula: String,
@@ -234,52 +233,15 @@ pub struct Metric {
 #[serde(rename_all = "PascalCase")]
 pub struct Metrics {
     pub header: Header,
-    #[serde(default)]
-    pub constants: Vec<Constant>,
     pub metrics: Vec<Metric>,
 }
 
-impl Metric {
-    pub fn as_counter(&self, events: &[Event]) -> Option<proc_macro2::TokenStream> {
-        let name = if self.metric_name.chars().nth(0).unwrap().is_ascii_digit() {
-            quote::format_ident!("_{}", self.metric_name)
-        } else {
-            quote::format_ident!("{}", self.metric_name)
-        };
-
-        let mut fields = vec![];
-
-        for EventAlias { name, .. } in self.events.iter() {
-            let search_for = name.split(":").next().unwrap();
-            if let Some(evt) = events.iter().find(|e| e.event_name == search_for) {
-                let filtered_name = search_for.replace(".", "__");
-                let as_ident = quote::format_ident!("{}", filtered_name);
-                let value = proc_macro2::Literal::from_str(&format!("0x{:x}", evt.raw())).unwrap();
-                fields.push(quote! {
-                    #[raw(#value)]
-                    #as_ident: u64
-                });
-            } else {
-                println!("{}", search_for);
-                return None;
-            }
-        }
-
-        Some(quote! {
-            #[derive(Debug, dirty_mike::Counter)]
-            pub struct #name {
-                #(#fields),*
-            }
-        })
-    }
-}
-
 #[derive(Debug, Default)]
-pub struct EventCollection {
+pub struct EventDefinitions {
     events: HashMap<String, Event>,
 }
 
-impl EventCollection {
+impl EventDefinitions {
     pub fn slurp<P: AsRef<Path>>(p: P) -> anyhow::Result<Self> {
         let mut events = HashMap::new();
 
@@ -305,6 +267,42 @@ impl EventCollection {
     }
 }
 
+#[derive(Debug)]
+pub struct CounterSpec {
+    name: proc_macro2::Ident,
+    fields: Vec<(proc_macro2::Ident, u64)>,
+}
+
+impl CounterSpec {
+    pub fn new(metric: &Metric, event_defns: &EventDefinitions) -> anyhow::Result<Self> {
+        let mut fields = vec![];
+
+        for ea in &metric.events {
+            let Some(defn) = event_defns.lookup(ea) else {
+                anyhow::bail!("cannot find event definition for {}", ea.name);
+            };
+
+            let name_to_use = defn.event_name.replace(".", "__");
+
+            let name = if name_to_use.chars().nth(0).unwrap().is_ascii_digit() {
+                quote::format_ident!("_{}", name_to_use)
+            } else {
+                quote::format_ident!("{}", name_to_use)
+            };
+
+            fields.push((name, defn.raw()));
+        }
+
+        let name = if metric.metric_name.chars().nth(0).unwrap().is_ascii_digit() {
+            quote::format_ident!("_{}", metric.metric_name)
+        } else {
+            quote::format_ident!("{}", metric.metric_name)
+        };
+
+        Ok(Self { name, fields })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -315,8 +313,25 @@ mod tests {
         include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
 
     #[test]
+    fn translate_to_counter_spec() -> anyhow::Result<()> {
+        let ed = EventDefinitions::slurp("../../extern/perfmon/SKL/events/")?;
+
+        let metrics: Metrics = serde_json::from_str(SKL_METRICS)?;
+
+        for metric in metrics
+            .metrics
+            .iter()
+            .filter(|m| m.metric_name != "Info_System_Power")
+        {
+            let spec = CounterSpec::new(&metric, &ed)?;
+        }
+
+        Ok(())
+    }
+
+    #[test]
     fn slurp_events() -> anyhow::Result<()> {
-        let ec = EventCollection::slurp("../../extern/perfmon/SKL/events/")?;
+        let ec = EventDefinitions::slurp("../../extern/perfmon/SKL/events/")?;
 
         let metrics: Metrics = serde_json::from_str(SKL_METRICS)?;
 
