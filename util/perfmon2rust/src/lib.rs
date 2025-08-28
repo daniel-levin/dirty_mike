@@ -1,8 +1,13 @@
+use quote::quote;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::path::Path;
+use std::str::FromStr;
 
 fn dehex<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
     let s = <&str>::deserialize(d)?;
-    Ok(u8::from_str_radix(&s[2..=3], 16).unwrap())
+    let clip = std::cmp::min(3, s.len() - 1);
+    Ok(u8::from_str_radix(&s[2..=clip], 16).unwrap())
 }
 
 fn dedecimal<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
@@ -17,7 +22,7 @@ fn bool_from_str<'de, D: serde::Deserializer<'de>>(d: D) -> Result<bool, D::Erro
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct Header {}
+pub struct Header {}
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Category {
@@ -168,7 +173,7 @@ pub struct Event {
 
     pub public_description: String,
 
-    #[serde(deserialize_with = "bool_from_str")]
+    #[serde(deserialize_with = "bool_from_str", default)]
     pub any_thread: bool,
 
     #[serde(deserialize_with = "bool_from_str")]
@@ -192,46 +197,112 @@ impl Event {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct Events {
+pub struct Events {
     pub header: Header,
     pub events: Vec<Event>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct EventAlias {
+pub struct EventAlias {
     name: String,
     alias: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct Constant {
-    name: String,
-    alias: String,
+pub struct Constant {
+    pub name: String,
+    pub alias: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct Metric {
-    metric_name: String,
-    legacy_name: String,
-    level: usize,
-    brief_description: String,
-    events: Vec<EventAlias>,
-    category: Category,
-    parent_category: Option<ParentCategory>,
-    base_formula: String,
-    formula: String,
+pub struct Metric {
+    pub metric_name: String,
+    pub legacy_name: String,
+    pub level: usize,
+    pub brief_description: String,
+    pub events: Vec<EventAlias>,
+    pub category: Category,
+    pub parent_category: Option<ParentCategory>,
+    pub base_formula: String,
+    pub formula: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
-struct Metrics {
+pub struct Metrics {
     pub header: Header,
     #[serde(default)]
     pub constants: Vec<Constant>,
     pub metrics: Vec<Metric>,
+}
+
+impl Metric {
+    pub fn as_counter(&self, events: &[Event]) -> Option<proc_macro2::TokenStream> {
+        let name = if self.metric_name.chars().nth(0).unwrap().is_ascii_digit() {
+            quote::format_ident!("_{}", self.metric_name)
+        } else {
+            quote::format_ident!("{}", self.metric_name)
+        };
+
+        let mut fields = vec![];
+
+        for EventAlias { name, .. } in self.events.iter() {
+            let search_for = name.split(":").next().unwrap();
+            if let Some(evt) = events.iter().find(|e| e.event_name == search_for) {
+                let filtered_name = search_for.replace(".", "__");
+                let as_ident = quote::format_ident!("{}", filtered_name);
+                let value = proc_macro2::Literal::from_str(&format!("0x{:x}", evt.raw())).unwrap();
+                fields.push(quote! {
+                    #[raw(#value)]
+                    #as_ident: u64
+                });
+            } else {
+                println!("{}", search_for);
+                return None;
+            }
+        }
+
+        Some(quote! {
+            #[derive(Debug, dirty_mike::Counter)]
+            pub struct #name {
+                #(#fields),*
+            }
+        })
+    }
+}
+
+#[derive(Debug, Default)]
+pub struct EventCollection {
+    events: HashMap<String, Event>,
+}
+
+impl EventCollection {
+    pub fn slurp<P: AsRef<Path>>(p: P) -> anyhow::Result<Self> {
+        let mut events = HashMap::new();
+
+        for entry in p.as_ref().canonicalize()?.read_dir()? {
+            let entry = entry?;
+
+            if let Some(Some("json")) = entry.path().extension().map(|s| s.to_str()) {
+                let contents = std::fs::read(entry.path())?;
+                if let Ok(e) = serde_json::from_slice::<Events>(&contents) {
+                    for event in e.events {
+                        events.insert(event.event_name.clone(), event);
+                    }
+                }
+            }
+        }
+
+        Ok(Self { events })
+    }
+
+    pub fn lookup(&self, ea: &EventAlias) -> Option<&Event> {
+        let search_for = ea.name.split(":").next().unwrap();
+        self.events.get(search_for)
+    }
 }
 
 #[cfg(test)]
@@ -240,16 +311,33 @@ mod tests {
 
     static SKL_METRICS: &str =
         include_str!("../../../extern/perfmon/SKL/metrics/skylake_metrics.json");
-    static SKL_EVENTS: &str = include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
+    static SKL_CORE_EVENTS: &str =
+        include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
 
     #[test]
-    fn parses_metrics() {
-        let _: Metrics = serde_json::from_str(SKL_METRICS).unwrap();
+    fn slurp_events() -> anyhow::Result<()> {
+        let ec = EventCollection::slurp("../../extern/perfmon/SKL/events/")?;
+
+        let metrics: Metrics = serde_json::from_str(SKL_METRICS)?;
+
+        for Metric { events, .. } in metrics.metrics {
+            for e in events {
+                match ec.lookup(&e) {
+                    Some(_e2) => {}
+                    None => {
+                        // Oddly, this one is missing for some reason.
+                        assert_eq!(e.name, "UNC_PKG_ENERGY_STATUS");
+                    }
+                }
+            }
+        }
+
+        Ok(())
     }
 
     #[test]
     fn event_code() {
-        let e: Events = serde_json::from_str(SKL_EVENTS).unwrap();
+        let e: Events = serde_json::from_str(SKL_CORE_EVENTS).unwrap();
 
         let evt = e
             .events
@@ -262,7 +350,7 @@ mod tests {
 
     #[test]
     fn event_code_and_any_thread() {
-        let e: Events = serde_json::from_str(SKL_EVENTS).unwrap();
+        let e: Events = serde_json::from_str(SKL_CORE_EVENTS).unwrap();
 
         let evt = e
             .events
@@ -283,7 +371,7 @@ mod tests {
 
     #[test]
     fn counter_mask_and_invert() {
-        let e: Events = serde_json::from_str(SKL_EVENTS).unwrap();
+        let e: Events = serde_json::from_str(SKL_CORE_EVENTS).unwrap();
         let evt = e
             .events
             .iter()
