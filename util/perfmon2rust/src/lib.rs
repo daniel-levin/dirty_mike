@@ -5,6 +5,11 @@ fn dehex<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
     Ok(u8::from_str_radix(&s[2..=3], 16).unwrap())
 }
 
+fn dedecimal<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
+    let s = <&str>::deserialize(d)?;
+    Ok(u8::from_str_radix(s, 10).unwrap())
+}
+
 fn bool_from_str<'de, D: serde::Deserializer<'de>>(d: D) -> Result<bool, D::Error> {
     let s = <&str>::deserialize(d)?;
     Ok(s == "1")
@@ -165,13 +170,23 @@ pub struct Event {
 
     #[serde(deserialize_with = "bool_from_str")]
     pub any_thread: bool,
+
+    #[serde(deserialize_with = "bool_from_str")]
+    pub invert: bool,
+
+    #[serde(deserialize_with = "dedecimal")]
+    pub counter_mask: u8,
 }
 
 impl Event {
     /// Vol. 3B 21-9
     /// Layout of IA32_PERFEVTSELx MSRs
     pub fn raw(&self) -> u64 {
-        ((self.any_thread as u64) << 21) | ((self.umask as u64) << 8) | (self.event_code as u64)
+        ((self.counter_mask as u64) << 24)
+            | ((self.invert as u64) << 23)
+            | ((self.any_thread as u64) << 21)
+            | ((self.umask as u64) << 8)
+            | (self.event_code as u64)
     }
 }
 
@@ -264,5 +279,17 @@ mod tests {
             .unwrap();
 
         assert_eq!(evt.raw(), 0x20003c);
+    }
+
+    #[test]
+    fn counter_mask_and_invert() {
+        let e: Events = serde_json::from_str(SKL_EVENTS).unwrap();
+        let evt = e
+            .events
+            .iter()
+            .find(|e| e.event_name == "UOPS_RETIRED.TOTAL_CYCLES")
+            .unwrap();
+
+        assert_eq!(evt.raw(), 0x108002c2);
     }
 }
