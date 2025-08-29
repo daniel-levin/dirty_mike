@@ -12,9 +12,6 @@ pub struct BasicHardwareCounters {
 
     #[hardware(BRANCH_MISSES)]
     pub branch_misses: u64,
-
-    #[time_running]
-    pub running: Duration,
 }
 
 #[inline(never)]

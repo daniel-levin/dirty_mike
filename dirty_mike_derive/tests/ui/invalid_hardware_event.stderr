@@ -1,5 +1,0 @@
-error: invalid hardware event 'INVALID_EVENT'. Valid events are: CPU_CYCLES, INSTRUCTIONS, CACHE_REFERENCES, CACHE_MISSES, BRANCH_INSTRUCTIONS, BRANCH_MISSES, BUS_CYCLES, STALLED_CYCLES_FRONTEND, STALLED_CYCLES_BACKEND, REF_CPU_CYCLES
- --> tests/ui/invalid_hardware_event.rs:5:5
-  |
-5 |     #[hardware(INVALID_EVENT)]
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^

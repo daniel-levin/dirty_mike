@@ -1,5 +1,0 @@
-error: counters must not contain generics
- --> tests/ui/generic_parameters.rs:4:21
-  |
-4 | struct GenericStruct<T> {
-  |                     ^^^

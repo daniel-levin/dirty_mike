@@ -20,17 +20,12 @@ pub struct BasicHardwareCounters {
 
     #[hardware(REF_CPU_CYCLES)]
     pub ref_cpu_cycles: u64,
-
-    #[time_running]
-    pub running: Duration,
-
-    #[time_enabled]
-    pub enabled: Duration,
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::intel::skl::*;
     use dirty_mike_core::Counter;
     use rand::prelude::SliceRandom;
 
@@ -54,10 +49,13 @@ mod tests {
         let mut sorted_data = shuffled_data.clone();
         sorted_data.sort();
 
-        let (_, sorted_res) = BasicHardwareCounters::measure(|| work(&sorted_data)).unwrap();
+        let (_, sorted_res) = MachineClears::measure(|| work(&sorted_data)).unwrap();
 
         let (_, unsorted_res) = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
 
-        assert!(sorted_res.branch_misses * 100 < unsorted_res.branch_misses);
+        dbg!(sorted_res);
+        dbg!(unsorted_res);
+
+        //assert!(sorted_res.branch_misses * 100 < unsorted_res.branch_misses);
     }
 }

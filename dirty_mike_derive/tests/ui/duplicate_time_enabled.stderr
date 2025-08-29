@@ -1,5 +1,0 @@
-error: at most one time_enabled field is allowed
- --> tests/ui/duplicate_time_enabled.rs:9:5
-  |
-9 |     enabled2: std::time::Duration,
-  |     ^^^^^^^^

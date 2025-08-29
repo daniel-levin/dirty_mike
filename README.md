@@ -17,9 +17,6 @@ pub struct CyclesAndTime {
     #[raw(0x13C)]
     pub cpu_clk_thread_unhalted_ref_xclk: u64,
 
-    #[time_running]
-    pub running: Duration,
-
     #[time_enabled]
     pub enabled: Duration,
 }
