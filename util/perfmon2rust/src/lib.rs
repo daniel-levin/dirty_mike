@@ -280,6 +280,7 @@ pub struct FieldDefn {
 
 #[derive(Debug)]
 pub struct CounterSpec {
+    brief_description: String,
     name: proc_macro2::Ident,
     fields: std::collections::HashSet<FieldDefn>,
 }
@@ -314,11 +315,16 @@ impl CounterSpec {
             quote::format_ident!("{}", metric.metric_name.to_upper_camel_case())
         };
 
-        Ok(Self { name, fields })
+        Ok(Self {
+            name,
+            fields,
+            brief_description: metric.brief_description.clone(),
+        })
     }
 
     pub fn as_rust_code(&self) -> proc_macro2::TokenStream {
         let name = &self.name;
+        let brief_description = &self.brief_description;
         let mut fields = vec![];
 
         for FieldDefn {
@@ -337,6 +343,7 @@ impl CounterSpec {
 
         quote! {
             #[derive(Debug, Counter)]
+            #[doc = #brief_description]
             pub struct #name {
                 #(#fields),*
             }
