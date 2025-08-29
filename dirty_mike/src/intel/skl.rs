@@ -1371,9 +1371,6 @@ pub struct Dsb {
 #[derive(Debug, Counter)]
 #[doc = "This category represents fraction of slots wasted due to incorrect speculations. This include slots used to issue uops that do not eventually get retired and slots for which the issue-pipeline was blocked due to recovery from earlier incorrect speculation. For example; wasted work due to miss-predicted branches are categorized under Bad Speculation category. Incorrect data speculation followed by Memory Ordering Nukes is another example."]
 pub struct BadSpeculation {
-    #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200013c)]
-    pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Core cycles the allocator was stalled due to recovery from earlier clear event for any thread running on the physical core (e.g. misprediction or memory nuke)."]
     #[raw(0x20010d)]
     pub int_misc_recovery_cycles_any: u64,
@@ -1386,9 +1383,6 @@ pub struct BadSpeculation {
     #[doc = "Counts the number of uops that the Resource Allocation Table (RAT) issues to the Reservation Station (RS)."]
     #[raw(0x10e)]
     pub uops_issued_any: u64,
-    #[doc = "Core cycles the Resource allocator was stalled due to recovery from an earlier branch misprediction or machine clear event."]
-    #[raw(0x10d)]
-    pub int_misc_recovery_cycles: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents fraction of slots the CPU has wasted due to Branch Misprediction.  These slots are either wasted by uops fetched from an incorrectly speculated program path; or stalls when the out-of-order part of the machine needs to recover its state from a speculative path."]
