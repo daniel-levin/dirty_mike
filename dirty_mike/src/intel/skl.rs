@@ -1,2750 +1,2746 @@
-#![allow(non_snake_case)]
-#![allow(dead_code)]
-#![allow(non_camel_case_types)]
 use crate::Counter;
-
 #[derive(Debug, Counter)]
-pub struct Bottleneck_Mispredictions {
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
+pub struct BottleneckMispredictions {
     #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
+    pub machine_clears_count: u64,
     #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-    #[raw(0x100010d)]
-    INT_MISC__CLEARS_COUNT: u64,
+    pub icache_tag_stalls: u64,
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
     #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Bottleneck_Big_Code {
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
+    pub idq_ms_uops: u64,
     #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
     #[raw(0x187)]
-    DECODE__LCP: u64,
+    pub decode_lcp: u64,
+    #[raw(0x100010d)]
+    pub int_misc_clears_count: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Bottleneck_Instruction_Fetch_BW {
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
+pub struct BottleneckBigCode {
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
     #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct BottleneckInstructionFetchBw {
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
     #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x100010d)]
-    INT_MISC__CLEARS_COUNT: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x3fc1)]
-    OTHER_ASSISTS__ANY: u64,
+    pub inst_retired_any: u64,
     #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
+    pub int_misc_recovery_cycles: u64,
     #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
+    pub icache_tag_stalls: u64,
+    #[raw(0x1001eca)]
+    pub fp_assist_any: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x3fc1)]
+    pub other_assists_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
     #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
+    pub idq_ms_switches: u64,
     #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+    #[raw(0x100010d)]
+    pub int_misc_clears_count: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Bottleneck_Cache_Memory_Bandwidth {
-    #[raw(0x2d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HIT: u64,
-    #[raw(0x60006a3)]
-    CYCLE_ACTIVITY__STALLS_L3_MISS: u64,
-    #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
-    #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
-    #[raw(0x107)]
-    LD_BLOCKS_PARTIAL__ADDRESS_ALIAS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2008)]
-    DTLB_LOAD_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x860)]
-    OFFCORE_REQUESTS_OUTSTANDING__ALL_DATA_RD_c4: u64,
-    #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x803)]
-    LD_BLOCKS__NO_SR: u64,
-    #[raw(0x4d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HITM: u64,
-    #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0xc224)]
-    L2_RQSTS__RFO_HIT: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x80008a3)]
-    CYCLE_ACTIVITY__CYCLES_L1D_MISS: u64,
-    #[raw(0x1000460)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_RFO: u64,
-    #[raw(0x203)]
-    LD_BLOCKS__STORE_FORWARD: u64,
-    #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
-    #[raw(0x21d0)]
-    MEM_INST_RETIRED__LOCK_LOADS: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x100010a3)]
-    CYCLE_ACTIVITY__CYCLES_MEM_ANY: u64,
-    #[raw(0x1d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_MISS: u64,
+pub struct BottleneckCacheMemoryBandwidth {
     #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-    #[raw(0x81d0)]
-    MEM_INST_RETIRED__ALL_LOADS: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
-    #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
-    #[raw(0x1b2)]
-    OFFCORE_REQUESTS_BUFFER__SQ_FULL: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x4d1)]
-    MEM_LOAD_RETIRED__L3_HIT: u64,
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x82d0)]
+    pub mem_inst_retired_all_stores: u64,
     #[raw(0x1000860)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DATA_RD: u64,
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
-    #[raw(0xe224)]
-    L2_RQSTS__ALL_RFO: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Bottleneck_Cache_Memory_Latency {
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x42d0)]
-    MEM_INST_RETIRED__SPLIT_STORES: u64,
-    #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x81d0)]
-    MEM_INST_RETIRED__ALL_LOADS: u64,
-    #[raw(0x1b2)]
-    OFFCORE_REQUESTS_BUFFER__SQ_FULL: u64,
-    #[raw(0x60006a3)]
-    CYCLE_ACTIVITY__STALLS_L3_MISS: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
+    pub offcore_requests_outstanding_cycles_with_data_rd: u64,
+    #[raw(0x80008a3)]
+    pub cycle_activity_cycles_l1d_miss: u64,
     #[raw(0x107)]
-    LD_BLOCKS_PARTIAL__ADDRESS_ALIAS: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
-    #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
+    pub ld_blocks_partial_address_alias: u64,
+    #[raw(0x1000460)]
+    pub offcore_requests_outstanding_cycles_with_demand_rfo: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
     #[raw(0x860)]
-    OFFCORE_REQUESTS_OUTSTANDING__ALL_DATA_RD_c4: u64,
-    #[raw(0x80008a3)]
-    CYCLE_ACTIVITY__CYCLES_L1D_MISS: u64,
-    #[raw(0x1000460)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_RFO: u64,
-    #[raw(0x2049)]
-    DTLB_STORE_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x1000860)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DATA_RD: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-    #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x21d0)]
-    MEM_INST_RETIRED__LOCK_LOADS: u64,
-    #[raw(0x4d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HITM: u64,
-    #[raw(0x1d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_MISS: u64,
-    #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0xe224)]
-    L2_RQSTS__ALL_RFO: u64,
-    #[raw(0x2d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HIT: u64,
-    #[raw(0xc224)]
-    L2_RQSTS__RFO_HIT: u64,
-    #[raw(0x803)]
-    LD_BLOCKS__NO_SR: u64,
-    #[raw(0x203)]
-    LD_BLOCKS__STORE_FORWARD: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
-    #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
-    #[raw(0x1b7)]
-    OFFCORE_RESPONSE__DEMAND_RFO__L3_HIT__SNOOP_HITM: u64,
-    #[raw(0x4d1)]
-    MEM_LOAD_RETIRED__L3_HIT: u64,
-    #[raw(0x2008)]
-    DTLB_LOAD_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x100010a3)]
-    CYCLE_ACTIVITY__CYCLES_MEM_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Bottleneck_Memory_Data_TLBs {
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x80008a3)]
-    CYCLE_ACTIVITY__CYCLES_L1D_MISS: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x42d0)]
-    MEM_INST_RETIRED__SPLIT_STORES: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x2049)]
-    DTLB_STORE_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
-    #[raw(0x60006a3)]
-    CYCLE_ACTIVITY__STALLS_L3_MISS: u64,
+    pub offcore_requests_outstanding_all_data_rd_c4: u64,
     #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
-    #[raw(0x2008)]
-    DTLB_LOAD_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x100010a3)]
-    CYCLE_ACTIVITY__CYCLES_MEM_ANY: u64,
+    pub exe_activity_bound_on_stores: u64,
     #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0xc224)]
-    L2_RQSTS__RFO_HIT: u64,
-    #[raw(0x203)]
-    LD_BLOCKS__STORE_FORWARD: u64,
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x148)]
+    pub l1d_pend_miss_pending: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0xe224)]
+    pub l2_rqsts_all_rfo: u64,
     #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
-    #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0xe224)]
-    L2_RQSTS__ALL_RFO: u64,
+    pub cycle_activity_stalls_l1d_miss: u64,
     #[raw(0x803)]
-    LD_BLOCKS__NO_SR: u64,
-    #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub ld_blocks_no_sr: u64,
+    #[raw(0x100010a3)]
+    pub cycle_activity_cycles_mem_any: u64,
+    #[raw(0x4d1)]
+    pub mem_load_retired_l3_hit: u64,
     #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
-    #[raw(0x1b7)]
-    OFFCORE_RESPONSE__DEMAND_RFO__L3_HIT__SNOOP_HITM: u64,
-    #[raw(0x107)]
-    LD_BLOCKS_PARTIAL__ADDRESS_ALIAS: u64,
-    #[raw(0x1000460)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_RFO: u64,
-    #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
-    #[raw(0x21d0)]
-    MEM_INST_RETIRED__LOCK_LOADS: u64,
-    #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
-    #[raw(0x81d0)]
-    MEM_INST_RETIRED__ALL_LOADS: u64,
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x60006a3)]
+    pub cycle_activity_stalls_l3_miss: u64,
+    #[raw(0x1b2)]
+    pub offcore_requests_buffer_sq_full: u64,
+    #[raw(0x50005a3)]
+    pub cycle_activity_stalls_l2_miss: u64,
     #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x2008)]
+    pub dtlb_load_misses_stlb_hit_c1: u64,
+    #[raw(0x81d0)]
+    pub mem_inst_retired_all_loads: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x2d2)]
+    pub mem_load_l3_hit_retired_xsnp_hit: u64,
+    #[raw(0x1d2)]
+    pub mem_load_l3_hit_retired_xsnp_miss: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x2d1)]
+    pub mem_load_retired_l2_hit: u64,
+    #[raw(0x248)]
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x21d0)]
+    pub mem_inst_retired_lock_loads: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0xc224)]
+    pub l2_rqsts_rfo_hit: u64,
+    #[raw(0x4d2)]
+    pub mem_load_l3_hit_retired_xsnp_hitm: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x203)]
+    pub ld_blocks_store_forward: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Bottleneck_Memory_Synchronization {
-    #[raw(0x2c3)]
-    MACHINE_CLEARS__MEMORY_ORDERING: u64,
-    #[raw(0x60006a3)]
-    CYCLE_ACTIVITY__STALLS_L3_MISS: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-    #[raw(0x1d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_MISS: u64,
+pub struct BottleneckCacheMemoryLatency {
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x42d0)]
+    pub mem_inst_retired_split_stores: u64,
+    #[raw(0x148)]
+    pub l1d_pend_miss_pending: u64,
+    #[raw(0x803)]
+    pub ld_blocks_no_sr: u64,
+    #[raw(0x1000860)]
+    pub offcore_requests_outstanding_cycles_with_data_rd: u64,
+    #[raw(0x248)]
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x107)]
+    pub ld_blocks_partial_address_alias: u64,
+    #[raw(0x82d0)]
+    pub mem_inst_retired_all_stores: u64,
+    #[raw(0x1000460)]
+    pub offcore_requests_outstanding_cycles_with_demand_rfo: u64,
     #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
+    pub dtlb_store_misses_walk_active: u64,
+    #[raw(0x203)]
+    pub ld_blocks_store_forward: u64,
     #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x860)]
+    pub offcore_requests_outstanding_all_data_rd_c4: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
     #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x100010a3)]
+    pub cycle_activity_cycles_mem_any: u64,
+    #[raw(0x2d2)]
+    pub mem_load_l3_hit_retired_xsnp_hit: u64,
+    #[raw(0x1b2)]
+    pub offcore_requests_buffer_sq_full: u64,
+    #[raw(0x2008)]
+    pub dtlb_load_misses_stlb_hit_c1: u64,
+    #[raw(0x1d2)]
+    pub mem_load_l3_hit_retired_xsnp_miss: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x1b7)]
+    pub offcore_response_demand_rfo_l3_hit_snoop_hitm: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0xc000ca3)]
+    pub cycle_activity_stalls_l1d_miss: u64,
+    #[raw(0x1001008)]
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0x81d0)]
+    pub mem_inst_retired_all_loads: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0xe224)]
+    pub l2_rqsts_all_rfo: u64,
+    #[raw(0x60006a3)]
+    pub cycle_activity_stalls_l3_miss: u64,
+    #[raw(0x21d0)]
+    pub mem_inst_retired_lock_loads: u64,
     #[raw(0x4d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HITM: u64,
+    pub mem_load_l3_hit_retired_xsnp_hitm: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0xc224)]
+    pub l2_rqsts_rfo_hit: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x80008a3)]
+    pub cycle_activity_cycles_l1d_miss: u64,
+    #[raw(0x2049)]
+    pub dtlb_store_misses_stlb_hit_c1: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x50005a3)]
+    pub cycle_activity_stalls_l2_miss: u64,
+    #[raw(0x2d1)]
+    pub mem_load_retired_l2_hit: u64,
+    #[raw(0x4d1)]
+    pub mem_load_retired_l3_hit: u64,
+}
+#[derive(Debug, Counter)]
+pub struct BottleneckMemoryDataTlBs {
+    #[raw(0x148)]
+    pub l1d_pend_miss_pending: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x1001049)]
+    pub dtlb_store_misses_walk_active: u64,
+    #[raw(0x107)]
+    pub ld_blocks_partial_address_alias: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x60006a3)]
+    pub cycle_activity_stalls_l3_miss: u64,
+    #[raw(0x1000460)]
+    pub offcore_requests_outstanding_cycles_with_demand_rfo: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x42d0)]
+    pub mem_inst_retired_split_stores: u64,
+    #[raw(0x2008)]
+    pub dtlb_load_misses_stlb_hit_c1: u64,
+    #[raw(0x803)]
+    pub ld_blocks_no_sr: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0xe224)]
+    pub l2_rqsts_all_rfo: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x2049)]
+    pub dtlb_store_misses_stlb_hit_c1: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x50005a3)]
+    pub cycle_activity_stalls_l2_miss: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x82d0)]
+    pub mem_inst_retired_all_stores: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x2d1)]
+    pub mem_load_retired_l2_hit: u64,
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x40a6)]
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x1001008)]
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0x80008a3)]
+    pub cycle_activity_cycles_l1d_miss: u64,
+    #[raw(0x81d0)]
+    pub mem_inst_retired_all_loads: u64,
+    #[raw(0x1b7)]
+    pub offcore_response_demand_rfo_l3_hit_snoop_hitm: u64,
+    #[raw(0x203)]
+    pub ld_blocks_store_forward: u64,
+    #[raw(0x248)]
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x21d0)]
+    pub mem_inst_retired_lock_loads: u64,
+    #[raw(0xc000ca3)]
+    pub cycle_activity_stalls_l1d_miss: u64,
+    #[raw(0x100010a3)]
+    pub cycle_activity_cycles_mem_any: u64,
+    #[raw(0xc224)]
+    pub l2_rqsts_rfo_hit: u64,
+}
+#[derive(Debug, Counter)]
+pub struct BottleneckMemorySynchronization {
+    #[raw(0x2049)]
+    pub dtlb_store_misses_stlb_hit_c1: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x248)]
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x42d0)]
+    pub mem_inst_retired_split_stores: u64,
+    #[raw(0xc224)]
+    pub l2_rqsts_rfo_hit: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x1b2)]
+    pub offcore_requests_buffer_sq_full: u64,
+    #[raw(0x1d2)]
+    pub mem_load_l3_hit_retired_xsnp_miss: u64,
+    #[raw(0x40a6)]
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
     #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0xc224)]
-    L2_RQSTS__RFO_HIT: u64,
-    #[raw(0x2049)]
-    DTLB_STORE_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x2d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HIT: u64,
-    #[raw(0x42d0)]
-    MEM_INST_RETIRED__SPLIT_STORES: u64,
-    #[raw(0x1b2)]
-    OFFCORE_REQUESTS_BUFFER__SQ_FULL: u64,
+    pub machine_clears_count: u64,
     #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
-    #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
-    #[raw(0x21d0)]
-    MEM_INST_RETIRED__LOCK_LOADS: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x1000460)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_RFO: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
-    #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
-    #[raw(0x4d1)]
-    MEM_LOAD_RETIRED__L3_HIT: u64,
-    #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
+    pub mem_inst_retired_all_stores: u64,
     #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x1b7)]
-    OFFCORE_RESPONSE__DEMAND_RFO__L3_HIT__SNOOP_HITM: u64,
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0xc000ca3)]
+    pub cycle_activity_stalls_l1d_miss: u64,
+    #[raw(0x4d1)]
+    pub mem_load_retired_l3_hit: u64,
+    #[raw(0x2d2)]
+    pub mem_load_l3_hit_retired_xsnp_hit: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x2d1)]
+    pub mem_load_retired_l2_hit: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0x1000460)]
+    pub offcore_requests_outstanding_cycles_with_demand_rfo: u64,
+    #[raw(0x21d0)]
+    pub mem_inst_retired_lock_loads: u64,
+    #[raw(0x1b7)]
+    pub offcore_response_demand_rfo_l3_hit_snoop_hitm: u64,
+    #[raw(0x4d2)]
+    pub mem_load_l3_hit_retired_xsnp_hitm: u64,
+    #[raw(0x60006a3)]
+    pub cycle_activity_stalls_l3_miss: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x2c3)]
+    pub machine_clears_memory_ordering: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x1001049)]
+    pub dtlb_store_misses_walk_active: u64,
+    #[raw(0x50005a3)]
+    pub cycle_activity_stalls_l2_miss: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Bottleneck_Compute_Bound_Est {
-    #[raw(0x159)]
-    PARTIAL_RAT_STALLS__SCOREBOARD: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
+pub struct BottleneckComputeBoundEst {
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x20002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_2: u64,
-    #[raw(0x1000114)]
-    ARITH__DIVIDER_ACTIVE: u64,
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
-    #[raw(0x30002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_3: u64,
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
+    pub cycle_activity_stalls_mem_any: u64,
     #[raw(0x10002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_1: u64,
-    #[raw(0x1a6)]
-    EXE_ACTIVITY__EXE_BOUND_0_PORTS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
+    pub uops_executed_core_cycles_ge_1: u64,
     #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Bottleneck_Irregular_Overhead {
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x100010d)]
-    INT_MISC__CLEARS_COUNT: u64,
-    #[raw(0x1a6)]
-    EXE_ACTIVITY__EXE_BOUND_0_PORTS: u64,
-    #[raw(0x15e)]
-    RS_EVENTS__EMPTY_CYCLES: u64,
+    pub cycle_activity_stalls_total: u64,
     #[raw(0x159)]
-    PARTIAL_RAT_STALLS__SCOREBOARD: u64,
-    #[raw(0x1000114)]
-    ARITH__DIVIDER_ACTIVE: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-    #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
+    pub partial_rat_stalls_scoreboard: u64,
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x3fc1)]
-    OTHER_ASSISTS__ANY: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-    #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x2c3)]
-    MACHINE_CLEARS__MEMORY_ORDERING: u64,
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Bottleneck_Other_Bottlenecks {
-    #[raw(0x803)]
-    LD_BLOCKS__NO_SR: u64,
-    #[raw(0x60006a3)]
-    CYCLE_ACTIVITY__STALLS_L3_MISS: u64,
-    #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
-    #[raw(0x80008a3)]
-    CYCLE_ACTIVITY__CYCLES_L1D_MISS: u64,
-    #[raw(0x1d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_MISS: u64,
-    #[raw(0x20002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_2: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x2049)]
-    DTLB_STORE_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
-    #[raw(0x15e)]
-    RS_EVENTS__EMPTY_CYCLES: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
-    #[raw(0xe224)]
-    L2_RQSTS__ALL_RFO: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x1000860)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DATA_RD: u64,
-    #[raw(0x2c4)]
-    BR_INST_RETIRED__NEAR_CALL: u64,
-    #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
-    #[raw(0x2d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HIT: u64,
-    #[raw(0x107)]
-    LD_BLOCKS_PARTIAL__ADDRESS_ALIAS: u64,
-    #[raw(0x10002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_1: u64,
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x159)]
-    PARTIAL_RAT_STALLS__SCOREBOARD: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-    #[raw(0x4d1)]
-    MEM_LOAD_RETIRED__L3_HIT: u64,
-    #[raw(0x21d0)]
-    MEM_INST_RETIRED__LOCK_LOADS: u64,
-    #[raw(0x1a6)]
-    EXE_ACTIVITY__EXE_BOUND_0_PORTS: u64,
-    #[raw(0x42d0)]
-    MEM_INST_RETIRED__SPLIT_STORES: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x2c0)]
-    INST_RETIRED__NOP: u64,
-    #[raw(0x4d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HITM: u64,
-    #[raw(0x1b7)]
-    OFFCORE_RESPONSE__DEMAND_RFO__L3_HIT__SNOOP_HITM: u64,
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x2008)]
-    DTLB_LOAD_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x2c3)]
-    MACHINE_CLEARS__MEMORY_ORDERING: u64,
-    #[raw(0x100010d)]
-    INT_MISC__CLEARS_COUNT: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
-    #[raw(0x100010a3)]
-    CYCLE_ACTIVITY__CYCLES_MEM_ANY: u64,
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x1b2)]
-    OFFCORE_REQUESTS_BUFFER__SQ_FULL: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-    #[raw(0x203)]
-    LD_BLOCKS__STORE_FORWARD: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
+    pub exe_activity_1_ports_util: u64,
     #[raw(0x1000114)]
-    ARITH__DIVIDER_ACTIVE: u64,
-    #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x81d0)]
-    MEM_INST_RETIRED__ALL_LOADS: u64,
+    pub arith_divider_active: u64,
     #[raw(0x30002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_3: u64,
-    #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x1000460)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_RFO: u64,
-    #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x3fc1)]
-    OTHER_ASSISTS__ANY: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x860)]
-    OFFCORE_REQUESTS_OUTSTANDING__ALL_DATA_RD_c4: u64,
-    #[raw(0xc224)]
-    L2_RQSTS__RFO_HIT: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Bottleneck_Branching_Overhead {
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2c0)]
-    INST_RETIRED__NOP: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x2c4)]
-    BR_INST_RETIRED__NEAR_CALL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Bottleneck_Useful_Work {
-    #[raw(0x2c4)]
-    BR_INST_RETIRED__NEAR_CALL: u64,
-    #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
-    #[raw(0x3fc1)]
-    OTHER_ASSISTS__ANY: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x2c0)]
-    INST_RETIRED__NOP: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub uops_executed_core_cycles_ge_3: u64,
+    #[raw(0x20002b1)]
+    pub uops_executed_core_cycles_ge_2: u64,
+    #[raw(0x1a6)]
+    pub exe_activity_exe_bound_0_ports: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
     #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Frontend_Bound {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub uops_issued_any: u64,
     #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Fetch_Latency {
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct ICache_Misses {
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct ITLB_Misses {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Code_STLB_Hit {
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1001085)]
-    ITLB_MISSES__WALK_ACTIVE: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Code_STLB_Miss {
-    #[raw(0x1001085)]
-    ITLB_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Code_STLB_Miss_4K {
-    #[raw(0x285)]
-    ITLB_MISSES__WALK_COMPLETED_4K: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x485)]
-    ITLB_MISSES__WALK_COMPLETED_2M_4M: u64,
-    #[raw(0x1001085)]
-    ITLB_MISSES__WALK_ACTIVE: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Code_STLB_Miss_2M {
-    #[raw(0x485)]
-    ITLB_MISSES__WALK_COMPLETED_2M_4M: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1001085)]
-    ITLB_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x285)]
-    ITLB_MISSES__WALK_COMPLETED_4K: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Branch_Resteers {
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Mispredicts_Resteers {
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Clears_Resteers {
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Unknown_Branches {
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct MS_Switches {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-}
-#[derive(Debug, Counter)]
-pub struct LCP {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-}
-#[derive(Debug, Counter)]
-pub struct DSB_Switches {
+pub struct BottleneckIrregularOverhead {
     #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Fetch_Bandwidth {
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
+    pub dsb2mite_switches_penalty_cycles: u64,
+    #[raw(0x1a6)]
+    pub exe_activity_exe_bound_0_ports: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+    #[raw(0x1000114)]
+    pub arith_divider_active: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
     #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x2c3)]
+    pub machine_clears_memory_ordering: u64,
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x100010d)]
+    pub int_misc_clears_count: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x15e)]
+    pub rs_events_empty_cycles: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x3fc1)]
+    pub other_assists_any: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x1001eca)]
+    pub fp_assist_any: u64,
+    #[raw(0x159)]
+    pub partial_rat_stalls_scoreboard: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+    #[raw(0x40a6)]
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
 }
 #[derive(Debug, Counter)]
-pub struct MITE {
-    #[raw(0x1002479)]
-    IDQ__ALL_MITE_CYCLES_ANY_UOPS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+pub struct BottleneckOtherBottlenecks {
+    #[raw(0x3fc1)]
+    pub other_assists_any: u64,
+    #[raw(0x860)]
+    pub offcore_requests_outstanding_all_data_rd_c4: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
+    #[raw(0x148)]
+    pub l1d_pend_miss_pending: u64,
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x10002b1)]
+    pub uops_executed_core_cycles_ge_1: u64,
+    #[raw(0x15e)]
+    pub rs_events_empty_cycles: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x50005a3)]
+    pub cycle_activity_stalls_l2_miss: u64,
+    #[raw(0x107)]
+    pub ld_blocks_partial_address_alias: u64,
+    #[raw(0x1001eca)]
+    pub fp_assist_any: u64,
+    #[raw(0x1001049)]
+    pub dtlb_store_misses_walk_active: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+    #[raw(0x248)]
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x1d2)]
+    pub mem_load_l3_hit_retired_xsnp_miss: u64,
+    #[raw(0xc224)]
+    pub l2_rqsts_rfo_hit: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+    #[raw(0x82d0)]
+    pub mem_inst_retired_all_stores: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x159)]
+    pub partial_rat_stalls_scoreboard: u64,
+    #[raw(0x2d1)]
+    pub mem_load_retired_l2_hit: u64,
+    #[raw(0x2008)]
+    pub dtlb_load_misses_stlb_hit_c1: u64,
+    #[raw(0x42d0)]
+    pub mem_inst_retired_split_stores: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+    #[raw(0x40a6)]
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x4d2)]
+    pub mem_load_l3_hit_retired_xsnp_hitm: u64,
+    #[raw(0x1000460)]
+    pub offcore_requests_outstanding_cycles_with_demand_rfo: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x1000114)]
+    pub arith_divider_active: u64,
+    #[raw(0x1001008)]
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0xc000ca3)]
+    pub cycle_activity_stalls_l1d_miss: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x30002b1)]
+    pub uops_executed_core_cycles_ge_3: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x60006a3)]
+    pub cycle_activity_stalls_l3_miss: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+    #[raw(0xe224)]
+    pub l2_rqsts_all_rfo: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x100010d)]
+    pub int_misc_clears_count: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x203)]
+    pub ld_blocks_store_forward: u64,
+    #[raw(0x80008a3)]
+    pub cycle_activity_cycles_l1d_miss: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x1b7)]
+    pub offcore_response_demand_rfo_l3_hit_snoop_hitm: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x100010a3)]
+    pub cycle_activity_cycles_mem_any: u64,
+    #[raw(0x2049)]
+    pub dtlb_store_misses_stlb_hit_c1: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x21d0)]
+    pub mem_inst_retired_lock_loads: u64,
+    #[raw(0x803)]
+    pub ld_blocks_no_sr: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x1b2)]
+    pub offcore_requests_buffer_sq_full: u64,
+    #[raw(0x2c3)]
+    pub machine_clears_memory_ordering: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x2d2)]
+    pub mem_load_l3_hit_retired_xsnp_hit: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x2c0)]
+    pub inst_retired_nop: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x2c4)]
+    pub br_inst_retired_near_call: u64,
+    #[raw(0x4d1)]
+    pub mem_load_retired_l3_hit: u64,
+    #[raw(0x1a6)]
+    pub exe_activity_exe_bound_0_ports: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+    #[raw(0x1000860)]
+    pub offcore_requests_outstanding_cycles_with_data_rd: u64,
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x20002b1)]
+    pub uops_executed_core_cycles_ge_2: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
+    #[raw(0x81d0)]
+    pub mem_inst_retired_all_loads: u64,
+}
+#[derive(Debug, Counter)]
+pub struct BottleneckBranchingOverhead {
+    #[raw(0x2c4)]
+    pub br_inst_retired_near_call: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2c0)]
+    pub inst_retired_nop: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+}
+#[derive(Debug, Counter)]
+pub struct BottleneckUsefulWork {
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x3fc1)]
+    pub other_assists_any: u64,
+    #[raw(0x1001eca)]
+    pub fp_assist_any: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x2c0)]
+    pub inst_retired_nop: u64,
+    #[raw(0x2c4)]
+    pub br_inst_retired_near_call: u64,
+}
+#[derive(Debug, Counter)]
+pub struct FrontendBound {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct FetchLatency {
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct ICacheMisses {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct ItlbMisses {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
+}
+#[derive(Debug, Counter)]
+pub struct CodeStlbHit {
+    #[raw(0x1001085)]
+    pub itlb_misses_walk_active: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
+}
+#[derive(Debug, Counter)]
+pub struct CodeStlbMiss {
+    #[raw(0x1001085)]
+    pub itlb_misses_walk_active: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct CodeStlbMiss4k {
+    #[raw(0x485)]
+    pub itlb_misses_walk_completed_2m_4m: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x285)]
+    pub itlb_misses_walk_completed_4k: u64,
+    #[raw(0x1001085)]
+    pub itlb_misses_walk_active: u64,
+}
+#[derive(Debug, Counter)]
+pub struct CodeStlbMiss2m {
+    #[raw(0x485)]
+    pub itlb_misses_walk_completed_2m_4m: u64,
+    #[raw(0x285)]
+    pub itlb_misses_walk_completed_4k: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1001085)]
+    pub itlb_misses_walk_active: u64,
+}
+#[derive(Debug, Counter)]
+pub struct BranchResteers {
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct MispredictsResteers {
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct ClearsResteers {
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct UnknownBranches {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct MsSwitches {
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Lcp {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+}
+#[derive(Debug, Counter)]
+pub struct DsbSwitches {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
+}
+#[derive(Debug, Counter)]
+pub struct FetchBandwidth {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Mite {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x4002479)]
-    IDQ__ALL_MITE_CYCLES_4_UOPS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Decoder0_Alone {
-    #[raw(0x155)]
-    INST_DECODED__DECODERS_c1: u64,
+    pub idq_all_mite_cycles_4_uops: u64,
+    #[raw(0x1002479)]
+    pub idq_all_mite_cycles_any_uops: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x155)]
-    INST_DECODED__DECODERS_c2: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct DSB {
+pub struct Decoder0Alone {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x155)]
+    pub inst_decoded_decoders_c2: u64,
+    #[raw(0x155)]
+    pub inst_decoded_decoders_c1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Dsb {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x4001879)]
-    IDQ__DSB_CYCLES_OK: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub idq_dsb_cycles_ok: u64,
     #[raw(0x1001879)]
-    IDQ__DSB_CYCLES_ANY: u64,
+    pub idq_dsb_cycles_any: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Bad_Speculation {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+pub struct BadSpeculation {
     #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
+    pub int_misc_recovery_cycles_any: u64,
     #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
+    pub uops_issued_any: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Branch_Mispredicts {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+pub struct BranchMispredicts {
     #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
+    pub uops_issued_any: u64,
     #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Other_Mispredicts {
+pub struct OtherMispredicts {
     #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub uops_issued_any: u64,
     #[raw(0x100010d)]
-    INT_MISC__CLEARS_COUNT: u64,
+    pub int_misc_clears_count: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
+    pub br_misp_retired_all_branches: u64,
     #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
+    pub machine_clears_count: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Machine_Clears {
+pub struct MachineClears {
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub int_misc_recovery_cycles_any: u64,
     #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
+    pub machine_clears_count: u64,
     #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Other_Nukes {
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
+pub struct OtherNukes {
     #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
     #[raw(0x2c3)]
-    MACHINE_CLEARS__MEMORY_ORDERING: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Backend_Bound {
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
+    pub machine_clears_memory_ordering: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Memory_Bound {
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
+    pub int_misc_recovery_cycles: u64,
 }
 #[derive(Debug, Counter)]
-pub struct L1_Bound {
-    #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
+pub struct BackendBound {
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct MemoryBound {
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
     #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0x40a6)]
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct DTLB_Load {
-    #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
+pub struct L1Bound {
+    #[raw(0xc000ca3)]
+    pub cycle_activity_stalls_l1d_miss: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct DtlbLoad {
     #[raw(0x2008)]
-    DTLB_LOAD_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x80008a3)]
-    CYCLE_ACTIVITY__CYCLES_L1D_MISS: u64,
+    pub dtlb_load_misses_stlb_hit_c1: u64,
     #[raw(0x100010a3)]
-    CYCLE_ACTIVITY__CYCLES_MEM_ANY: u64,
+    pub cycle_activity_cycles_mem_any: u64,
+    #[raw(0x1001008)]
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0x80008a3)]
+    pub cycle_activity_cycles_l1d_miss: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Load_STLB_Hit {
-    #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
+pub struct LoadStlbHit {
+    #[raw(0x100010a3)]
+    pub cycle_activity_cycles_mem_any: u64,
     #[raw(0x2008)]
-    DTLB_LOAD_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x100010a3)]
-    CYCLE_ACTIVITY__CYCLES_MEM_ANY: u64,
+    pub dtlb_load_misses_stlb_hit_c1: u64,
+    #[raw(0x1001008)]
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x80008a3)]
-    CYCLE_ACTIVITY__CYCLES_L1D_MISS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cycle_activity_cycles_l1d_miss: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Load_STLB_Miss {
+pub struct LoadStlbMiss {
     #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
+    pub dtlb_load_misses_walk_active: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Load_STLB_Miss_4K {
+pub struct LoadStlbMiss4k {
     #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
+    pub dtlb_load_misses_walk_active: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x208)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_4K: u64,
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x408)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_2M_4M: u64,
+    pub dtlb_load_misses_walk_completed_2m_4m: u64,
     #[raw(0x808)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_1G: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Load_STLB_Miss_2M {
-    #[raw(0x408)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_2M_4M: u64,
-    #[raw(0x808)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_1G: u64,
-    #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub dtlb_load_misses_walk_completed_1g: u64,
     #[raw(0x208)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_4K: u64,
+    pub dtlb_load_misses_walk_completed_4k: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Load_STLB_Miss_1G {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x408)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_2M_4M: u64,
-    #[raw(0x208)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_4K: u64,
-    #[raw(0x808)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED_1G: u64,
+pub struct LoadStlbMiss2m {
     #[raw(0x1001008)]
-    DTLB_LOAD_MISSES__WALK_ACTIVE: u64,
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0x208)]
+    pub dtlb_load_misses_walk_completed_4k: u64,
+    #[raw(0x808)]
+    pub dtlb_load_misses_walk_completed_1g: u64,
+    #[raw(0x408)]
+    pub dtlb_load_misses_walk_completed_2m_4m: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Store_Fwd_Blk {
+pub struct LoadStlbMiss1g {
+    #[raw(0x408)]
+    pub dtlb_load_misses_walk_completed_2m_4m: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1001008)]
+    pub dtlb_load_misses_walk_active: u64,
+    #[raw(0x808)]
+    pub dtlb_load_misses_walk_completed_1g: u64,
+    #[raw(0x208)]
+    pub dtlb_load_misses_walk_completed_4k: u64,
+}
+#[derive(Debug, Counter)]
+pub struct StoreFwdBlk {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x203)]
-    LD_BLOCKS__STORE_FORWARD: u64,
+    pub ld_blocks_store_forward: u64,
 }
 #[derive(Debug, Counter)]
-pub struct L1_Latency_Dependency {
+pub struct L1LatencyDependency {
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
     #[raw(0x81d0)]
-    MEM_INST_RETIRED__ALL_LOADS: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
+    pub mem_inst_retired_all_loads: u64,
     #[raw(0x100010a3)]
-    CYCLE_ACTIVITY__CYCLES_MEM_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cycle_activity_cycles_mem_any: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
     #[raw(0x80008a3)]
-    CYCLE_ACTIVITY__CYCLES_L1D_MISS: u64,
+    pub cycle_activity_cycles_l1d_miss: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Lock_Latency {
+pub struct LockLatency {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1000460)]
+    pub offcore_requests_outstanding_cycles_with_demand_rfo: u64,
+    #[raw(0xc224)]
+    pub l2_rqsts_rfo_hit: u64,
+    #[raw(0x82d0)]
+    pub mem_inst_retired_all_stores: u64,
+    #[raw(0x21d0)]
+    pub mem_inst_retired_lock_loads: u64,
     #[raw(0xe224)]
-    L2_RQSTS__ALL_RFO: u64,
-    #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
-    #[raw(0x1000460)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_RFO: u64,
-    #[raw(0x21d0)]
-    MEM_INST_RETIRED__LOCK_LOADS: u64,
-    #[raw(0xc224)]
-    L2_RQSTS__RFO_HIT: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub l2_rqsts_all_rfo: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Split_Loads {
+pub struct SplitLoads {
+    #[raw(0x148)]
+    pub l1d_pend_miss_pending: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
     #[raw(0x803)]
-    LD_BLOCKS__NO_SR: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
+    pub ld_blocks_no_sr: u64,
     #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
+    pub mem_load_retired_l1_miss: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct _4K_Aliasing {
+pub struct _4kAliasing {
     #[raw(0x107)]
-    LD_BLOCKS_PARTIAL__ADDRESS_ALIAS: u64,
+    pub ld_blocks_partial_address_alias: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct FB_Full {
+pub struct FbFull {
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
     #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub l1d_pend_miss_pending: u64,
     #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct L2_Bound {
-    #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
+pub struct L2Bound {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x248)]
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x2d1)]
+    pub mem_load_retired_l2_hit: u64,
     #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
-    #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct L2_Hit_Latency {
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct L3_Bound {
-    #[raw(0x60006a3)]
-    CYCLE_ACTIVITY__STALLS_L3_MISS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cycle_activity_stalls_l1d_miss: u64,
     #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
+    pub cycle_activity_stalls_l2_miss: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Contested_Accesses {
+pub struct L2HitLatency {
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+    #[raw(0x2d1)]
+    pub mem_load_retired_l2_hit: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+}
+#[derive(Debug, Counter)]
+pub struct L3Bound {
+    #[raw(0x50005a3)]
+    pub cycle_activity_stalls_l2_miss: u64,
+    #[raw(0x60006a3)]
+    pub cycle_activity_stalls_l3_miss: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct ContestedAccesses {
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
     #[raw(0x1d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_MISS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
+    pub mem_load_l3_hit_retired_xsnp_miss: u64,
     #[raw(0x4d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HITM: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
+    pub mem_load_l3_hit_retired_xsnp_hitm: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Data_Sharing {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
+pub struct DataSharing {
     #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
     #[raw(0x2d2)]
-    MEM_LOAD_L3_HIT_RETIRED__XSNP_HIT: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
+    pub mem_load_l3_hit_retired_xsnp_hit: u64,
 }
 #[derive(Debug, Counter)]
-pub struct L3_Hit_Latency {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+pub struct L3HitLatency {
     #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
+    pub mem_load_retired_l1_miss: u64,
     #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
     #[raw(0x4d1)]
-    MEM_LOAD_RETIRED__L3_HIT: u64,
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
+    pub mem_load_retired_l3_hit: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct SQ_Full {
+pub struct SqFull {
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x1b2)]
-    OFFCORE_REQUESTS_BUFFER__SQ_FULL: u64,
+    pub offcore_requests_buffer_sq_full: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct DRAM_Bound {
-    #[raw(0x248)]
-    L1D_PEND_MISS__FB_FULL_c1: u64,
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x50005a3)]
-    CYCLE_ACTIVITY__STALLS_L2_MISS: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+pub struct DramBound {
     #[raw(0x60006a3)]
-    CYCLE_ACTIVITY__STALLS_L3_MISS: u64,
+    pub cycle_activity_stalls_l3_miss: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
     #[raw(0xc000ca3)]
-    CYCLE_ACTIVITY__STALLS_L1D_MISS: u64,
+    pub cycle_activity_stalls_l1d_miss: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x248)]
+    pub l1d_pend_miss_fb_full_c1: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x50005a3)]
+    pub cycle_activity_stalls_l2_miss: u64,
     #[raw(0x2d1)]
-    MEM_LOAD_RETIRED__L2_HIT: u64,
+    pub mem_load_retired_l2_hit: u64,
 }
 #[derive(Debug, Counter)]
-pub struct MEM_Bandwidth {
+pub struct MemBandwidth {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x860)]
-    OFFCORE_REQUESTS_OUTSTANDING__ALL_DATA_RD_c4: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub offcore_requests_outstanding_all_data_rd_c4: u64,
 }
 #[derive(Debug, Counter)]
-pub struct MEM_Latency {
+pub struct MemLatency {
+    #[raw(0x860)]
+    pub offcore_requests_outstanding_all_data_rd_c4: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x1000860)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DATA_RD: u64,
-    #[raw(0x860)]
-    OFFCORE_REQUESTS_OUTSTANDING__ALL_DATA_RD_c4: u64,
+    pub offcore_requests_outstanding_cycles_with_data_rd: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Store_Bound {
+pub struct StoreBound {
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
+    pub exe_activity_bound_on_stores: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Store_Latency {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0xc224)]
-    L2_RQSTS__RFO_HIT: u64,
-    #[raw(0x1000460)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_RFO: u64,
-    #[raw(0x21d0)]
-    MEM_INST_RETIRED__LOCK_LOADS: u64,
+pub struct StoreLatency {
     #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
+    pub mem_inst_retired_all_stores: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1000460)]
+    pub offcore_requests_outstanding_cycles_with_demand_rfo: u64,
+    #[raw(0xc224)]
+    pub l2_rqsts_rfo_hit: u64,
+    #[raw(0x21d0)]
+    pub mem_inst_retired_lock_loads: u64,
 }
 #[derive(Debug, Counter)]
-pub struct False_Sharing {
-    #[raw(0x1b7)]
-    OFFCORE_RESPONSE__DEMAND_RFO__L3_HIT__SNOOP_HITM: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+pub struct FalseSharing {
     #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
+    pub cpu_clk_unhalted_ref_tsc: u64,
+    #[raw(0x1b7)]
+    pub offcore_response_demand_rfo_l3_hit_snoop_hitm: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Split_Stores {
+pub struct SplitStores {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x42d0)]
-    MEM_INST_RETIRED__SPLIT_STORES: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub mem_inst_retired_split_stores: u64,
 }
 #[derive(Debug, Counter)]
-pub struct DTLB_Store {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+pub struct DtlbStore {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x2049)]
-    DTLB_STORE_MISSES__STLB_HIT_c1: u64,
+    pub dtlb_store_misses_stlb_hit_c1: u64,
     #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub dtlb_store_misses_walk_active: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Store_STLB_Hit {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
+pub struct StoreStlbHit {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x2049)]
-    DTLB_STORE_MISSES__STLB_HIT_c1: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Store_STLB_Miss {
-    #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
+    pub dtlb_store_misses_stlb_hit_c1: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1001049)]
+    pub dtlb_store_misses_walk_active: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Store_STLB_Miss_4K {
+pub struct StoreStlbMiss {
+    #[raw(0x1001049)]
+    pub dtlb_store_misses_walk_active: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct StoreStlbMiss4k {
     #[raw(0x249)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_4K: u64,
-    #[raw(0x849)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_1G: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub dtlb_store_misses_walk_completed_4k: u64,
     #[raw(0x449)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_2M_4M: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub dtlb_store_misses_walk_completed_2m_4m: u64,
+    #[raw(0x849)]
+    pub dtlb_store_misses_walk_completed_1g: u64,
     #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
+    pub dtlb_store_misses_walk_active: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Store_STLB_Miss_2M {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
+pub struct StoreStlbMiss2m {
     #[raw(0x249)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_4K: u64,
+    pub dtlb_store_misses_walk_completed_4k: u64,
+    #[raw(0x849)]
+    pub dtlb_store_misses_walk_completed_1g: u64,
     #[raw(0x449)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_2M_4M: u64,
-    #[raw(0x849)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_1G: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Store_STLB_Miss_1G {
+    pub dtlb_store_misses_walk_completed_2m_4m: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x849)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_1G: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x1001049)]
-    DTLB_STORE_MISSES__WALK_ACTIVE: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x249)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_4K: u64,
-    #[raw(0x449)]
-    DTLB_STORE_MISSES__WALK_COMPLETED_2M_4M: u64,
+    pub dtlb_store_misses_walk_active: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Core_Bound {
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
+pub struct StoreStlbMiss1g {
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x849)]
+    pub dtlb_store_misses_walk_completed_1g: u64,
+    #[raw(0x449)]
+    pub dtlb_store_misses_walk_completed_2m_4m: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x249)]
+    pub dtlb_store_misses_walk_completed_4k: u64,
+    #[raw(0x1001049)]
+    pub dtlb_store_misses_walk_active: u64,
+}
+#[derive(Debug, Counter)]
+pub struct CoreBound {
     #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
+    pub idq_uops_not_delivered_core: u64,
     #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
+    pub cycle_activity_stalls_mem_any: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x40a6)]
+    pub exe_activity_bound_on_stores: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
 }
 #[derive(Debug, Counter)]
 pub struct Divider {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
     #[raw(0x1000114)]
-    ARITH__DIVIDER_ACTIVE: u64,
+    pub arith_divider_active: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Serializing_Operation {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+pub struct SerializingOperation {
     #[raw(0x159)]
-    PARTIAL_RAT_STALLS__SCOREBOARD: u64,
+    pub partial_rat_stalls_scoreboard: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Ports_Utilization {
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x1a6)]
-    EXE_ACTIVITY__EXE_BOUND_0_PORTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
-    #[raw(0x1000114)]
-    ARITH__DIVIDER_ACTIVE: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
+pub struct PortsUtilization {
     #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Ports_Utilized_0 {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1a6)]
-    EXE_ACTIVITY__EXE_BOUND_0_PORTS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Mixing_Vectors {
-    #[raw(0x20e)]
-    UOPS_ISSUED__VECTOR_WIDTH_MISMATCH: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Ports_Utilized_1 {
-    #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x10002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_1: u64,
-    #[raw(0x20002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_2: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Ports_Utilized_2 {
-    #[raw(0x20002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_2: u64,
-    #[raw(0x30002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_3: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cycle_activity_stalls_mem_any: u64,
     #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x1a6)]
+    pub exe_activity_exe_bound_0_ports: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x1000114)]
+    pub arith_divider_active: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Ports_Utilized_3m {
+pub struct PortsUtilized0 {
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1a6)]
+    pub exe_activity_exe_bound_0_ports: u64,
+}
+#[derive(Debug, Counter)]
+pub struct MixingVectors {
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x20e)]
+    pub uops_issued_vector_width_mismatch: u64,
+}
+#[derive(Debug, Counter)]
+pub struct PortsUtilized1 {
+    #[raw(0x10002b1)]
+    pub uops_executed_core_cycles_ge_1: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2a6)]
+    pub exe_activity_1_ports_util: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x20002b1)]
+    pub uops_executed_core_cycles_ge_2: u64,
+}
+#[derive(Debug, Counter)]
+pub struct PortsUtilized2 {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x20002b1)]
+    pub uops_executed_core_cycles_ge_2: u64,
     #[raw(0x30002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_3: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub uops_executed_core_cycles_ge_3: u64,
+    #[raw(0x4a6)]
+    pub exe_activity_2_ports_util: u64,
 }
 #[derive(Debug, Counter)]
-pub struct ALU_Op_Utilization {
-    #[raw(0x40a1)]
-    UOPS_DISPATCHED_PORT__PORT_6: u64,
-    #[raw(0x20a1)]
-    UOPS_DISPATCHED_PORT__PORT_5: u64,
+pub struct PortsUtilized3m {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x30002b1)]
+    pub uops_executed_core_cycles_ge_3: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct AluOpUtilization {
     #[raw(0x1a1)]
-    UOPS_DISPATCHED_PORT__PORT_0: u64,
-    #[raw(0x2a1)]
-    UOPS_DISPATCHED_PORT__PORT_1: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Port_0 {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1a1)]
-    UOPS_DISPATCHED_PORT__PORT_0: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Port_1 {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2a1)]
-    UOPS_DISPATCHED_PORT__PORT_1: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Port_5 {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub uops_dispatched_port_port_0: u64,
     #[raw(0x20a1)]
-    UOPS_DISPATCHED_PORT__PORT_5: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Port_6 {
+    pub uops_dispatched_port_port_5: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2a1)]
+    pub uops_dispatched_port_port_1: u64,
     #[raw(0x40a1)]
-    UOPS_DISPATCHED_PORT__PORT_6: u64,
+    pub uops_dispatched_port_port_6: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Load_Op_Utilization {
-    #[raw(0x4a1)]
-    UOPS_DISPATCHED_PORT__PORT_2: u64,
-    #[raw(0x8a1)]
-    UOPS_DISPATCHED_PORT__PORT_3: u64,
-    #[raw(0x10a1)]
-    UOPS_DISPATCHED_PORT__PORT_4: u64,
+pub struct Port0 {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x1a1)]
+    pub uops_dispatched_port_port_0: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Port1 {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2a1)]
+    pub uops_dispatched_port_port_1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Port5 {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x20a1)]
+    pub uops_dispatched_port_port_5: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Port6 {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x40a1)]
+    pub uops_dispatched_port_port_6: u64,
+}
+#[derive(Debug, Counter)]
+pub struct LoadOpUtilization {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x80a1)]
-    UOPS_DISPATCHED_PORT__PORT_7: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Port_2 {
-    #[raw(0x4a1)]
-    UOPS_DISPATCHED_PORT__PORT_2: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Port_3 {
+    pub uops_dispatched_port_port_7: u64,
     #[raw(0x8a1)]
-    UOPS_DISPATCHED_PORT__PORT_3: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Store_Op_Utilization {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub uops_dispatched_port_port_3: u64,
     #[raw(0x10a1)]
-    UOPS_DISPATCHED_PORT__PORT_4: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub uops_dispatched_port_port_4: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x4a1)]
+    pub uops_dispatched_port_port_2: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Port_4 {
+pub struct Port2 {
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x4a1)]
+    pub uops_dispatched_port_port_2: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Port3 {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x8a1)]
+    pub uops_dispatched_port_port_3: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct StoreOpUtilization {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x10a1)]
-    UOPS_DISPATCHED_PORT__PORT_4: u64,
+    pub uops_dispatched_port_port_4: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Port_7 {
+pub struct Port4 {
+    #[raw(0x10a1)]
+    pub uops_dispatched_port_port_4: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct Port7 {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x80a1)]
-    UOPS_DISPATCHED_PORT__PORT_7: u64,
+    pub uops_dispatched_port_port_7: u64,
 }
 #[derive(Debug, Counter)]
 pub struct Retiring {
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Light_Operations {
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+pub struct LightOperations {
     #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct FP_Arith {
+    pub inst_retired_any: u64,
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x10b1)]
-    UOPS_EXECUTED__X87: u64,
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0xfcc7)]
-    FP_ARITH_INST_RETIRED__VECTOR: u64,
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
 }
 #[derive(Debug, Counter)]
-pub struct X87_Use {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x10b1)]
-    UOPS_EXECUTED__X87: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct FP_Scalar {
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
-}
-#[derive(Debug, Counter)]
-pub struct FP_Vector {
+pub struct FpArith {
     #[raw(0xfcc7)]
-    FP_ARITH_INST_RETIRED__VECTOR: u64,
+    pub fp_arith_inst_retired_vector: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x1b1)]
+    pub uops_executed_thread: u64,
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x10b1)]
+    pub uops_executed_x87: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
 }
 #[derive(Debug, Counter)]
-pub struct FP_Vector_128b {
+pub struct X87Use {
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x4c7)]
-    FP_ARITH_INST_RETIRED__128B_PACKED_DOUBLE: u64,
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x10b1)]
+    pub uops_executed_x87: u64,
+    #[raw(0x1b1)]
+    pub uops_executed_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct FpScalar {
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
+}
+#[derive(Debug, Counter)]
+pub struct FpVector {
+    #[raw(0xfcc7)]
+    pub fp_arith_inst_retired_vector: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+}
+#[derive(Debug, Counter)]
+pub struct FpVector128b {
     #[raw(0x8c7)]
-    FP_ARITH_INST_RETIRED__128B_PACKED_SINGLE: u64,
+    pub fp_arith_inst_retired_128b_packed_single: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x4c7)]
+    pub fp_arith_inst_retired_128b_packed_double: u64,
 }
 #[derive(Debug, Counter)]
-pub struct FP_Vector_256b {
-    #[raw(0x20c7)]
-    FP_ARITH_INST_RETIRED__256B_PACKED_SINGLE: u64,
+pub struct FpVector256b {
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x10c7)]
-    FP_ARITH_INST_RETIRED__256B_PACKED_DOUBLE: u64,
+    pub fp_arith_inst_retired_256b_packed_double: u64,
+    #[raw(0x20c7)]
+    pub fp_arith_inst_retired_256b_packed_single: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Memory_Operations {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
+pub struct MemoryOperations {
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
     #[raw(0x83d0)]
-    MEM_INST_RETIRED__ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub mem_inst_retired_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Fused_Instructions {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+pub struct FusedInstructions {
     #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Non_Fused_Branches {
+pub struct NonFusedBranches {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
     #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
+    pub br_inst_retired_all_branches: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
+    pub uops_retired_macro_fused: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Other_Light_Ops {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x83d0)]
-    MEM_INST_RETIRED__ANY: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD: u64,
+pub struct OtherLightOps {
     #[raw(0xfcc7)]
-    FP_ARITH_INST_RETIRED__VECTOR: u64,
+    pub fp_arith_inst_retired_vector: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x10b1)]
-    UOPS_EXECUTED__X87: u64,
+    pub uops_executed_x87: u64,
+    #[raw(0x83d0)]
+    pub mem_inst_retired_any: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+    #[raw(0x1b1)]
+    pub uops_executed_thread: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Nop_Instructions {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+pub struct NopInstructions {
     #[raw(0x2c0)]
-    INST_RETIRED__NOP: u64,
+    pub inst_retired_nop: u64,
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Heavy_Operations {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
+    pub uops_retired_retire_slots: u64,
     #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub uops_retired_macro_fused: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Few_Uops_Instructions {
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
     #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x4c2)]
-    UOPS_RETIRED__MACRO_FUSED: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
+    pub inst_retired_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Microcode_Sequencer {
+pub struct HeavyOperations {
     #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct FewUopsInstructions {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x4c2)]
+    pub uops_retired_macro_fused: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
     #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
+    pub idq_ms_uops: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct MicrocodeSequencer {
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
 }
 #[derive(Debug, Counter)]
 pub struct Assists {
-    #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
-    #[raw(0x3fc1)]
-    OTHER_ASSISTS__ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x1001eca)]
+    pub fp_assist_any: u64,
+    #[raw(0x3fc1)]
+    pub other_assists_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct FP_Assists {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
+pub struct FpAssists {
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
+    pub fp_assist_any: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct CISC {
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+pub struct Cisc {
     #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x3fc1)]
-    OTHER_ASSISTS__ANY: u64,
+    pub fp_assist_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
     #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
+    pub uops_issued_any: u64,
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x3fc1)]
+    pub other_assists_any: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Info_Botlnk_L0_Core_Bound_Likely {
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x140014a3)]
-    CYCLE_ACTIVITY__STALLS_MEM_ANY: u64,
-    #[raw(0x40a6)]
-    EXE_ACTIVITY__BOUND_ON_STORES: u64,
+pub struct InfoBotlnkL0CoreBoundLikely {
     #[raw(0x4a6)]
-    EXE_ACTIVITY__2_PORTS_UTIL: u64,
+    pub exe_activity_2_ports_util: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
     #[raw(0x2a6)]
-    EXE_ACTIVITY__1_PORTS_UTIL: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x20013c)]
-    CPU_CLK_UNHALTED__REF_XCLK_ANY: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x23c)]
-    CPU_CLK_UNHALTED__ONE_THREAD_ACTIVE: u64,
-    #[raw(0x1000114)]
-    ARITH__DIVIDER_ACTIVE: u64,
+    pub exe_activity_1_ports_util: u64,
     #[raw(0x1a6)]
-    EXE_ACTIVITY__EXE_BOUND_0_PORTS: u64,
-    #[raw(0x40004a3)]
-    CYCLE_ACTIVITY__STALLS_TOTAL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Thread_IPC {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Thread_UopPI {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Thread_UpTB {
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x20c4)]
-    BR_INST_RETIRED__NEAR_TAKEN: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Thread_CPI {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Thread_CLKS {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Thread_SLOTS {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Thread_Execute_per_Issue {
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Core_CoreIPC {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Core_FLOPc {
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
-    #[raw(0x18c7)]
-    FP_ARITH_INST_RETIRED__4_FLOPS: u64,
-    #[raw(0x4c7)]
-    FP_ARITH_INST_RETIRED__128B_PACKED_DOUBLE: u64,
-    #[raw(0x20c7)]
-    FP_ARITH_INST_RETIRED__256B_PACKED_SINGLE: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Core_FP_Arith_Utilization {
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0xfcc7)]
-    FP_ARITH_INST_RETIRED__VECTOR: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Core_ILP {
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD: u64,
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD_c1: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Core_EPC {
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Core_CORE_CLKS {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpLoad {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x81d0)]
-    MEM_INST_RETIRED__ALL_LOADS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpStore {
-    #[raw(0x82d0)]
-    MEM_INST_RETIRED__ALL_STORES: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpBranch {
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpCall {
-    #[raw(0x2c4)]
-    BR_INST_RETIRED__NEAR_CALL: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpTB {
-    #[raw(0x20c4)]
-    BR_INST_RETIRED__NEAR_TAKEN: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_BpTkBranch {
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x20c4)]
-    BR_INST_RETIRED__NEAR_TAKEN: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpFLOP {
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
-    #[raw(0x20c7)]
-    FP_ARITH_INST_RETIRED__256B_PACKED_SINGLE: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x4c7)]
-    FP_ARITH_INST_RETIRED__128B_PACKED_DOUBLE: u64,
-    #[raw(0x18c7)]
-    FP_ARITH_INST_RETIRED__4_FLOPS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpArith {
-    #[raw(0xfcc7)]
-    FP_ARITH_INST_RETIRED__VECTOR: u64,
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpArith_Scalar_SP {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x2c7)]
-    FP_ARITH_INST_RETIRED__SCALAR_SINGLE: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpArith_Scalar_DP {
-    #[raw(0x1c7)]
-    FP_ARITH_INST_RETIRED__SCALAR_DOUBLE: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpArith_AVX128 {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x4c7)]
-    FP_ARITH_INST_RETIRED__128B_PACKED_DOUBLE: u64,
-    #[raw(0x8c7)]
-    FP_ARITH_INST_RETIRED__128B_PACKED_SINGLE: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpArith_AVX256 {
-    #[raw(0x20c7)]
-    FP_ARITH_INST_RETIRED__256B_PACKED_SINGLE: u64,
-    #[raw(0x10c7)]
-    FP_ARITH_INST_RETIRED__256B_PACKED_DOUBLE: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_IpSWPF {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0xf32)]
-    SW_PREFETCH_ACCESS__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Inst_Mix_Instructions {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Pipeline_Retire {
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS_c1: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Pipeline_IpAssist {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x1001eca)]
-    FP_ASSIST__ANY: u64,
-    #[raw(0x3fc1)]
-    OTHER_ASSISTS__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Pipeline_Execute {
-    #[raw(0x10002b1)]
-    UOPS_EXECUTED__CORE_CYCLES_GE_1: u64,
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD_c1: u64,
-    #[raw(0x1b1)]
-    UOPS_EXECUTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Pipeline_Fetch_DSB {
-    #[raw(0x879)]
-    IDQ__DSB_UOPS: u64,
-    #[raw(0x1001879)]
-    IDQ__DSB_CYCLES_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Pipeline_Fetch_MITE {
-    #[raw(0x1000479)]
-    IDQ__MITE_CYCLES: u64,
-    #[raw(0x479)]
-    IDQ__MITE_UOPS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_Fetch_UpC {
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY_c1: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_DSB_Coverage {
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
-    #[raw(0x879)]
-    IDQ__DSB_UOPS: u64,
-    #[raw(0x479)]
-    IDQ__MITE_UOPS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_DSB_Switch_Cost {
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x1ab)]
-    DSB2MITE_SWITCHES__COUNT: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_TBpC {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x20c4)]
-    BR_INST_RETIRED__NEAR_TAKEN: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_ICache_Miss_Latency {
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_IpDSB_Miss_Ret {
-    #[raw(0x1c6)]
-    FRONTEND_RETIRED__ANY_DSB_MISS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_IpUnknown_Branch {
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_L2MPKI_Code {
-    #[raw(0x1c6)]
-    FRONTEND_RETIRED__L2_MISS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Frontend_L2MPKI_Code_All {
-    #[raw(0x2424)]
-    L2_RQSTS__CODE_RD_MISS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Botlnk_L2_DSB_Misses {
-    #[raw(0x1002479)]
-    IDQ__ALL_MITE_CYCLES_ANY_UOPS: u64,
-    #[raw(0x4001879)]
-    IDQ__DSB_CYCLES_OK: u64,
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x1001879)]
-    IDQ__DSB_CYCLES_ANY: u64,
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x4002479)]
-    IDQ__ALL_MITE_CYCLES_4_UOPS: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Botlnk_L2_DSB_Bandwidth {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x1002479)]
-    IDQ__ALL_MITE_CYCLES_ANY_UOPS: u64,
-    #[raw(0x1001879)]
-    IDQ__DSB_CYCLES_ANY: u64,
-    #[raw(0x4002479)]
-    IDQ__ALL_MITE_CYCLES_4_UOPS: u64,
-    #[raw(0x19c)]
-    IDQ_UOPS_NOT_DELIVERED__CORE: u64,
-    #[raw(0x4001879)]
-    IDQ__DSB_CYCLES_OK: u64,
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Botlnk_L2_IC_Misses {
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Bad_Spec_IpMispredict {
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Bad_Spec_IpMisp_Indirect {
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0xe489)]
-    BR_MISP_EXEC__INDIRECT: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Bad_Spec_Branch_Misprediction_Cost {
-    #[raw(0x800d)]
-    INT_MISC__CLEAR_RESTEER_CYCLES: u64,
-    #[raw(0x10e)]
-    UOPS_ISSUED__ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x2ab)]
-    DSB2MITE_SWITCHES__PENALTY_CYCLES: u64,
-    #[raw(0x3079)]
-    IDQ__MS_UOPS: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0x100010d)]
-    INT_MISC__CLEARS_COUNT: u64,
-    #[raw(0x10d)]
-    INT_MISC__RECOVERY_CYCLES: u64,
-    #[raw(0x2c2)]
-    UOPS_RETIRED__RETIRE_SLOTS: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL: u64,
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x1e6)]
-    BACLEARS__ANY: u64,
-    #[raw(0x1003079)]
-    IDQ__MS_SWITCHES: u64,
-    #[raw(0x400019c)]
-    IDQ_UOPS_NOT_DELIVERED__CYCLES_0_UOPS_DELIV__CORE: u64,
-    #[raw(0x187)]
-    DECODE__LCP: u64,
-    #[raw(0x480)]
-    ICACHE_16B__IFDATA_STALL_c1_e1: u64,
-    #[raw(0x20010d)]
-    INT_MISC__RECOVERY_CYCLES_ANY: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x483)]
-    ICACHE_TAG__STALLS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Bad_Spec_Spec_Clears_Ratio {
-    #[raw(0x100010d)]
-    INT_MISC__CLEARS_COUNT: u64,
-    #[raw(0x10001c3)]
-    MACHINE_CLEARS__COUNT: u64,
-    #[raw(0xc5)]
-    BR_MISP_RETIRED__ALL_BRANCHES: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Branches_Cond_NT {
-    #[raw(0x10c4)]
-    BR_INST_RETIRED__NOT_TAKEN: u64,
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Branches_Cond_TK {
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x10c4)]
-    BR_INST_RETIRED__NOT_TAKEN: u64,
-    #[raw(0x1c4)]
-    BR_INST_RETIRED__CONDITIONAL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Branches_CallRet {
-    #[raw(0x2c4)]
-    BR_INST_RETIRED__NEAR_CALL: u64,
-    #[raw(0x8c4)]
-    BR_INST_RETIRED__NEAR_RETURN: u64,
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Branches_Jump {
-    #[raw(0xc4)]
-    BR_INST_RETIRED__ALL_BRANCHES: u64,
-    #[raw(0x2c4)]
-    BR_INST_RETIRED__NEAR_CALL: u64,
-    #[raw(0x1c4)]
-    BR_INST_RETIRED__COND: u64,
-    #[raw(0x20c4)]
-    BR_INST_RETIRED__NEAR_TAKEN: u64,
-    #[raw(0x10c4)]
-    BR_INST_RETIRED__NOT_TAKEN: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Load_Miss_Real_Latency {
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-    #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_MLP {
-    #[raw(0x1000148)]
-    L1D_PEND_MISS__PENDING_CYCLES: u64,
-    #[raw(0x148)]
-    L1D_PEND_MISS__PENDING: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L1MPKI {
-    #[raw(0x8d1)]
-    MEM_LOAD_RETIRED__L1_MISS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L1MPKI_Load {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0xe124)]
-    L2_RQSTS__ALL_DEMAND_DATA_RD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L2MPKI {
-    #[raw(0x10d1)]
-    MEM_LOAD_RETIRED__L2_MISS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L2MPKI_All {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x3f24)]
-    L2_RQSTS__MISS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L2MPKI_Load {
-    #[raw(0x2124)]
-    L2_RQSTS__DEMAND_DATA_RD_MISS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L2MPKI_RFO {
-    #[raw(0x4b0)]
-    OFFCORE_REQUESTS__DEMAND_RFO: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L2HPKI_All {
-    #[raw(0x3f24)]
-    L2_RQSTS__MISS: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0xff24)]
-    L2_RQSTS__REFERENCES: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L2HPKI_Load {
-    #[raw(0xc124)]
-    L2_RQSTS__DEMAND_DATA_RD_HIT: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L3MPKI {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x20d1)]
-    MEM_LOAD_RETIRED__L3_MISS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_FB_HPKI {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x40d1)]
-    MEM_LOAD_RETIRED__FB_HIT: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L1D_Cache_Fill_BW {
-    #[raw(0x151)]
-    L1D__REPLACEMENT: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L2_Cache_Fill_BW {
-    #[raw(0x1ff1)]
-    L2_LINES_IN__ALL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L3_Cache_Fill_BW {
-    #[raw(0x412e)]
-    LONGEST_LAT_CACHE__MISS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_L3_Cache_Access_BW {
-    #[raw(0x80b0)]
-    OFFCORE_REQUESTS__ALL_REQUESTS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_TLB_Page_Walks_Utilization {
-    #[raw(0x200200)]
-    CPU_CLK_UNHALTED__THREAD_ANY: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-    #[raw(0x1085)]
-    ITLB_MISSES__WALK_PENDING: u64,
-    #[raw(0x1008)]
-    DTLB_LOAD_MISSES__WALK_PENDING: u64,
-    #[raw(0x1049)]
-    DTLB_STORE_MISSES__WALK_PENDING: u64,
-    #[raw(0x104f)]
-    EPT__WALK_PENDING: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_TLB_Code_STLB_MPKI {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0xe85)]
-    ITLB_MISSES__WALK_COMPLETED: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_TLB_Load_STLB_MPKI {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0xe08)]
-    DTLB_LOAD_MISSES__WALK_COMPLETED: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_TLB_Store_STLB_MPKI {
-    #[raw(0xe49)]
-    DTLB_STORE_MISSES__WALK_COMPLETED: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Core_L1D_Cache_Fill_BW_2T {
-    #[raw(0x151)]
-    L1D__REPLACEMENT: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Core_L2_Cache_Fill_BW_2T {
-    #[raw(0x1ff1)]
-    L2_LINES_IN__ALL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Core_L3_Cache_Fill_BW_2T {
-    #[raw(0x412e)]
-    LONGEST_LAT_CACHE__MISS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Core_L3_Cache_Access_BW_2T {
-    #[raw(0x80b0)]
-    OFFCORE_REQUESTS__ALL_REQUESTS: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Latency_Load_L2_Miss_Latency {
-    #[raw(0x1b0)]
-    OFFCORE_REQUESTS__DEMAND_DATA_RD: u64,
-    #[raw(0x160)]
-    OFFCORE_REQUESTS_OUTSTANDING__DEMAND_DATA_RD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Latency_Load_L2_MLP {
-    #[raw(0x1000160)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DEMAND_DATA_RD: u64,
-    #[raw(0x160)]
-    OFFCORE_REQUESTS_OUTSTANDING__DEMAND_DATA_RD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Latency_Data_L2_MLP {
-    #[raw(0x1000860)]
-    OFFCORE_REQUESTS_OUTSTANDING__CYCLES_WITH_DATA_RD: u64,
-    #[raw(0x860)]
-    OFFCORE_REQUESTS_OUTSTANDING__ALL_DATA_RD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_Memory_Mix_UC_Load_PKI {
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
-    #[raw(0x4d4)]
-    MEM_LOAD_MISC_RETIRED__UC: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_CPU_Utilization {
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_CPUs_Utilized {
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_Core_Frequency {
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_GFLOPs {
-    #[raw(0x3c7)]
-    FP_ARITH_INST_RETIRED__SCALAR: u64,
-    #[raw(0x18c7)]
-    FP_ARITH_INST_RETIRED__4_FLOPS: u64,
-    #[raw(0x4c7)]
-    FP_ARITH_INST_RETIRED__128B_PACKED_DOUBLE: u64,
-    #[raw(0x20c7)]
-    FP_ARITH_INST_RETIRED__256B_PACKED_SINGLE: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_Turbo_Utilization {
-    #[raw(0x300)]
-    CPU_CLK_UNHALTED__REF_TSC: u64,
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_SMT_2T_Utilization {
+    pub exe_activity_exe_bound_0_ports: u64,
     #[raw(0x23c)]
-    CPU_CLK_UNHALTED__ONE_THREAD_ACTIVE: u64,
+    pub cpu_clk_unhalted_one_thread_active: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
     #[raw(0x20013c)]
-    CPU_CLK_UNHALTED__REF_XCLK_ANY: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_Kernel_Utilization {
-    #[raw(0x3c)]
-    CPU_CLK_UNHALTED__THREAD_P_SUP: u64,
+    pub cpu_clk_unhalted_ref_xclk_any: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x1000114)]
+    pub arith_divider_active: u64,
+    #[raw(0x40004a3)]
+    pub cycle_activity_stalls_total: u64,
+    #[raw(0x40a6)]
+    pub exe_activity_bound_on_stores: u64,
     #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x140014a3)]
+    pub cycle_activity_stalls_mem_any: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Info_System_Kernel_CPI {
+pub struct InfoThreadIpc {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoThreadUopPi {
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoThreadUpTb {
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x20c4)]
+    pub br_inst_retired_near_taken: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoThreadCpi {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoThreadClks {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoThreadSlots {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoThreadExecutePerIssue {
+    #[raw(0x1b1)]
+    pub uops_executed_thread: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoCoreCoreIpc {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoCoreFloPc {
+    #[raw(0x20c7)]
+    pub fp_arith_inst_retired_256b_packed_single: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x4c7)]
+    pub fp_arith_inst_retired_128b_packed_double: u64,
+    #[raw(0x18c7)]
+    pub fp_arith_inst_retired_4_flops: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoCoreFpArithUtilization {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0xfcc7)]
+    pub fp_arith_inst_retired_vector: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoCoreIlp {
+    #[raw(0x1b1)]
+    pub uops_executed_thread: u64,
+    #[raw(0x1b1)]
+    pub uops_executed_thread_c1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoCoreEpc {
+    #[raw(0x1b1)]
+    pub uops_executed_thread: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoCoreCoreClks {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpLoad {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x81d0)]
+    pub mem_inst_retired_all_loads: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpStore {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x82d0)]
+    pub mem_inst_retired_all_stores: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpBranch {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpCall {
+    #[raw(0x2c4)]
+    pub br_inst_retired_near_call: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpTb {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x20c4)]
+    pub br_inst_retired_near_taken: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixBpTkBranch {
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+    #[raw(0x20c4)]
+    pub br_inst_retired_near_taken: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpFlop {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x4c7)]
+    pub fp_arith_inst_retired_128b_packed_double: u64,
+    #[raw(0x18c7)]
+    pub fp_arith_inst_retired_4_flops: u64,
+    #[raw(0x20c7)]
+    pub fp_arith_inst_retired_256b_packed_single: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpArith {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
+    #[raw(0xfcc7)]
+    pub fp_arith_inst_retired_vector: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpArithScalarSp {
+    #[raw(0x2c7)]
+    pub fp_arith_inst_retired_scalar_single: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpArithScalarDp {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x1c7)]
+    pub fp_arith_inst_retired_scalar_double: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpArithAvx128 {
+    #[raw(0x4c7)]
+    pub fp_arith_inst_retired_128b_packed_double: u64,
+    #[raw(0x8c7)]
+    pub fp_arith_inst_retired_128b_packed_single: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpArithAvx256 {
+    #[raw(0x20c7)]
+    pub fp_arith_inst_retired_256b_packed_single: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x10c7)]
+    pub fp_arith_inst_retired_256b_packed_double: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixIpSwpf {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xf32)]
+    pub sw_prefetch_access_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoInstMixInstructions {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoPipelineRetire {
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots_c1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoPipelineIpAssist {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x1001eca)]
+    pub fp_assist_any: u64,
+    #[raw(0x3fc1)]
+    pub other_assists_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoPipelineExecute {
+    #[raw(0x1b1)]
+    pub uops_executed_thread: u64,
+    #[raw(0x10002b1)]
+    pub uops_executed_core_cycles_ge_1: u64,
+    #[raw(0x1b1)]
+    pub uops_executed_thread_c1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoPipelineFetchDsb {
+    #[raw(0x879)]
+    pub idq_dsb_uops: u64,
+    #[raw(0x1001879)]
+    pub idq_dsb_cycles_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoPipelineFetchMite {
+    #[raw(0x1000479)]
+    pub idq_mite_cycles: u64,
+    #[raw(0x479)]
+    pub idq_mite_uops: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendFetchUpC {
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any_c1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendDsbCoverage {
+    #[raw(0x879)]
+    pub idq_dsb_uops: u64,
+    #[raw(0x479)]
+    pub idq_mite_uops: u64,
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendDsbSwitchCost {
+    #[raw(0x1ab)]
+    pub dsb2mite_switches_count: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendTBpC {
+    #[raw(0x20c4)]
+    pub br_inst_retired_near_taken: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendICacheMissLatency {
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendIpDsbMissRet {
+    #[raw(0x1c6)]
+    pub frontend_retired_any_dsb_miss: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendIpUnknownBranch {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendL2mpkiCode {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x1c6)]
+    pub frontend_retired_l2_miss: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoFrontendL2mpkiCodeAll {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x2424)]
+    pub l2_rqsts_code_rd_miss: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBotlnkL2DsbMisses {
+    #[raw(0x4001879)]
+    pub idq_dsb_cycles_ok: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x4002479)]
+    pub idq_all_mite_cycles_4_uops: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x1002479)]
+    pub idq_all_mite_cycles_any_uops: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x1001879)]
+    pub idq_dsb_cycles_any: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBotlnkL2DsbBandwidth {
+    #[raw(0x1001879)]
+    pub idq_dsb_cycles_any: u64,
+    #[raw(0x19c)]
+    pub idq_uops_not_delivered_core: u64,
+    #[raw(0x4002479)]
+    pub idq_all_mite_cycles_4_uops: u64,
+    #[raw(0x4001879)]
+    pub idq_dsb_cycles_ok: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x1002479)]
+    pub idq_all_mite_cycles_any_uops: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBotlnkL2IcMisses {
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBadSpecIpMispredict {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBadSpecIpMispIndirect {
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xe489)]
+    pub br_misp_exec_indirect: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBadSpecBranchMispredictionCost {
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x100010d)]
+    pub int_misc_clears_count: u64,
+    #[raw(0x483)]
+    pub icache_tag_stalls: u64,
+    #[raw(0x20010d)]
+    pub int_misc_recovery_cycles_any: u64,
+    #[raw(0x400019c)]
+    pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall_c1_e1: u64,
+    #[raw(0x1003079)]
+    pub idq_ms_switches: u64,
+    #[raw(0x480)]
+    pub icache_16b_ifdata_stall: u64,
+    #[raw(0x2ab)]
+    pub dsb2mite_switches_penalty_cycles: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x2c2)]
+    pub uops_retired_retire_slots: u64,
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x10e)]
+    pub uops_issued_any: u64,
+    #[raw(0x800d)]
+    pub int_misc_clear_resteer_cycles: u64,
+    #[raw(0x1e6)]
+    pub baclears_any: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+    #[raw(0x3079)]
+    pub idq_ms_uops: u64,
+    #[raw(0x187)]
+    pub decode_lcp: u64,
+    #[raw(0x10d)]
+    pub int_misc_recovery_cycles: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBadSpecSpecClearsRatio {
+    #[raw(0xc5)]
+    pub br_misp_retired_all_branches: u64,
+    #[raw(0x100010d)]
+    pub int_misc_clears_count: u64,
+    #[raw(0x10001c3)]
+    pub machine_clears_count: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBranchesCondNt {
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+    #[raw(0x10c4)]
+    pub br_inst_retired_not_taken: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBranchesCondTk {
+    #[raw(0x1c4)]
+    pub br_inst_retired_conditional: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+    #[raw(0x10c4)]
+    pub br_inst_retired_not_taken: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBranchesCallRet {
+    #[raw(0x2c4)]
+    pub br_inst_retired_near_call: u64,
+    #[raw(0x8c4)]
+    pub br_inst_retired_near_return: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoBranchesJump {
+    #[raw(0x20c4)]
+    pub br_inst_retired_near_taken: u64,
+    #[raw(0x1c4)]
+    pub br_inst_retired_cond: u64,
+    #[raw(0x10c4)]
+    pub br_inst_retired_not_taken: u64,
+    #[raw(0x2c4)]
+    pub br_inst_retired_near_call: u64,
+    #[raw(0xc4)]
+    pub br_inst_retired_all_branches: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryLoadMissRealLatency {
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+    #[raw(0x148)]
+    pub l1d_pend_miss_pending: u64,
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryMlp {
+    #[raw(0x148)]
+    pub l1d_pend_miss_pending: u64,
+    #[raw(0x1000148)]
+    pub l1d_pend_miss_pending_cycles: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL1mpki {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x8d1)]
+    pub mem_load_retired_l1_miss: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL1mpkiLoad {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xe124)]
+    pub l2_rqsts_all_demand_data_rd: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL2mpki {
+    #[raw(0x10d1)]
+    pub mem_load_retired_l2_miss: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL2mpkiAll {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0x3f24)]
+    pub l2_rqsts_miss: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL2mpkiLoad {
+    #[raw(0x2124)]
+    pub l2_rqsts_demand_data_rd_miss: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL2mpkiRfo {
+    #[raw(0x4b0)]
+    pub offcore_requests_demand_rfo: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL2hpkiAll {
+    #[raw(0x3f24)]
+    pub l2_rqsts_miss: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xff24)]
+    pub l2_rqsts_references: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL2hpkiLoad {
+    #[raw(0xc124)]
+    pub l2_rqsts_demand_data_rd_hit: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL3mpki {
+    #[raw(0x20d1)]
+    pub mem_load_retired_l3_miss: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryFbHpki {
+    #[raw(0x40d1)]
+    pub mem_load_retired_fb_hit: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL1dCacheFillBw {
+    #[raw(0x151)]
+    pub l1d_replacement: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL2CacheFillBw {
+    #[raw(0x1ff1)]
+    pub l2_lines_in_all: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL3CacheFillBw {
+    #[raw(0x412e)]
+    pub longest_lat_cache_miss: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryL3CacheAccessBw {
+    #[raw(0x80b0)]
+    pub offcore_requests_all_requests: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryTlbPageWalksUtilization {
+    #[raw(0x1085)]
+    pub itlb_misses_walk_pending: u64,
+    #[raw(0x1049)]
+    pub dtlb_store_misses_walk_pending: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x200200)]
+    pub cpu_clk_unhalted_thread_any: u64,
+    #[raw(0x1008)]
+    pub dtlb_load_misses_walk_pending: u64,
+    #[raw(0x104f)]
+    pub ept_walk_pending: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryTlbCodeStlbMpki {
+    #[raw(0xe85)]
+    pub itlb_misses_walk_completed: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryTlbLoadStlbMpki {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xe08)]
+    pub dtlb_load_misses_walk_completed: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryTlbStoreStlbMpki {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+    #[raw(0xe49)]
+    pub dtlb_store_misses_walk_completed: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryCoreL1dCacheFillBw2t {
+    #[raw(0x151)]
+    pub l1d_replacement: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryCoreL2CacheFillBw2t {
+    #[raw(0x1ff1)]
+    pub l2_lines_in_all: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryCoreL3CacheFillBw2t {
+    #[raw(0x412e)]
+    pub longest_lat_cache_miss: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryCoreL3CacheAccessBw2t {
+    #[raw(0x80b0)]
+    pub offcore_requests_all_requests: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryLatencyLoadL2MissLatency {
+    #[raw(0x160)]
+    pub offcore_requests_outstanding_demand_data_rd: u64,
+    #[raw(0x1b0)]
+    pub offcore_requests_demand_data_rd: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryLatencyLoadL2Mlp {
+    #[raw(0x1000160)]
+    pub offcore_requests_outstanding_cycles_with_demand_data_rd: u64,
+    #[raw(0x160)]
+    pub offcore_requests_outstanding_demand_data_rd: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryLatencyDataL2Mlp {
+    #[raw(0x1000860)]
+    pub offcore_requests_outstanding_cycles_with_data_rd: u64,
+    #[raw(0x860)]
+    pub offcore_requests_outstanding_all_data_rd: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoMemoryMixUcLoadPki {
+    #[raw(0x4d4)]
+    pub mem_load_misc_retired_uc: u64,
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemCpuUtilization {
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemCpUsUtilized {
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemCoreFrequency {
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemGfloPs {
+    #[raw(0x4c7)]
+    pub fp_arith_inst_retired_128b_packed_double: u64,
+    #[raw(0x3c7)]
+    pub fp_arith_inst_retired_scalar: u64,
+    #[raw(0x20c7)]
+    pub fp_arith_inst_retired_256b_packed_single: u64,
+    #[raw(0x18c7)]
+    pub fp_arith_inst_retired_4_flops: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemTurboUtilization {
+    #[raw(0x300)]
+    pub cpu_clk_unhalted_ref_tsc: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemSmt2tUtilization {
+    #[raw(0x23c)]
+    pub cpu_clk_unhalted_one_thread_active: u64,
+    #[raw(0x20013c)]
+    pub cpu_clk_unhalted_ref_xclk_any: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemKernelUtilization {
     #[raw(0x3c)]
-    CPU_CLK_UNHALTED__THREAD_P_SUP: u64,
+    pub cpu_clk_unhalted_thread_p_sup: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemKernelCpi {
     #[raw(0xc0)]
-    INST_RETIRED__ANY_P_SUP: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_DRAM_BW_Use {
-    #[raw(0x181)]
-    UNC_ARB_TRK_REQUESTS__ALL: u64,
-    #[raw(0x184)]
-    UNC_ARB_COH_TRK_REQUESTS__ALL: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_MEM_Read_Latency {
-    #[raw(0x280)]
-    UNC_ARB_TRK_OCCUPANCY__DATA_READ: u64,
-    #[raw(0x100)]
-    UNC_CLOCK__SOCKET: u64,
-    #[raw(0x281)]
-    UNC_ARB_TRK_REQUESTS__DATA_READ: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_MEM_Parallel_Reads {
-    #[raw(0x280)]
-    UNC_ARB_TRK_OCCUPANCY__DATA_READ: u64,
-    #[raw(0x280)]
-    UNC_ARB_TRK_OCCUPANCY__DATA_READ_c1: u64,
-}
-#[derive(Debug, Counter)]
-pub struct Info_System_Time {}
-#[derive(Debug, Counter)]
-pub struct Info_System_MUX {
-    #[raw(0x200)]
-    CPU_CLK_UNHALTED__THREAD: u64,
+    pub inst_retired_any_p_sup: u64,
     #[raw(0x3c)]
-    CPU_CLK_UNHALTED__THREAD_P: u64,
+    pub cpu_clk_unhalted_thread_p_sup: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Info_System_Socket_CLKS {
+pub struct InfoSystemDramBwUse {
+    #[raw(0x184)]
+    pub unc_arb_coh_trk_requests_all: u64,
+    #[raw(0x181)]
+    pub unc_arb_trk_requests_all: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemMemReadLatency {
+    #[raw(0x281)]
+    pub unc_arb_trk_requests_data_read: u64,
     #[raw(0x100)]
-    UNC_CLOCK__SOCKET: u64,
+    pub unc_clock_socket: u64,
+    #[raw(0x280)]
+    pub unc_arb_trk_occupancy_data_read: u64,
 }
 #[derive(Debug, Counter)]
-pub struct Info_System_IpFarBranch {
+pub struct InfoSystemMemParallelReads {
+    #[raw(0x280)]
+    pub unc_arb_trk_occupancy_data_read: u64,
+    #[raw(0x280)]
+    pub unc_arb_trk_occupancy_data_read_c1: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemTime {}
+#[derive(Debug, Counter)]
+pub struct InfoSystemMux {
+    #[raw(0x3c)]
+    pub cpu_clk_unhalted_thread_p: u64,
+    #[raw(0x200)]
+    pub cpu_clk_unhalted_thread: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemSocketClks {
+    #[raw(0x100)]
+    pub unc_clock_socket: u64,
+}
+#[derive(Debug, Counter)]
+pub struct InfoSystemIpFarBranch {
+    #[raw(0x100)]
+    pub inst_retired_any: u64,
     #[raw(0x40c4)]
-    BR_INST_RETIRED__FAR_BRANCH_USER: u64,
-    #[raw(0x100)]
-    INST_RETIRED__ANY: u64,
+    pub br_inst_retired_far_branch_user: u64,
 }

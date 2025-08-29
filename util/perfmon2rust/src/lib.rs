@@ -1,3 +1,4 @@
+use heck::ToUpperCamelCase;
 use quote::quote;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -285,7 +286,7 @@ impl CounterSpec {
                 anyhow::bail!("cannot find event definition for {}", ea.name);
             };
 
-            let name_to_use = ea.name.replace(".", "__").replace(":", "_");
+            let name_to_use = ea.name.replace(".", "_").replace(":", "_").to_lowercase();
 
             let name = if name_to_use.chars().nth(0).unwrap().is_ascii_digit() {
                 quote::format_ident!("_{}", name_to_use)
@@ -297,9 +298,9 @@ impl CounterSpec {
         }
 
         let name = if metric.metric_name.chars().nth(0).unwrap().is_ascii_digit() {
-            quote::format_ident!("_{}", metric.metric_name)
+            quote::format_ident!("_{}", metric.metric_name.to_upper_camel_case())
         } else {
-            quote::format_ident!("{}", metric.metric_name)
+            quote::format_ident!("{}", metric.metric_name.to_upper_camel_case())
         };
 
         Ok(Self { name, fields })
@@ -313,7 +314,7 @@ impl CounterSpec {
             let value = proc_macro2::Literal::from_str(&format!("0x{raw:x}")).unwrap();
             fields.push(quote! {
                 #[raw(#value)]
-                #name: u64
+                pub #name: u64
             });
         }
 
