@@ -39,16 +39,16 @@ mod tests {
             sum
         }
 
-        let mut shuffled_data: Vec<i32> = (0..32768).collect();
+        let mut shuffled_data: Vec<i32> = (0..32_768_000).collect();
         let mut rng = rand::rng();
         shuffled_data.shuffle(&mut rng);
 
         let mut sorted_data = shuffled_data.clone();
         sorted_data.sort();
 
-        let (_, sorted_res) = BadSpeculation::measure(|| work(&sorted_data)).unwrap();
+        let (_, sorted_res) = BottleneckMispredictions::measure(|| work(&shuffled_data)).unwrap();
 
-        let (_, unsorted_res) = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
+        let (_, unsorted_res) = BadSpeculation::measure(|| work(&shuffled_data)).unwrap();
 
         dbg!(sorted_res);
         dbg!(unsorted_res);

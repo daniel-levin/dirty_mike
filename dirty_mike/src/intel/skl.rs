@@ -5,9 +5,6 @@ pub struct BottleneckMispredictions {
     #[doc = "Cycles where a code line fetch is stalled due to an L1 instruction cache miss. The legacy decode pipeline works at a 16 Byte granularity."]
     #[raw(0x480)]
     pub icache_16b_ifdata_stall_c1_e1: u64,
-    #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
-    pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Number of machine clears (nukes) of any type."]
     #[raw(0x10001c3)]
     pub machine_clears_count: u64,
@@ -20,9 +17,6 @@ pub struct BottleneckMispredictions {
     #[doc = "Counts cycles that the Instruction Length decoder (ILD) stalls occurred due to dynamically changing prefix length of the decoded instruction (by operand size prefix instruction 0x66, address size prefix instruction 0x67 or REX.W for Intel64). Count is proportional to the number of prefixes in a 16B-line. This may result in a three-cycle penalty for each LCP (Length changing prefix) in a 16-byte chunk. [This event is alias to ILD_STALL.LCP]"]
     #[raw(0x187)]
     pub decode_lcp: u64,
-    #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
-    pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles the issue-stage is waiting for front-end to fetch from resteered path following branch misprediction or machine clear events."]
     #[raw(0x800d)]
     pub int_misc_clear_resteer_cycles: u64,
