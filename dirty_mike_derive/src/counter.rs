@@ -16,37 +16,6 @@ struct CounterField {
 }
 
 impl CounterField {
-    pub fn extraction(&self) -> proc_macro2::TokenStream {
-        let counter_name = quote::format_ident!("{}_counter", self.name);
-        let name = &self.name;
-        quote! {
-            #name: #counter_name.read().unwrap()
-        }
-    }
-
-    pub fn declare_counter(&self) -> Option<proc_macro2::TokenStream> {
-        match &self.spec {
-            EventSpec::Hardware(s) => {
-                let counter_name = quote::format_ident!("{}_counter", self.name);
-                let as_ident = quote::format_ident!("{}", s);
-                Some(quote! {
-                    let mut #counter_name = Builder::new(Hardware:: #as_ident).build()
-                        .map_err(|error| CounterError::CannotAddHardwareCounter { name: #s, error })?;
-                    #counter_name.enable();
-                })
-            }
-            EventSpec::Raw(id) => {
-                let counter_name = quote::format_ident!("{}_counter", self.name);
-                Some(quote! {
-                    let mut #counter_name = Builder::new(Raw::new( #id)).build()
-                        .map_err(|error| CounterError::CannotAddRawCounter { id: #id, error })?;
-                    #counter_name.enable();
-                })
-            }
-            _ => None,
-        }
-    }
-
     pub fn extract_from_field(
         Field {
             attrs, ident, ty, ..
@@ -210,36 +179,10 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         use ::dirty_mike_core::CounterError;
     };
 
-    let mut decls = vec![];
-
-    for spec in cs.counter_fields.iter() {
-        if let Some(enablement) = spec.declare_counter() {
-            decls.push(enablement);
-        }
-    }
-
-    let counter_extractions = cs
-        .counter_fields
-        .iter()
-        .map(|f| f.extraction())
-        .collect::<Vec<_>>();
-
     let expanded = quote! {
         impl ::dirty_mike_core::Counter for #name {
             fn measure<T, F: FnOnce() -> T>(mut f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
-                #imports
-
-                #(#decls);*
-
-                //group.enable().unwrap();
-                let result = f();
-                //group.disable().unwrap();
-
-                let counter = #name {
-                    #(#counter_extractions),*
-                };
-
-                Ok((result, counter))
+                todo!()
             }
         }
     };
