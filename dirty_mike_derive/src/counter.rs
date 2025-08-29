@@ -95,11 +95,11 @@ impl CounterField {
 }
 
 #[derive(Debug, Default)]
-struct CounterSpec {
+struct IntendedFields {
     counter_fields: Vec<CounterField>,
 }
 
-impl CounterSpec {
+impl IntendedFields {
     fn from_named_fields(fields: FieldsNamed) -> Result<Self, Error> {
         let mut cs = Self::default();
 
@@ -169,20 +169,59 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
         }
     };
 
-    let mut cs = CounterSpec::from_named_fields(fields)?;
+    let cs = IntendedFields::from_named_fields(fields)?;
 
-    let imports = quote! {
-        use ::perf_event::ReadFormat;
-        use ::perf_event::events::Hardware;
-        use ::perf_event::events::Raw;
-        use ::perf_event::{Builder, Group};
-        use ::dirty_mike_core::CounterError;
-    };
+    let mut field_assignments = vec![];
+    let mut field_creations = vec![];
+
+    for (i, field) in cs.counter_fields.iter().enumerate() {
+        let name = &field.name;
+
+        field_creations.push(match &field.spec {
+            EventSpec::Hardware(s) => {
+                let as_ident = quote::format_ident!("{}", s);
+                quote! {
+                    ctrs.add(Hardware :: #as_ident)?;
+                }
+            }
+            EventSpec::Raw(id) => {
+                quote! {
+                    ctrs.add(Raw :: new(#id))?;
+                }
+            }
+        });
+
+        field_assignments.push(quote! {
+            #name: observations[#i]
+        });
+    }
 
     let expanded = quote! {
-        impl ::dirty_mike_core::Counter for #name {
-            fn measure<T, F: FnOnce() -> T>(mut f: F) -> Result<(T, Self), ::dirty_mike_core::CounterError> {
-                todo!()
+        impl #name {
+            pub fn new() -> std::io::Result<::dirty_mike_core::Counters<Self>> {
+                //use ::dirty_mike_core::pe2::*;
+                use ::dirty_mike_core::pe2::events::{Raw, Hardware};
+                let mut ctrs = ::dirty_mike_core::Counters::new();
+
+                #(#field_creations)*
+
+                Ok(ctrs)
+            }
+
+            pub fn measure<T, F: FnOnce() -> T>(f: F) -> std::io::Result<(T, Self)> {
+                let mut collection = Self::new()?;
+                collection.enable()?;
+                let result = f();
+                collection.disable()?;
+                Ok((result, collection.read()?))
+            }
+        }
+
+        impl ::dirty_mike_core::Measurements for #name {
+            fn from_observations(observations: &[u64]) -> Self {
+                Self {
+                    #(#field_assignments),*
+                }
             }
         }
     };

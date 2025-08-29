@@ -1,5 +1,4 @@
 use crate::Counter;
-use std::time::Duration;
 
 #[derive(Debug, Counter)]
 pub struct BasicHardwareCounters {
@@ -26,11 +25,9 @@ pub struct BasicHardwareCounters {
 mod tests {
     use super::*;
     use crate::intel::skl::*;
-    use dirty_mike_core::Counter;
     use rand::prelude::SliceRandom;
 
     #[test]
-    #[cfg_attr(feature = "ci", ignore = "requires perf_event_open capabilities")]
     fn measure_branch_misses() {
         fn work(data: &[i32]) -> u64 {
             let mut sum = 0u64;
@@ -49,7 +46,7 @@ mod tests {
         let mut sorted_data = shuffled_data.clone();
         sorted_data.sort();
 
-        let (_, sorted_res) = MachineClears::measure(|| work(&sorted_data)).unwrap();
+        let (_, sorted_res) = BadSpeculation::measure(|| work(&sorted_data)).unwrap();
 
         let (_, unsorted_res) = BasicHardwareCounters::measure(|| work(&shuffled_data)).unwrap();
 

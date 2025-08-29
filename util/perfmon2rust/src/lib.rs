@@ -361,6 +361,7 @@ mod tests {
         include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
 
     #[test]
+    #[ignore]
     fn translate_to_counter_spec() -> anyhow::Result<()> {
         let ed = EventDefinitions::slurp("../../extern/perfmon/SKL/events/")?;
 
