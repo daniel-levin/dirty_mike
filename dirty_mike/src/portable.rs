@@ -23,7 +23,6 @@ pub struct BasicHardwareCounters {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::intel::skl::*;
     use rand::prelude::SliceRandom;
 

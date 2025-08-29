@@ -36,7 +36,7 @@ pub struct BottleneckMispredictions {
     #[raw(0x100010d)]
     pub int_misc_clears_count: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles where a code line fetch is stalled due to an L1 instruction cache miss. The legacy decode pipeline works at a 16 Byte granularity."]
     #[raw(0x480)]
@@ -51,7 +51,7 @@ pub struct BottleneckMispredictions {
     #[raw(0x400019c)]
     pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Cycles where a code fetch is stalled due to L1 instruction cache tag miss. [This event is alias to ICACHE_64B.IFTAG_STALL]"]
     #[raw(0x483)]
@@ -64,7 +64,7 @@ pub struct BottleneckMispredictions {
 #[doc = "Total pipeline cost of instruction fetch related bottlenecks by large code footprint programs (i-side cache; TLB and BTB misses)"]
 pub struct BottleneckBigCode {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles where a code fetch is stalled due to L1 instruction cache tag miss. [This event is alias to ICACHE_64B.IFTAG_STALL]"]
     #[raw(0x483)]
@@ -88,7 +88,7 @@ pub struct BottleneckBigCode {
     #[raw(0x1003079)]
     pub idq_ms_switches: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles that the Instruction Length decoder (ILD) stalls occurred due to dynamically changing prefix length of the decoded instruction (by operand size prefix instruction 0x66, address size prefix instruction 0x67 or REX.W for Intel64). Count is proportional to the number of prefixes in a 16B-line. This may result in a three-cycle penalty for each LCP (Length changing prefix) in a 16-byte chunk. [This event is alias to ILD_STALL.LCP]"]
     #[raw(0x187)]
@@ -140,7 +140,7 @@ pub struct BottleneckInstructionFetchBw {
     #[raw(0x1e6)]
     pub baclears_any: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles with any input and output SSE or x87 FP assist. If an input and output assist are detected on the same cycle the event increments by 1."]
     #[raw(0x1001eca)]
@@ -149,7 +149,7 @@ pub struct BottleneckInstructionFetchBw {
     #[raw(0x800d)]
     pub int_misc_clear_resteer_cycles: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of uops not delivered to Resource Allocation Table (RAT) per thread adding 4  x when Resource Allocation Table (RAT) is not stalled and Instruction Decode Queue (IDQ) delivers x uops to Resource Allocation Table (RAT) (where x belongs to {0,1,2,3}). Counting does not cover cases when: a. IDQ-Resource Allocation Table (RAT) pipe serves the other thread. b. Resource Allocation Table (RAT) is stalled for the thread (including uop drops and clear BE conditions).  c. Instruction Decode Queue (IDQ) delivers four uops."]
     #[raw(0x19c)]
@@ -246,7 +246,7 @@ pub struct BottleneckCacheMemoryBandwidth {
     #[raw(0x81d0)]
     pub mem_inst_retired_all_loads: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Retired load instructions with L2 cache hits as data sources."]
     #[raw(0x2d1)]
@@ -291,7 +291,7 @@ pub struct BottleneckCacheMemoryBandwidth {
     #[raw(0x860)]
     pub offcore_requests_outstanding_all_data_rd_c4: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Core cycles the Resource allocator was stalled due to recovery from an earlier branch misprediction or machine clear event."]
     #[raw(0x10d)]
@@ -307,7 +307,7 @@ pub struct BottleneckCacheMemoryLatency {
     #[raw(0xc000ca3)]
     pub cycle_activity_stalls_l1d_miss: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts loads that miss the DTLB (Data TLB) and hit the STLB (Second level TLB)."]
     #[raw(0x2008)]
@@ -370,7 +370,7 @@ pub struct BottleneckCacheMemoryLatency {
     #[raw(0x107)]
     pub ld_blocks_partial_address_alias: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Retired load instructions with L2 cache hits as data sources."]
     #[raw(0x2d1)]
@@ -518,13 +518,13 @@ pub struct BottleneckMemoryDataTlBs {
     #[raw(0x10e)]
     pub uops_issued_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles while L1 cache miss demand load is outstanding."]
     #[raw(0x80008a3)]
     pub cycle_activity_cycles_l1d_miss: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts retired store instructions that split across a cacheline boundary."]
     #[raw(0x42d0)]
@@ -585,7 +585,7 @@ pub struct BottleneckMemorySynchronization {
     #[raw(0x1d2)]
     pub mem_load_l3_hit_retired_xsnp_miss: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the RFO (Read-for-Ownership) requests that hit L2 cache."]
     #[raw(0xc224)]
@@ -624,7 +624,7 @@ pub struct BottleneckMemorySynchronization {
     #[raw(0x2049)]
     pub dtlb_store_misses_stlb_hit_c1: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
@@ -691,7 +691,7 @@ pub struct BottleneckComputeBoundEst {
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Cycles where the Store Buffer was full and no outstanding load."]
     #[raw(0x40a6)]
@@ -712,7 +712,7 @@ pub struct BottleneckComputeBoundEst {
     #[raw(0x10d)]
     pub int_misc_recovery_cycles: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts cycles during which a total of 1 uop was executed on all ports and Reservation Station (RS) was not empty."]
     #[raw(0x2a6)]
@@ -761,7 +761,7 @@ pub struct BottleneckIrregularOverhead {
     #[raw(0x100)]
     pub inst_retired_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of uops that the Resource Allocation Table (RAT) issues to the Reservation Station (RS)."]
     #[raw(0x10e)]
@@ -791,7 +791,7 @@ pub struct BottleneckIrregularOverhead {
     #[raw(0x2c3)]
     pub machine_clears_memory_ordering: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Cycles where a code fetch is stalled due to L1 instruction cache tag miss. [This event is alias to ICACHE_64B.IFTAG_STALL]"]
     #[raw(0x483)]
@@ -891,7 +891,7 @@ pub struct BottleneckOtherBottlenecks {
     #[raw(0x1d2)]
     pub mem_load_l3_hit_retired_xsnp_miss: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles when at least one PMH (Page Miss Handler) is busy with a page walk for a store."]
     #[raw(0x1001049)]
@@ -909,7 +909,7 @@ pub struct BottleneckOtherBottlenecks {
     #[raw(0x80008a3)]
     pub cycle_activity_cycles_l1d_miss: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Number of switches from DSB (Decode Stream Buffer) or MITE (legacy decode pipeline) to the Microcode Sequencer."]
     #[raw(0x1003079)]
@@ -1060,7 +1060,7 @@ pub struct BottleneckOtherBottlenecks {
 #[doc = "Total pipeline cost of instructions used for program control-flow - a subset of the Retiring category in TMA. Examples include function calls; loops and alignments. (A lower bound)"]
 pub struct BottleneckBranchingOverhead {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "This event counts both direct and indirect near call instructions retired."]
     #[raw(0x2c4)]
@@ -1072,7 +1072,7 @@ pub struct BottleneckBranchingOverhead {
     #[raw(0x2c0)]
     pub inst_retired_nop: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1085,7 +1085,7 @@ pub struct BottleneckUsefulWork {
     #[raw(0x3079)]
     pub idq_ms_uops: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of macro-fused uops retired. (non precise)"]
     #[raw(0x4c2)]
@@ -1106,7 +1106,7 @@ pub struct BottleneckUsefulWork {
     #[raw(0xc4)]
     pub br_inst_retired_all_branches: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Number of all retired NOP instructions."]
     #[raw(0x2c0)]
@@ -1119,10 +1119,10 @@ pub struct BottleneckUsefulWork {
 #[doc = "This category represents fraction of slots where the processor's Frontend undersupplies its Backend. Frontend denotes the first part of the processor core responsible to fetch operations that are executed later on by the Backend part. Within the Frontend; a branch predictor predicts the next address to fetch; cache-lines are fetched from the memory subsystem; parsed into instructions; and lastly decoded into micro-operations (uops). Ideally the Frontend can issue Pipeline_Width uops every cycle to the Backend. Frontend Bound denotes unutilized issue-slots when there is no Backend stall; i.e. bubbles where Frontend delivered no uops while Backend could have accepted them. For example; stalls due to instruction-cache misses would be categorized under Frontend Bound."]
 pub struct FrontendBound {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of uops not delivered to Resource Allocation Table (RAT) per thread adding 4  x when Resource Allocation Table (RAT) is not stalled and Instruction Decode Queue (IDQ) delivers x uops to Resource Allocation Table (RAT) (where x belongs to {0,1,2,3}). Counting does not cover cases when: a. IDQ-Resource Allocation Table (RAT) pipe serves the other thread. b. Resource Allocation Table (RAT) is stalled for the thread (including uop drops and clear BE conditions).  c. Instruction Decode Queue (IDQ) delivers four uops."]
     #[raw(0x19c)]
@@ -1132,20 +1132,20 @@ pub struct FrontendBound {
 #[doc = "This metric represents fraction of slots the CPU was stalled due to Frontend latency issues.  For example; instruction-cache misses; iTLB misses or fetch stalls after a branch misprediction are categorized under Frontend Latency. In such cases; the Frontend eventually delivers no uops for some period."]
 pub struct FetchLatency {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts, on the per-thread basis, cycles when no uops are delivered to Resource Allocation Table (RAT). IDQ_Uops_Not_Delivered.core =4."]
     #[raw(0x400019c)]
     pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents fraction of cycles the CPU was stalled due to instruction cache misses."]
 pub struct ICacheMisses {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles where a code line fetch is stalled due to an L1 instruction cache miss. The legacy decode pipeline works at a 16 Byte granularity."]
     #[raw(0x480)]
@@ -1158,7 +1158,7 @@ pub struct ICacheMisses {
 #[doc = "This metric represents fraction of cycles the CPU was stalled due to Instruction TLB (ITLB) misses."]
 pub struct ItlbMisses {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles where a code fetch is stalled due to L1 instruction cache tag miss. [This event is alias to ICACHE_64B.IFTAG_STALL]"]
     #[raw(0x483)]
@@ -1174,14 +1174,14 @@ pub struct CodeStlbHit {
     #[raw(0x483)]
     pub icache_tag_stalls: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric estimates the fraction of cycles where the Second-level TLB (STLB) was missed by instruction fetches, performing a hardware page walk"]
 pub struct CodeStlbMiss {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles when at least one PMH is busy with a page walk for code (instruction fetch) request. EPT page walk duration are excluded in Skylake microarchitecture."]
     #[raw(0x1001085)]
@@ -1200,7 +1200,7 @@ pub struct CodeStlbMiss4k {
     #[raw(0x285)]
     pub itlb_misses_walk_completed_4k: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1210,7 +1210,7 @@ pub struct CodeStlbMiss2m {
     #[raw(0x1001085)]
     pub itlb_misses_walk_active: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts completed page walks (4K page sizes) caused by a code fetch. This implies it missed in the ITLB (Instruction TLB) and further levels of TLB. The page walk can end with or without a fault."]
     #[raw(0x285)]
@@ -1229,7 +1229,7 @@ pub struct BranchResteers {
     #[raw(0x800d)]
     pub int_misc_clear_resteer_cycles: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1245,7 +1245,7 @@ pub struct MispredictsResteers {
     #[raw(0x10001c3)]
     pub machine_clears_count: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1258,7 +1258,7 @@ pub struct ClearsResteers {
     #[raw(0x800d)]
     pub int_misc_clear_resteer_cycles: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Number of machine clears (nukes) of any type."]
     #[raw(0x10001c3)]
@@ -1271,14 +1271,14 @@ pub struct UnknownBranches {
     #[raw(0x1e6)]
     pub baclears_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric estimates the fraction of cycles when the CPU was stalled due to switches of uop delivery to the Microcode Sequencer (MS). Commonly used instructions are optimized for delivery by the DSB (decoded i-cache) or MITE (legacy instruction decode) pipelines. Certain operations cannot be handled natively by the execution pipeline; and must be performed by microcode (small programs injected into the execution stream). Switching to the MS too often can negatively impact performance. The MS is designated to deliver long uop flows required by CISC instructions like CPUID; or uncommon conditions like Floating Point Assists when dealing with Denormals."]
 pub struct MsSwitches {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Number of switches from DSB (Decode Stream Buffer) or MITE (legacy decode pipeline) to the Microcode Sequencer."]
     #[raw(0x1003079)]
@@ -1291,7 +1291,7 @@ pub struct Lcp {
     #[raw(0x187)]
     pub decode_lcp: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1301,14 +1301,14 @@ pub struct DsbSwitches {
     #[raw(0x2ab)]
     pub dsb2mite_switches_penalty_cycles: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents fraction of slots the CPU was stalled due to Frontend bandwidth issues.  For example; inefficiencies at the instruction decoders; or restrictions for caching in the DSB (decoded uops cache) are categorized under Fetch Bandwidth. In such cases; the Frontend typically delivers suboptimal amount of uops to the Backend."]
 pub struct FetchBandwidth {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts, on the per-thread basis, cycles when no uops are delivered to Resource Allocation Table (RAT). IDQ_Uops_Not_Delivered.core =4."]
     #[raw(0x400019c)]
@@ -1317,7 +1317,7 @@ pub struct FetchBandwidth {
     #[raw(0x19c)]
     pub idq_uops_not_delivered_core: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1327,20 +1327,20 @@ pub struct Mite {
     #[raw(0x4002479)]
     pub idq_all_mite_cycles_4_uops: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of cycles uops were delivered to the Instruction Decode Queue (IDQ) from the MITE (legacy decode pipeline) path. Counting includes uops that may 'bypass' the IDQ. During these cycles uops are not being delivered from the Decode Stream Buffer (DSB)."]
     #[raw(0x1002479)]
     pub idq_all_mite_cycles_any_uops: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents fraction of cycles where decoder-0 was the only active decoder"]
 pub struct Decoder0Alone {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Number of decoders utilized in a cycle when the MITE (legacy decode pipeline) fetches instructions."]
     #[raw(0x155)]
@@ -1349,14 +1349,14 @@ pub struct Decoder0Alone {
     #[raw(0x155)]
     pub inst_decoded_decoders_c1: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents Core fraction of cycles in which CPU was likely limited due to DSB (decoded uop cache) fetch pipeline.  For example; inefficient utilization of the DSB cache structure or bank conflict when reading from it; are categorized here."]
 pub struct Dsb {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of cycles uops were delivered to Instruction Decode Queue (IDQ) from the Decode Stream Buffer (DSB) path. Count includes uops that may 'bypass' the IDQ. [This event is alias to IDQ.ALL_DSB_CYCLES_ANY_UOPS]"]
     #[raw(0x1001879)]
@@ -1365,14 +1365,14 @@ pub struct Dsb {
     #[raw(0x4001879)]
     pub idq_dsb_cycles_ok: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This category represents fraction of slots wasted due to incorrect speculations. This include slots used to issue uops that do not eventually get retired and slots for which the issue-pipeline was blocked due to recovery from earlier incorrect speculation. For example; wasted work due to miss-predicted branches are categorized under Bad Speculation category. Incorrect data speculation followed by Memory Ordering Nukes is another example."]
 pub struct BadSpeculation {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Core cycles the allocator was stalled due to recovery from earlier clear event for any thread running on the physical core (e.g. misprediction or memory nuke)."]
     #[raw(0x20010d)]
@@ -1381,7 +1381,7 @@ pub struct BadSpeculation {
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of uops that the Resource Allocation Table (RAT) issues to the Reservation Station (RS)."]
     #[raw(0x10e)]
@@ -1409,10 +1409,10 @@ pub struct BranchMispredicts {
     #[raw(0x10e)]
     pub uops_issued_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
@@ -1434,10 +1434,10 @@ pub struct OtherMispredicts {
     #[raw(0x10d)]
     pub int_misc_recovery_cycles: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Number of machine clears (nukes) of any type."]
     #[raw(0x10001c3)]
@@ -1459,7 +1459,7 @@ pub struct MachineClears {
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts all the retired branch instructions that were mispredicted by the processor. A branch misprediction occurs when the processor incorrectly predicts the destination of the branch.  When the misprediction is discovered at execution, all the instructions executed in the wrong (speculative) path must be discarded, and the processor must start fetching from the correct path."]
     #[raw(0xc5)]
@@ -1474,7 +1474,7 @@ pub struct MachineClears {
     #[raw(0x10001c3)]
     pub machine_clears_count: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1484,13 +1484,13 @@ pub struct OtherNukes {
     #[raw(0x10d)]
     pub int_misc_recovery_cycles: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of memory ordering Machine Clears detected. Memory Ordering Machine Clears can result from one of the following:a. memory disambiguation,b. external snoop, orc. cross SMT-HW-thread snoop (stores) hitting load buffer."]
     #[raw(0x2c3)]
@@ -1524,10 +1524,10 @@ pub struct BackendBound {
     #[raw(0x19c)]
     pub idq_uops_not_delivered_core: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1543,7 +1543,7 @@ pub struct MemoryBound {
     #[raw(0x140014a3)]
     pub cycle_activity_stalls_mem_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Total execution stalls."]
     #[raw(0x40004a3)]
@@ -1567,7 +1567,7 @@ pub struct MemoryBound {
     #[raw(0x20010d)]
     pub int_misc_recovery_cycles_any: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -1580,7 +1580,7 @@ pub struct L1Bound {
     #[raw(0xc000ca3)]
     pub cycle_activity_stalls_l1d_miss: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1599,7 +1599,7 @@ pub struct DtlbLoad {
     #[raw(0x2008)]
     pub dtlb_load_misses_stlb_hit_c1: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1618,14 +1618,14 @@ pub struct LoadStlbHit {
     #[raw(0x80008a3)]
     pub cycle_activity_cycles_l1d_miss: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric estimates the fraction of cycles where the Second-level TLB (STLB) was missed by load accesses, performing a hardware page walk"]
 pub struct LoadStlbMiss {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts cycles when at least one PMH (Page Miss Handler) is busy with a page walk for a load."]
     #[raw(0x1001008)]
@@ -1638,7 +1638,7 @@ pub struct LoadStlbMiss4k {
     #[raw(0x808)]
     pub dtlb_load_misses_walk_completed_1g: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts completed page walks  (2M/4M sizes) caused by demand data loads. This implies address translations missed in the DTLB and further levels of TLB. The page walk can end with or without a fault."]
     #[raw(0x408)]
@@ -1657,7 +1657,7 @@ pub struct LoadStlbMiss2m {
     #[raw(0x1001008)]
     pub dtlb_load_misses_walk_active: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts completed page walks  (1G sizes) caused by demand data loads. This implies address translations missed in the DTLB and further levels of TLB. The page walk can end with or without a fault."]
     #[raw(0x808)]
@@ -1682,7 +1682,7 @@ pub struct LoadStlbMiss1g {
     #[raw(0x1001008)]
     pub dtlb_load_misses_walk_active: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts completed page walks  (2M/4M sizes) caused by demand data loads. This implies address translations missed in the DTLB and further levels of TLB. The page walk can end with or without a fault."]
     #[raw(0x408)]
@@ -1692,7 +1692,7 @@ pub struct LoadStlbMiss1g {
 #[doc = "This metric roughly estimates fraction of cycles when the memory subsystem had loads blocked since they could not forward data from earlier (in program order) overlapping stores. To streamline memory operations in the pipeline; a load can avoid waiting for memory if a prior in-flight store is writing the data that the load wants to read (store forwarding process). However; in some cases the load may be blocked for a significant time pending the store forward. For example; when the prior store is writing a smaller region than the load is reading."]
 pub struct StoreFwdBlk {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of times where store forwarding was prevented for a load operation. The most common case is a load blocked due to the address of memory access (partially) overlapping with a preceding uncompleted store. Note: See the table of not supported store forwards in the Optimization Guide."]
     #[raw(0x203)]
@@ -1714,7 +1714,7 @@ pub struct L1LatencyDependency {
     #[raw(0x81d0)]
     pub mem_inst_retired_all_loads: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles while L1 cache miss demand load is outstanding."]
     #[raw(0x80008a3)]
@@ -1727,7 +1727,7 @@ pub struct LockLatency {
     #[raw(0x82d0)]
     pub mem_inst_retired_all_stores: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of offcore outstanding demand rfo Reads transactions in the super queue every cycle. The 'Offcore outstanding' state of the transaction lasts from the L2 miss until the sending transaction completion to requestor (SQ deallocation). See the corresponding Umask under OFFCORE_REQUESTS."]
     #[raw(0x1000460)]
@@ -1755,7 +1755,7 @@ pub struct SplitLoads {
     #[raw(0x8d1)]
     pub mem_load_retired_l1_miss: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts retired load instructions with at least one uop was load missed in L1 but hit FB (Fill Buffers) due to preceding miss to the same cache line with data not ready."]
     #[raw(0x40d1)]
@@ -1765,7 +1765,7 @@ pub struct SplitLoads {
 #[doc = "This metric estimates how often memory load accesses were aliased by preceding stores (in program order) with a 4K address offset. False match is possible; which incur a few cycles load re-issue. However; the short re-issue duration is often hidden by the out-of-order core and HW optimizations; hence a user may safely ignore a high value of this metric unless it manages to propagate up into parent nodes of the hierarchy (e.g. to L1_Bound)."]
 pub struct _4kAliasing {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts false dependencies in MOB when the partial comparison upon loose net check and dependency was resolved by the Enhanced Loose net mechanism. This may not result in high performance penalties. Loose net checks can fail when loads and stores are 4k aliased."]
     #[raw(0x107)]
@@ -1775,7 +1775,7 @@ pub struct _4kAliasing {
 #[doc = "This metric does a *rough estimation* of how often L1D Fill Buffer unavailability limited additional L1D miss memory access requests to proceed. The higher the metric value; the deeper the memory hierarchy level the misses are satisfied from (metric values >1 are valid). Often it hints on approaching bandwidth limits (to L2 cache; L3 cache or external memory)."]
 pub struct FbFull {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Number of times a request needed a FB (Fill Buffer) entry but there was no entry available for it. A request includes cacheable/uncacheable demands that are load, store or SW prefetch instructions."]
     #[raw(0x248)]
@@ -1794,7 +1794,7 @@ pub struct FbFull {
 #[doc = "This metric estimates how often the CPU was stalled due to L2 cache accesses by loads.  Avoiding cache misses (i.e. L1 misses/L2 hits) can improve the latency and increase performance."]
 pub struct L2Bound {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts retired load instructions with at least one uop that missed in the L1 cache."]
     #[raw(0x8d1)]
@@ -1831,7 +1831,7 @@ pub struct L2HitLatency {
     #[raw(0x40d1)]
     pub mem_load_retired_fb_hit: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1844,7 +1844,7 @@ pub struct L3Bound {
     #[raw(0x60006a3)]
     pub cycle_activity_stalls_l3_miss: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1866,7 +1866,7 @@ pub struct ContestedAccesses {
     #[raw(0x40d1)]
     pub mem_load_retired_fb_hit: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1876,7 +1876,7 @@ pub struct DataSharing {
     #[raw(0x300)]
     pub cpu_clk_unhalted_ref_tsc: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Retired load instructions which data sources were L3 and cross-core snoop hits in on-pkg core cache."]
     #[raw(0x2d2)]
@@ -1904,20 +1904,20 @@ pub struct L3HitLatency {
     #[raw(0x300)]
     pub cpu_clk_unhalted_ref_tsc: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric measures fraction of cycles where the Super Queue (SQ) was full taking into account all request-types and both hardware SMT threads (Logical Processors)."]
 pub struct SqFull {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of cases when the offcore requests buffer cannot take more entries for the core. This can happen when the superqueue does not contain eligible entries, or when L1D writeback pending FIFO requests is full.Note: Writeback pending FIFO has six entries."]
     #[raw(0x1b2)]
     pub offcore_requests_buffer_sq_full: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -1939,7 +1939,7 @@ pub struct DramBound {
     #[raw(0x8d1)]
     pub mem_load_retired_l1_miss: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Retired load instructions with L2 cache hits as data sources."]
     #[raw(0x2d1)]
@@ -1952,7 +1952,7 @@ pub struct DramBound {
 #[doc = "This metric estimates fraction of cycles where the core's performance was likely hurt due to approaching bandwidth limits of external memory - DRAM ([SPR-HBM] and/or HBM).  The underlying heuristic assumes that a similar off-core traffic is generated by all IA cores. This metric does not aggregate non-data-read requests by this logical processor; requests from other IA Logical Processors/Physical Cores/sockets; or other non-IA devices like GPU; hence the maximum external memory bandwidth limits may or may not be approached when this metric is flagged (see Uncore counters for that)."]
 pub struct MemBandwidth {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of offcore outstanding cacheable Core Data Read transactions in the super queue every cycle. A transaction is considered to be in the Offcore outstanding state between L2 miss and transaction completion sent to requestor (SQ de-allocation). See corresponding Umask under OFFCORE_REQUESTS."]
     #[raw(0x860)]
@@ -1965,7 +1965,7 @@ pub struct MemLatency {
     #[raw(0x1000860)]
     pub offcore_requests_outstanding_cycles_with_data_rd: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of offcore outstanding cacheable Core Data Read transactions in the super queue every cycle. A transaction is considered to be in the Offcore outstanding state between L2 miss and transaction completion sent to requestor (SQ de-allocation). See corresponding Umask under OFFCORE_REQUESTS."]
     #[raw(0x860)]
@@ -1978,14 +1978,14 @@ pub struct StoreBound {
     #[raw(0x40a6)]
     pub exe_activity_bound_on_stores: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric estimates fraction of cycles the CPU spent handling L1D store misses. Store accesses usually less impact out-of-order core performance; however; holding resources for longer time can lead into undesired implications (e.g. contention on L1D fill-buffer entries - see FB_Full)"]
 pub struct StoreLatency {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of offcore outstanding demand rfo Reads transactions in the super queue every cycle. The 'Offcore outstanding' state of the transaction lasts from the L2 miss until the sending transaction completion to requestor (SQ deallocation). See the corresponding Umask under OFFCORE_REQUESTS."]
     #[raw(0x1000460)]
@@ -2010,17 +2010,17 @@ pub struct FalseSharing {
     #[raw(0x300)]
     pub cpu_clk_unhalted_ref_tsc: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents rate of split store accesses.  Consider aligning your data to the 64-byte cache line granularity."]
 pub struct SplitStores {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts retired store instructions that split across a cacheline boundary."]
     #[raw(0x42d0)]
@@ -2030,10 +2030,10 @@ pub struct SplitStores {
 #[doc = "This metric roughly estimates the fraction of cycles spent handling first-level data TLB store misses.  As with ordinary data caching; focus on improving data locality and reducing working-set size to reduce DTLB overhead.  Additionally; consider using profile-guided optimization (PGO) to collocate frequently-used data on the same page.  Try using larger page sizes for large amounts of frequently-used data."]
 pub struct DtlbStore {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts cycles when at least one PMH (Page Miss Handler) is busy with a page walk for a store."]
     #[raw(0x1001049)]
@@ -2049,13 +2049,13 @@ pub struct StoreStlbHit {
     #[raw(0x2049)]
     pub dtlb_store_misses_stlb_hit_c1: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts cycles when at least one PMH (Page Miss Handler) is busy with a page walk for a store."]
     #[raw(0x1001049)]
     pub dtlb_store_misses_walk_active: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2065,10 +2065,10 @@ pub struct StoreStlbMiss {
     #[raw(0x1001049)]
     pub dtlb_store_misses_walk_active: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2081,7 +2081,7 @@ pub struct StoreStlbMiss4k {
     #[raw(0x849)]
     pub dtlb_store_misses_walk_completed_1g: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts completed page walks  (4K sizes) caused by demand data stores. This implies address translations missed in the DTLB and further levels of TLB. The page walk can end with or without a fault."]
     #[raw(0x249)]
@@ -2090,7 +2090,7 @@ pub struct StoreStlbMiss4k {
     #[raw(0x449)]
     pub dtlb_store_misses_walk_completed_2m_4m: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2103,10 +2103,10 @@ pub struct StoreStlbMiss2m {
     #[raw(0x1001049)]
     pub dtlb_store_misses_walk_active: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts completed page walks  (1G sizes) caused by demand data stores. This implies address translations missed in the DTLB and further levels of TLB. The page walk can end with or without a fault."]
     #[raw(0x849)]
@@ -2119,7 +2119,7 @@ pub struct StoreStlbMiss2m {
 #[doc = "This metric estimates the fraction of cycles to walk the memory paging structures to cache translation of 1 GB pages for data store accesses."]
 pub struct StoreStlbMiss1g {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts completed page walks  (4K sizes) caused by demand data stores. This implies address translations missed in the DTLB and further levels of TLB. The page walk can end with or without a fault."]
     #[raw(0x249)]
@@ -2134,7 +2134,7 @@ pub struct StoreStlbMiss1g {
     #[raw(0x849)]
     pub dtlb_store_misses_walk_completed_1g: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2156,10 +2156,10 @@ pub struct CoreBound {
     #[raw(0x19c)]
     pub idq_uops_not_delivered_core: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles where the Store Buffer was full and no outstanding load."]
     #[raw(0x40a6)]
@@ -2184,14 +2184,14 @@ pub struct Divider {
     #[raw(0x1000114)]
     pub arith_divider_active: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents fraction of cycles the CPU issue-pipeline was stalled due to serializing operations. Instructions like CPUID; WRMSR or LFENCE serialize the out-of-order execution which may limit performance."]
 pub struct SerializingOperation {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "This event counts cycles during which the microcode scoreboard stalls happen."]
     #[raw(0x159)]
@@ -2201,7 +2201,7 @@ pub struct SerializingOperation {
 #[doc = "This metric estimates fraction of cycles the CPU performance was potentially limited due to Core computation issues (non divider-related).  Two distinct categories can be attributed into this metric: (1) heavy data-dependency among contiguous instructions would manifest in this metric - such cases are often referred to as low Instruction Level Parallelism (ILP). (2) Contention on some hardware execution unit other than Divider. For example; when there are too many multiply operations."]
 pub struct PortsUtilization {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles during which no uops were executed on all ports and Reservation Station (RS) was not empty."]
     #[raw(0x1a6)]
@@ -2216,7 +2216,7 @@ pub struct PortsUtilization {
     #[raw(0x2a6)]
     pub exe_activity_1_ports_util: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Execution stalls while memory subsystem has an outstanding load."]
     #[raw(0x140014a3)]
@@ -2235,7 +2235,7 @@ pub struct PortsUtilized0 {
     #[raw(0x1a6)]
     pub exe_activity_exe_bound_0_ports: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -2261,10 +2261,10 @@ pub struct PortsUtilized1 {
     #[raw(0x20002b1)]
     pub uops_executed_core_cycles_ge_2: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2274,13 +2274,13 @@ pub struct PortsUtilized2 {
     #[raw(0x20002b1)]
     pub uops_executed_core_cycles_ge_2: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles at least 3 micro-op is executed from any thread on physical core."]
     #[raw(0x30002b1)]
     pub uops_executed_core_cycles_ge_3: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles during which a total of 2 uops were executed on all ports and Reservation Station (RS) was not empty."]
     #[raw(0x4a6)]
@@ -2290,23 +2290,23 @@ pub struct PortsUtilized2 {
 #[doc = "This metric represents fraction of cycles CPU executed total of 3 or more uops per cycle on all execution ports (Logical Processor cycles since ICL, Physical Core cycles otherwise)."]
 pub struct PortsUtilized3m {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Cycles at least 3 micro-op is executed from any thread on physical core."]
     #[raw(0x30002b1)]
     pub uops_executed_core_cycles_ge_3: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution ports for ALU operations."]
 pub struct AluOpUtilization {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 6."]
     #[raw(0x40a1)]
@@ -2325,52 +2325,52 @@ pub struct AluOpUtilization {
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution port 0 ([SNB+] ALU; [HSW+] ALU and 2nd branch)"]
 pub struct Port0 {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 0."]
     #[raw(0x1a1)]
     pub uops_dispatched_port_port_0: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution port 1 (ALU)"]
 pub struct Port1 {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 1."]
     #[raw(0x2a1)]
     pub uops_dispatched_port_port_1: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution port 5 ([SNB+] Branches and ALU; [HSW+] ALU)"]
 pub struct Port5 {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 5."]
     #[raw(0x20a1)]
     pub uops_dispatched_port_port_5: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution port 6 ([HSW+] Primary Branch and simple ALU)"]
 pub struct Port6 {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 6."]
     #[raw(0x40a1)]
     pub uops_dispatched_port_port_6: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2389,23 +2389,23 @@ pub struct LoadOpUtilization {
     #[raw(0x10a1)]
     pub uops_dispatched_port_port_4: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution port 2 ([SNB+]Loads and Store-address; [ICL+] Loads)"]
 pub struct Port2 {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 2."]
     #[raw(0x4a1)]
     pub uops_dispatched_port_port_2: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2415,20 +2415,20 @@ pub struct Port3 {
     #[raw(0x8a1)]
     pub uops_dispatched_port_port_3: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution port for Store operations"]
 pub struct StoreOpUtilization {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 4."]
     #[raw(0x10a1)]
@@ -2438,10 +2438,10 @@ pub struct StoreOpUtilization {
 #[doc = "This metric represents Core fraction of cycles CPU dispatched uops on execution port 4 (Store-data)"]
 pub struct Port4 {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts, on the per-thread basis, cycles during which at least one uop is dispatched from the Reservation Station (RS) to port 4."]
     #[raw(0x10a1)]
@@ -2454,20 +2454,20 @@ pub struct Port7 {
     #[raw(0x80a1)]
     pub uops_dispatched_port_port_7: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This category represents fraction of slots utilized by useful work i.e. issued uops that eventually get retired. Ideally; all pipeline slots would be attributed to the Retiring category.  Retiring of 100% would indicate the maximum Pipeline_Width throughput was achieved.  Maximizing Retiring typically increases the Instructions-per-cycle (see IPC metric). Note that a high Retiring value does not necessary mean there is no room for more performance.  For example; Heavy-operations or Microcode Assists are categorized under Retiring. They often indicate suboptimal performance and can often be optimized or avoided. "]
 pub struct Retiring {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
@@ -2480,10 +2480,10 @@ pub struct LightOperations {
     #[raw(0x4c2)]
     pub uops_retired_macro_fused: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
@@ -2496,7 +2496,7 @@ pub struct LightOperations {
 #[doc = "This metric represents overall arithmetic floating-point (FP) operations fraction the CPU has executed (retired). Note this metric's value may exceed its parent due to use of \"Uops\" CountDomain and FMA double-counting."]
 pub struct FpArith {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of x87 uops executed."]
     #[raw(0x10b1)]
@@ -2511,7 +2511,7 @@ pub struct FpArith {
     #[raw(0xfcc7)]
     pub fp_arith_inst_retired_vector: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Number of uops to be executed per-thread each cycle."]
     #[raw(0x1b1)]
@@ -2524,7 +2524,7 @@ pub struct X87Use {
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Number of uops to be executed per-thread each cycle."]
     #[raw(0x1b1)]
@@ -2533,7 +2533,7 @@ pub struct X87Use {
     #[raw(0x10b1)]
     pub uops_executed_x87: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -2598,10 +2598,10 @@ pub struct MemoryOperations {
     #[raw(0x100)]
     pub inst_retired_any: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -2611,7 +2611,7 @@ pub struct FusedInstructions {
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of macro-fused uops retired. (non precise)"]
     #[raw(0x4c2)]
@@ -2620,7 +2620,7 @@ pub struct FusedInstructions {
     #[raw(0x100)]
     pub inst_retired_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -2636,10 +2636,10 @@ pub struct NonFusedBranches {
     #[raw(0xc4)]
     pub br_inst_retired_all_branches: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of instructions retired from execution. For instructions that consist of multiple micro-ops, Counts the retirement of the last micro-op of the instruction. Counting continues during hardware interrupts, traps, and inside interrupt handlers. Notes: INST_RETIRED.ANY is counted by a designated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events. INST_RETIRED.ANY_P is counted by a programmable counter and it is an architectural performance event. Counting: Faulting executions of GETSEC/VM entry/VM Exit/MWait will not count as retired instructions."]
     #[raw(0x100)]
@@ -2667,10 +2667,10 @@ pub struct OtherLightOps {
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts once for most SIMD scalar computational single precision and double precision floating-point instructions retired; some instructions will count twice as noted below.  Each count represents 1 computational operation. Applies to SIMD scalar single precision floating-point instructions: ADD SUB MUL DIV MIN MAX SQRT RSQRT RCP FM(N)ADD/SUB.  FM(N)ADD/SUB instructions count twice as they perform 2 calculations per element. The DAZ and FTZ flags in the MXCSR register need to be set when using these events."]
     #[raw(0x3c7)]
@@ -2698,23 +2698,23 @@ pub struct NopInstructions {
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric represents fraction of slots where the CPU was retiring heavy-weight operations , instructions that require two or more uops or micro-coded sequences. This highly-correlates with the uop length of these instructions/sequences.([ICL+] Note this may overcount due to approximation using indirect events; [ADL+])"]
 pub struct HeavyOperations {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of instructions retired from execution. For instructions that consist of multiple micro-ops, Counts the retirement of the last micro-op of the instruction. Counting continues during hardware interrupts, traps, and inside interrupt handlers. Notes: INST_RETIRED.ANY is counted by a designated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events. INST_RETIRED.ANY_P is counted by a programmable counter and it is an architectural performance event. Counting: Faulting executions of GETSEC/VM entry/VM Exit/MWait will not count as retired instructions."]
     #[raw(0x100)]
     pub inst_retired_any: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
@@ -2742,10 +2742,10 @@ pub struct FewUopsInstructions {
     #[raw(0x100)]
     pub inst_retired_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2755,13 +2755,13 @@ pub struct MicrocodeSequencer {
     #[raw(0x3079)]
     pub idq_ms_uops: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of uops that the Resource Allocation Table (RAT) issues to the Reservation Station (RS)."]
     #[raw(0x10e)]
     pub uops_issued_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
@@ -2774,26 +2774,26 @@ pub struct Assists {
     #[raw(0x3fc1)]
     pub other_assists_any: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles with any input and output SSE or x87 FP assist. If an input and output assist are detected on the same cycle the event increments by 1."]
     #[raw(0x1001eca)]
     pub fp_assist_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "This metric roughly estimates fraction of slots the CPU retired uops as a result of handing Floating Point (FP) Assists. FP Assist may apply when working with very small floating point values (so-called Denormals)."]
 pub struct FpAssists {
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles with any input and output SSE or x87 FP assist. If an input and output assist are detected on the same cycle the event increments by 1."]
     #[raw(0x1001eca)]
     pub fp_assist_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -2815,10 +2815,10 @@ pub struct Cisc {
     #[raw(0x3079)]
     pub idq_ms_uops: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -2828,7 +2828,7 @@ pub struct InfoBotlnkL0CoreBoundLikely {
     #[raw(0x2a6)]
     pub exe_activity_1_ports_util: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts cycles during which no uops were executed on all ports and Reservation Station (RS) was not empty."]
     #[raw(0x1a6)]
@@ -2852,7 +2852,7 @@ pub struct InfoBotlnkL0CoreBoundLikely {
     #[raw(0x4a6)]
     pub exe_activity_2_ports_util: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of uops not delivered to Resource Allocation Table (RAT) per thread adding 4  x when Resource Allocation Table (RAT) is not stalled and Instruction Decode Queue (IDQ) delivers x uops to Resource Allocation Table (RAT) (where x belongs to {0,1,2,3}). Counting does not cover cases when: a. IDQ-Resource Allocation Table (RAT) pipe serves the other thread. b. Resource Allocation Table (RAT) is stalled for the thread (including uop drops and clear BE conditions).  c. Instruction Decode Queue (IDQ) delivers four uops."]
     #[raw(0x19c)]
@@ -2880,7 +2880,7 @@ pub struct InfoThreadIpc {
     #[raw(0x100)]
     pub inst_retired_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -2910,24 +2910,24 @@ pub struct InfoThreadCpi {
     #[raw(0x100)]
     pub inst_retired_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "Per-Logical Processor actual clocks when the Logical Processor is active."]
 pub struct InfoThreadClks {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
 #[doc = "Total issue-pipeline slots (per-Physical Core till ICL; per-Logical Processor ICL onward)"]
 pub struct InfoThreadSlots {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2944,10 +2944,10 @@ pub struct InfoThreadExecutePerIssue {
 #[doc = "Instructions Per Cycle across hyper-threads (per physical core)"]
 pub struct InfoCoreCoreIpc {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of instructions retired from execution. For instructions that consist of multiple micro-ops, Counts the retirement of the last micro-op of the instruction. Counting continues during hardware interrupts, traps, and inside interrupt handlers. Notes: INST_RETIRED.ANY is counted by a designated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events. INST_RETIRED.ANY_P is counted by a programmable counter and it is an architectural performance event. Counting: Faulting executions of GETSEC/VM entry/VM Exit/MWait will not count as retired instructions."]
     #[raw(0x100)]
@@ -2957,7 +2957,7 @@ pub struct InfoCoreCoreIpc {
 #[doc = "Floating Point Operations Per Cycle"]
 pub struct InfoCoreFloPc {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts once for most SIMD 128-bit packed computational double precision floating-point instructions retired; some instructions will count twice as noted below.  Each count represents 2 computation operations, one for each element.  Applies to packed double precision floating-point instructions: ADD SUB HADD HSUB SUBADD MUL DIV MIN MAX SQRT DPP FM(N)ADD/SUB.  DPP and FM(N)ADD/SUB instructions count twice as they perform 2 calculations per element. The DAZ and FTZ flags in the MXCSR register need to be set when using these events."]
     #[raw(0x4c7)]
@@ -2972,7 +2972,7 @@ pub struct InfoCoreFloPc {
     #[raw(0x20c7)]
     pub fp_arith_inst_retired_256b_packed_single: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -2982,13 +2982,13 @@ pub struct InfoCoreFpArithUtilization {
     #[raw(0xfcc7)]
     pub fp_arith_inst_retired_vector: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts once for most SIMD scalar computational single precision and double precision floating-point instructions retired; some instructions will count twice as noted below.  Each count represents 1 computational operation. Applies to SIMD scalar single precision floating-point instructions: ADD SUB MUL DIV MIN MAX SQRT RSQRT RCP FM(N)ADD/SUB.  FM(N)ADD/SUB instructions count twice as they perform 2 calculations per element. The DAZ and FTZ flags in the MXCSR register need to be set when using these events."]
     #[raw(0x3c7)]
     pub fp_arith_inst_retired_scalar: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -3005,7 +3005,7 @@ pub struct InfoCoreIlp {
 #[doc = "uops Executed per Cycle"]
 pub struct InfoCoreEpc {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Number of uops to be executed per-thread each cycle."]
     #[raw(0x1b1)]
@@ -3015,10 +3015,10 @@ pub struct InfoCoreEpc {
 #[doc = "Core actual clocks when any Logical Processor is active on the Physical Core"]
 pub struct InfoCoreCoreClks {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -3269,7 +3269,7 @@ pub struct InfoFrontendDsbSwitchCost {
 #[doc = "Taken Branches retired Per Cycle"]
 pub struct InfoFrontendTBpC {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "This event counts taken branch instructions retired."]
     #[raw(0x20c4)]
@@ -3371,10 +3371,10 @@ pub struct InfoBotlnkL2DsbMisses {
     #[raw(0x1e6)]
     pub baclears_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -3390,7 +3390,7 @@ pub struct InfoBotlnkL2DsbBandwidth {
     #[raw(0x400019c)]
     pub idq_uops_not_delivered_cycles_0_uops_deliv_core: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the number of cycles 4 uops were delivered to the Instruction Decode Queue (IDQ) from the MITE (legacy decode pipeline) path. Counting includes uops that may 'bypass' the IDQ. During these cycles uops are not being delivered from the Decode Stream Buffer (DSB)."]
     #[raw(0x4002479)]
@@ -3399,7 +3399,7 @@ pub struct InfoBotlnkL2DsbBandwidth {
     #[raw(0x1001879)]
     pub idq_dsb_cycles_any: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of cycles uops were delivered to the Instruction Decode Queue (IDQ) from the MITE (legacy decode pipeline) path. Counting includes uops that may 'bypass' the IDQ. During these cycles uops are not being delivered from the Decode Stream Buffer (DSB)."]
     #[raw(0x1002479)]
@@ -3418,10 +3418,10 @@ pub struct InfoBotlnkL2IcMisses {
     #[raw(0x187)]
     pub decode_lcp: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Cycles where a code fetch is stalled due to L1 instruction cache tag miss. [This event is alias to ICACHE_64B.IFTAG_STALL]"]
     #[raw(0x483)]
@@ -3484,7 +3484,7 @@ pub struct InfoBadSpecBranchMispredictionCost {
     #[raw(0xc5)]
     pub br_misp_retired_all_branches: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Core cycles the allocator was stalled due to recovery from earlier clear event for any thread running on the physical core (e.g. misprediction or memory nuke)."]
     #[raw(0x20010d)]
@@ -3520,7 +3520,7 @@ pub struct InfoBadSpecBranchMispredictionCost {
     #[raw(0x800d)]
     pub int_misc_clear_resteer_cycles: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
@@ -3761,7 +3761,7 @@ pub struct InfoMemoryTlbPageWalksUtilization {
     #[raw(0x1049)]
     pub dtlb_store_misses_walk_pending: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts 1 per cycle for each PMH that is busy with a page walk for a load. EPT page walk duration are excluded in Skylake microarchitecture."]
     #[raw(0x1008)]
@@ -3770,7 +3770,7 @@ pub struct InfoMemoryTlbPageWalksUtilization {
     #[raw(0x104f)]
     pub ept_walk_pending: u64,
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
-    #[raw(0x200200)]
+    #[raw(0x200013c)]
     pub cpu_clk_unhalted_thread_any: u64,
 }
 #[derive(Debug, Counter)]
@@ -3889,7 +3889,7 @@ pub struct InfoSystemCpUsUtilized {
 #[doc = "Measured Average Core Frequency for unhalted processors [GHz]"]
 pub struct InfoSystemCoreFrequency {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of reference cycles when the core is not in a halt state. The core enters the halt state when it is running the HLT instruction or the MWAIT instruction. This event is not affected by core frequency changes (for example, P states, TM2 transitions) but has the same incrementing frequency as the time stamp counter. This event can approximate elapsed time while the core was not in a halt state. This event has a constant ratio with the CPU_CLK_UNHALTED.REF_XCLK event. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events. Note: On all current platforms this event stops counting during 'throttling (TM)' states duty off periods the processor is 'halted'.  The counter update is done at a lower clock rate then the core clock the overflow status bit for this counter may appear 'sticky'.  After the counter has overflowed and software clears the overflow status bit and resets the counter to less than MAX. The reset value to the counter is not clocked immediately so the overflow status bit will flip 'high (1)' and generate another PMI (if enabled) after which the reset value gets clocked into the counter. Therefore, software will get the interrupt, read the overflow status bit '1 for bit 34 while the counter value is less than MAX. Software should ignore this case."]
     #[raw(0x300)]
@@ -3915,7 +3915,7 @@ pub struct InfoSystemGfloPs {
 #[doc = "Average Frequency Utilization relative nominal frequency"]
 pub struct InfoSystemTurboUtilization {
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
     #[doc = "Counts the number of reference cycles when the core is not in a halt state. The core enters the halt state when it is running the HLT instruction or the MWAIT instruction. This event is not affected by core frequency changes (for example, P states, TM2 transitions) but has the same incrementing frequency as the time stamp counter. This event can approximate elapsed time while the core was not in a halt state. This event has a constant ratio with the CPU_CLK_UNHALTED.REF_XCLK event. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events. Note: On all current platforms this event stops counting during 'throttling (TM)' states duty off periods the processor is 'halted'.  The counter update is done at a lower clock rate then the core clock the overflow status bit for this counter may appear 'sticky'.  After the counter has overflowed and software clears the overflow status bit and resets the counter to less than MAX. The reset value to the counter is not clocked immediately so the overflow status bit will flip 'high (1)' and generate another PMI (if enabled) after which the reset value gets clocked into the counter. Therefore, software will get the interrupt, read the overflow status bit '1 for bit 34 while the counter value is less than MAX. Software should ignore this case."]
     #[raw(0x300)]
@@ -3938,7 +3938,7 @@ pub struct InfoSystemKernelUtilization {
     #[raw(0x3c)]
     pub cpu_clk_unhalted_thread_p_sup: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
@@ -3994,7 +3994,7 @@ pub struct InfoSystemMux {
     #[raw(0x3c)]
     pub cpu_clk_unhalted_thread_p: u64,
     #[doc = "Counts the number of core cycles while the thread is not in a halt state. The thread enters the halt state when it is running the HLT instruction. This event is a component in many key event ratios. The core frequency may change from time to time due to transitions associated with Enhanced Intel SpeedStep Technology or TM2. For this reason this event may have a changing ratio with regards to time. When the core frequency is constant, this event can approximate elapsed time while the core was not in the halt state. It is counted on a dedicated fixed counter, leaving the four (eight when Hyperthreading is disabled) programmable counters available for other events."]
-    #[raw(0x200)]
+    #[raw(0x013c)]
     pub cpu_clk_unhalted_thread: u64,
 }
 #[derive(Debug, Counter)]
