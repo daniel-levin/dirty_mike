@@ -271,10 +271,17 @@ impl EventDefinitions {
     }
 }
 
+#[derive(Debug, PartialEq, Eq, Hash)]
+pub struct FieldDefn {
+    field_ident: proc_macro2::Ident,
+    raw: u64,
+    doc_string: String,
+}
+
 #[derive(Debug)]
 pub struct CounterSpec {
     name: proc_macro2::Ident,
-    fields: std::collections::HashSet<(proc_macro2::Ident, u64)>,
+    fields: std::collections::HashSet<FieldDefn>,
 }
 
 impl CounterSpec {
@@ -288,13 +295,17 @@ impl CounterSpec {
 
             let name_to_use = ea.name.replace(".", "_").replace(":", "_").to_lowercase();
 
-            let name = if name_to_use.chars().nth(0).unwrap().is_ascii_digit() {
+            let field_ident = if name_to_use.chars().nth(0).unwrap().is_ascii_digit() {
                 quote::format_ident!("_{}", name_to_use)
             } else {
                 quote::format_ident!("{}", name_to_use)
             };
 
-            fields.insert((name, defn.raw()));
+            fields.insert(FieldDefn {
+                field_ident,
+                raw: defn.raw(),
+                doc_string: defn.public_description.clone(),
+            });
         }
 
         let name = if metric.metric_name.chars().nth(0).unwrap().is_ascii_digit() {
@@ -310,11 +321,17 @@ impl CounterSpec {
         let name = &self.name;
         let mut fields = vec![];
 
-        for (name, raw) in self.fields.iter() {
+        for FieldDefn {
+            field_ident,
+            raw,
+            doc_string,
+        } in self.fields.iter()
+        {
             let value = proc_macro2::Literal::from_str(&format!("0x{raw:x}")).unwrap();
             fields.push(quote! {
+                #[doc = #doc_string]
                 #[raw(#value)]
-                pub #name: u64
+                pub #field_ident: u64
             });
         }
 
