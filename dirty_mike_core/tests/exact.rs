@@ -12,7 +12,7 @@ fn work(data: &[i32]) -> u64 {
 }
 
 #[test]
-fn test_builder() {
+fn test_builder() -> anyhow::Result<()> {
     // tma_frontend_bound on SKL
 
     let exact = ExactMeasurements::builder()
@@ -20,8 +20,7 @@ fn test_builder() {
         .follower(0x19c)
         .follower(0x23c)
         .follower(0x3c)
-        .build()
-        .unwrap();
+        .build()?;
 
     let mut shuffled_data: Vec<i32> = (0..320_768).collect();
     let mut rng = rand::rng();
@@ -32,4 +31,6 @@ fn test_builder() {
     let measurements = handle.stop().unwrap();
 
     dbg!(measurements);
+
+    Ok(())
 }

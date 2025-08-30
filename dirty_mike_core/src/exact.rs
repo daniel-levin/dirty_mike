@@ -12,7 +12,7 @@ pub enum ExactMeasurementsBuildError {
     #[error("cannot create group leader")]
     CannotCreateLeader(#[from] std::io::Error),
 
-    #[error("cannot attach follower {0} to group leader")]
+    #[error("cannot attach follower 0x{0:x} to group leader")]
     CannotAttachFollower(u64, #[source] std::io::Error),
 }
 
@@ -98,6 +98,7 @@ impl ExactMeasurementsBuilder {
             .exclude_hv(false)
             .exclude_guest(true)
             .inherit(true)
+            .pinned(true)
             .build_group()
             .map_err(ExactMeasurementsBuildError::CannotCreateLeader)?;
 
