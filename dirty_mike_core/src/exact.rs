@@ -99,6 +99,7 @@ impl ExactMeasurementsBuilder {
             .exclude_guest(true)
             .inherit(true)
             .pinned(true)
+            .exclusive(true)
             .build_group()
             .map_err(ExactMeasurementsBuildError::CannotCreateLeader)?;
 
