@@ -80,8 +80,8 @@ fn main() -> anyhow::Result<()> {
     setup(0x20010d);
     setup(0x23c);
     setup(0x3c);
-    setup(0x2c2);
-    setup(0x10e);
+    //setup(0x2c2);
+    //setup(0x10e);
 
     b.enable()?;
     work(&shuffled_data);

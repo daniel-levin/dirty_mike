@@ -1,3 +1,5 @@
+pub mod exact;
+
 pub mod pe2 {
     pub use perf_event::*;
 }

@@ -9,6 +9,7 @@ license = "Unlicense"
 perf-event2 = "0.7.4"
 dirty_mike_derive = { version = "0.1", path = "../dirty_mike_derive" }
 thiserror = "2"
+derive_more = { version = "2.0.1", features = ["debug"] }
 
 [dev-dependencies]
 anyhow = "1"
