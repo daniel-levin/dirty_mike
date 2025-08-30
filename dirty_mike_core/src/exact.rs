@@ -4,6 +4,7 @@ use perf_event::Group;
 use perf_event::ReadFormat;
 use perf_event::SampleFlag;
 use perf_event::events::Raw;
+use std::io;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -18,13 +19,44 @@ pub enum ExactMeasurementsBuildError {
 #[derive(derive_more::Debug)]
 pub struct ExactMeasurements {
     #[debug("opaque")]
-    leader: Group,
+    leader: Box<Group>,
     followers: Vec<Counter>,
 }
 
 impl ExactMeasurements {
     pub fn builder() -> ExactMeasurementsBuilder {
         ExactMeasurementsBuilder::default()
+    }
+
+    pub fn start(mut self) -> io::Result<ExactMeasurementsDropGuard> {
+        self.leader.enable()?;
+        Ok(ExactMeasurementsDropGuard {
+            leader: self.leader,
+            followers: self.followers,
+        })
+    }
+}
+
+#[derive(derive_more::Debug)]
+pub struct ExactMeasurementsDropGuard {
+    #[debug("opaque")]
+    leader: Box<Group>,
+    followers: Vec<Counter>,
+}
+
+impl ExactMeasurementsDropGuard {
+    pub fn stop(mut self) -> io::Result<Vec<u64>> {
+        self.leader.disable()?;
+        let counts = self.leader.read()?;
+
+        let leader_val = counts[&self.leader.as_counter()];
+        let mut values = vec![leader_val];
+
+        for f in self.followers.iter() {
+            values.push(counts[f]);
+        }
+
+        Ok(values)
     }
 }
 
@@ -89,6 +121,9 @@ impl ExactMeasurementsBuilder {
             followers.push(follower);
         }
 
-        Ok(ExactMeasurements { leader, followers })
+        Ok(ExactMeasurements {
+            leader: Box::new(leader),
+            followers,
+        })
     }
 }
