@@ -32,9 +32,7 @@ fn test_builder() -> anyhow::Result<()> {
     let mut sorted_data = shuffled_data.clone();
     sorted_data.sort();
 
-    let handle = exact.start().unwrap();
-    work(&shuffled_data);
-    let measurements = handle.stop().unwrap();
+    let measurements = exact.measure(|| work(&shuffled_data))?;
 
     let exact2 = ExactMeasurements::builder()
         .measure(0x13c)
@@ -43,9 +41,7 @@ fn test_builder() -> anyhow::Result<()> {
         .measure(0x3c)
         .build()?;
 
-    let handle2 = exact2.start().unwrap();
-    work(&sorted_data);
-    let measurements2 = handle2.stop().unwrap();
+    let measurements2 = exact2.measure(|| work(&sorted_data))?;
 
     dbg!(measurements);
     dbg!(measurements2);

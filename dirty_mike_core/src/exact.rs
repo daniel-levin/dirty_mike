@@ -38,6 +38,13 @@ impl ExactMeasurements {
             followers: self.followers,
         })
     }
+
+    pub fn measure<T, F: FnOnce() -> T>(self, f: F) -> std::io::Result<(T, Vec<u64>)> {
+        let dg = self.start()?;
+        let result = f();
+        let measurements = dg.stop()?;
+        Ok((result, measurements))
+    }
 }
 
 #[derive(derive_more::Debug)]
