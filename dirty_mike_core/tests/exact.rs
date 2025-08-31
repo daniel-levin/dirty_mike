@@ -19,10 +19,10 @@ fn test_builder() -> anyhow::Result<()> {
     // 0x23c = CPU_CLK_THREAD_UNHALTED.ONE_THREAD_ACTIVE
     // 0x3c  = CPU_CLK_UNHALTED.THREAD_P_ANY
     let exact = ExactMeasurements::builder()
-        .leader(0x13c)
-        .follower(0x19c)
-        .follower(0x23c)
-        .follower(0x3c)
+        .measure(0x13c)
+        .measure(0x19c)
+        .measure(0x23c)
+        .measure(0x3c)
         .build()?;
 
     let mut shuffled_data: Vec<i32> = (0..320_768).collect();
@@ -37,10 +37,10 @@ fn test_builder() -> anyhow::Result<()> {
     let measurements = handle.stop().unwrap();
 
     let exact2 = ExactMeasurements::builder()
-        .leader(0x13c)
-        .follower(0x19c)
-        .follower(0x23c)
-        .follower(0x3c)
+        .measure(0x13c)
+        .measure(0x19c)
+        .measure(0x23c)
+        .measure(0x3c)
         .build()?;
 
     let handle2 = exact2.start().unwrap();
