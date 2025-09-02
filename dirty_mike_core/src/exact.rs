@@ -5,6 +5,7 @@ use perf_event::ReadFormat;
 use perf_event::SampleFlag;
 use perf_event::events::Raw;
 use std::io;
+use std::time::Duration;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -19,6 +20,18 @@ pub enum ExactMeasurementsBuildError {
     NoDefinedEvents,
 }
 
+#[derive(Debug, Error)]
+pub enum ExactMeasurementsError {
+    #[error("cannot take reading from group")]
+    CannotReadGroup(#[source] io::Error),
+
+    #[error("cannot disable group")]
+    CannotDisable(#[source] io::Error),
+
+    #[error("cannot enable group")]
+    CannotEnableGroup(#[source] io::Error),
+}
+
 #[derive(derive_more::Debug)]
 pub struct ExactMeasurements {
     #[debug("opaque")]
@@ -31,15 +44,20 @@ impl ExactMeasurements {
         ExactMeasurementsBuilder::default()
     }
 
-    pub fn start(mut self) -> io::Result<ExactMeasurementsDropGuard> {
-        self.leader.enable()?;
+    pub fn start(mut self) -> Result<ExactMeasurementsDropGuard, ExactMeasurementsError> {
+        self.leader
+            .enable()
+            .map_err(ExactMeasurementsError::CannotEnableGroup)?;
         Ok(ExactMeasurementsDropGuard {
             leader: self.leader,
             followers: self.followers,
         })
     }
 
-    pub fn measure<T, F: FnOnce() -> T>(self, f: F) -> std::io::Result<(T, Vec<u64>)> {
+    pub fn measure<T, F: FnOnce() -> T>(
+        self,
+        f: F,
+    ) -> Result<(T, ExactMeasurementsReading), ExactMeasurementsError> {
         let dg = self.start()?;
         let result = f();
         let measurements = dg.stop()?;
@@ -54,19 +72,35 @@ pub struct ExactMeasurementsDropGuard {
     followers: Vec<Counter>,
 }
 
-impl ExactMeasurementsDropGuard {
-    pub fn stop(mut self) -> io::Result<Vec<u64>> {
-        self.leader.disable()?;
-        let counts = self.leader.read()?;
+#[derive(Debug)]
+pub struct ExactMeasurementsReading {
+    pub time_running: Duration,
+    pub time_enabled: Duration,
+    pub counts: Vec<u64>,
+}
 
-        let leader_val = counts[&self.leader.as_counter()];
-        let mut values = vec![leader_val];
+impl ExactMeasurementsDropGuard {
+    pub fn stop(mut self) -> Result<ExactMeasurementsReading, ExactMeasurementsError> {
+        self.leader
+            .disable()
+            .map_err(ExactMeasurementsError::CannotDisable)?;
+        let measurements = self
+            .leader
+            .read()
+            .map_err(ExactMeasurementsError::CannotReadGroup)?;
+
+        let leader_val = measurements[&self.leader.as_counter()];
+        let mut counts = vec![leader_val];
 
         for f in self.followers.iter() {
-            values.push(counts[f]);
+            counts.push(measurements[f]);
         }
 
-        Ok(values)
+        Ok(ExactMeasurementsReading {
+            counts,
+            time_running: measurements.time_running().unwrap(),
+            time_enabled: measurements.time_enabled().unwrap(),
+        })
     }
 }
 

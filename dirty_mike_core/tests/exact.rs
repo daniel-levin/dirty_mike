@@ -25,7 +25,7 @@ fn test_builder() -> anyhow::Result<()> {
         .measure(0x3c)
         .build()?;
 
-    let mut shuffled_data: Vec<i32> = (0..320_768).collect();
+    let mut shuffled_data: Vec<i32> = (0..1_320_768).collect();
     let mut rng = rand::rng();
     shuffled_data.shuffle(&mut rng);
 
