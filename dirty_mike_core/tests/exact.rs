@@ -43,8 +43,5 @@ fn test_builder() -> anyhow::Result<()> {
 
     let measurements2 = exact2.measure(|| work(&sorted_data))?;
 
-    dbg!(measurements);
-    dbg!(measurements2);
-
     Ok(())
 }
