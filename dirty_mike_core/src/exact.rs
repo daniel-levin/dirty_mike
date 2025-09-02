@@ -131,8 +131,8 @@ impl ExactMeasurementsBuilder {
             .sample(SampleFlag::IDENTIFIER)
             .read_format(rf)
             .enable_on_exec(true)
-            .exclude_kernel(false)
-            .exclude_hv(false)
+            .exclude_kernel(true)
+            .exclude_hv(true)
             .exclude_guest(true)
             .inherit(true)
             .pinned(true)
@@ -146,8 +146,9 @@ impl ExactMeasurementsBuilder {
             let mut fb = Builder::new(Raw::new(*raw_follower_code));
             let fb = fb
                 .inherit(true)
-                .exclude_kernel(false)
-                .exclude_hv(false)
+                .exclude_kernel(true)
+                .exclude_hv(true)
+                .exclude_guest(true)
                 .sample(SampleFlag::IDENTIFIER)
                 .read_format(rf);
 

@@ -6,13 +6,7 @@ fn main() -> anyhow::Result<()> {
         .measure(0x3c) // cycles
         .build()?;
 
-    let o = exact.measure(|| {
-        for i in 0..100 {
-            if i > 1000 {
-                dbg!("");
-            }
-        }
-    })?;
+    let o = exact.measure(|| {})?;
 
     dbg!(o);
 
