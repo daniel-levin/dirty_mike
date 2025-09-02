@@ -199,7 +199,6 @@ pub fn derive_counter_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     let expanded = quote! {
         impl #name {
             pub fn new() -> std::io::Result<::dirty_mike_core::Counters<Self>> {
-                //use ::dirty_mike_core::pe2::*;
                 use ::dirty_mike_core::pe2::events::{Raw, Hardware};
                 let mut ctrs = ::dirty_mike_core::Counters::new();
 
