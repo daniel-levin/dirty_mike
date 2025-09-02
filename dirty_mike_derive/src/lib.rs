@@ -1,9 +1,8 @@
 use proc_macro::TokenStream;
 use syn::parse_macro_input;
-use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, FieldsNamed, Ident, Meta, Type};
+use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, Meta, Type};
 
 mod counter;
-mod exact_counter;
 
 #[proc_macro_derive(Counter, attributes(hardware, raw))]
 pub fn derive_counter(input: TokenStream) -> TokenStream {
@@ -15,20 +14,13 @@ pub fn derive_counter(input: TokenStream) -> TokenStream {
     }
 }
 
-#[proc_macro_derive(ExactCounter, attributes(raw))]
-pub fn derive_exact_counter(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as DeriveInput);
-
-    match exact_counter::derive_counter_inner(input) {
-        Ok(tokens) => tokens,
-        Err(err) => err.to_compile_error().into(),
-    }
-}
+#[derive(Debug)]
 pub(crate) enum EventSpec {
     Hardware(String),
     Raw(u64),
 }
 
+#[derive(Debug)]
 pub(crate) struct DesignatedField {
     pub name: syn::Ident,
     pub spec: EventSpec,
@@ -36,8 +28,6 @@ pub(crate) struct DesignatedField {
 
 impl DesignatedField {
     pub fn extract_fields(input: DeriveInput) -> Result<Vec<DesignatedField>, syn::Error> {
-        let name = &input.ident;
-
         if !input.generics.lifetimes().collect::<Vec<_>>().is_empty() {
             return Err(Error::new_spanned(
                 &input.generics,
@@ -178,4 +168,58 @@ fn is_valid_hardware_event(event: &str) -> bool {
             | "STALLED_CYCLES_BACKEND"
             | "REF_CPU_CYCLES"
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_no_extractions() {
+        let i = syn::parse_str(
+            r#"
+        #[derive(Debug, ExactCounter)]
+        pub struct A {
+        }
+        "#,
+        )
+        .unwrap();
+
+        assert!(DesignatedField::extract_fields(i).unwrap().is_empty());
+    }
+
+    #[test]
+    fn test_mixed_extractions() {
+        let i = syn::parse_str(
+            r#"
+        #[derive(Debug, ExactCounter)]
+        pub struct A {
+            #[raw(0xab)]
+            a: u64,
+
+            #[raw(0xcd)]
+            pub b: u64
+        }
+        "#,
+        )
+        .unwrap();
+
+        let fields = DesignatedField::extract_fields(i).unwrap();
+
+        assert!(matches!(
+            &fields[0],
+            DesignatedField {
+                spec: EventSpec::Raw(0xab),
+                ..
+            }
+        ));
+
+        assert!(matches!(
+            &fields[1],
+            DesignatedField {
+                spec: EventSpec::Raw(0xcd),
+                ..
+            }
+        ));
+    }
 }

@@ -20,6 +20,12 @@ pub struct Counters<M: Measurements> {
     _m: PhantomData<M>,
 }
 
+impl<M: Measurements> Default for Counters<M> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<M: Measurements> Counters<M> {
     pub fn new() -> Self {
         Self {

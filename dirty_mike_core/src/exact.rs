@@ -89,7 +89,7 @@ impl ExactMeasurementsDropGuard {
             .read()
             .map_err(ExactMeasurementsError::CannotReadGroup)?;
 
-        let leader_val = measurements[&self.leader.as_counter()];
+        let leader_val = measurements[self.leader.as_counter()];
         let mut counts = vec![leader_val];
 
         for f in self.followers.iter() {
