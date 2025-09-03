@@ -30,6 +30,9 @@ pub enum ExactMeasurementsError {
 
     #[error("cannot enable group")]
     CannotEnableGroup(#[source] io::Error),
+
+    #[error(transparent)]
+    CannotBuildGroup(#[from] ExactMeasurementsBuildError),
 }
 
 #[derive(derive_more::Debug)]

@@ -31,6 +31,16 @@ pub(crate) enum EventSpec {
     Raw(u64),
 }
 
+impl EventSpec {
+    pub fn unwrap_raw(&self) -> u64 {
+        let Self::Raw(x) = &self else {
+            panic!("");
+        };
+
+        *x
+    }
+}
+
 #[derive(Debug)]
 pub(crate) struct DesignatedField {
     pub name: syn::Ident,

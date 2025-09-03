@@ -4,15 +4,19 @@ use core::arch::x86_64::_mm_movemask_epi8;
 use core::arch::x86_64::_mm_set1_epi8;
 use core::arch::x86_64::_popcnt32;
 use dirty_mike_core::exact::*;
+use dirty_mike_derive::ExactCounter;
+
+#[derive(Debug, ExactCounter)]
+struct Metrics {
+    #[raw(0xc0)]
+    ins_retired: u64,
+
+    #[raw(0x3c)]
+    cycles: u64,
+}
 
 fn main() -> anyhow::Result<()> {
-    let exact = ExactMeasurements::builder()
-        .measure(0xc0) // ins retired
-        .measure(0x3c) // cycles
-        .measure(0x10e) // uops issued
-        .build()?;
-
-    let simd = exact.measure(|| {
+    let simd = Metrics::measure(|| {
         let mut count = 0;
         let mask = unsafe { _mm_set1_epi8('f' as i8) };
 
@@ -31,13 +35,7 @@ fn main() -> anyhow::Result<()> {
         count
     })?;
 
-    let exact = ExactMeasurements::builder()
-        .measure(0xc0) // ins retired
-        .measure(0x3c) // cycles
-        .measure(0x10e) // uops issued
-        .build()?;
-
-    let single = exact.measure(|| {
+    let single = Metrics::measure(|| {
         let mut count = 0;
         for i in include_bytes!("page.txt") {
             if *i == b'f' {
