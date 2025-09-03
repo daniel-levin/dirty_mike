@@ -6,12 +6,19 @@ use core::arch::x86_64::_popcnt32;
 use dirty_mike_derive::ExactCounter;
 
 #[derive(Debug, ExactCounter)]
+#[allow(dead_code)]
 struct Metrics {
-    #[raw(0xc0)]
-    ins_retired: u64,
+    #[raw(0x0728)]
+    core_power_lvl0_turbo_license: u64,
 
-    #[raw(0x3c)]
-    cycles: u64,
+    #[raw(0x1828)]
+    core_power_lvl1_turbo_license: u64,
+
+    #[raw(0x2028)]
+    core_power_lvl2_turbo_license: u64,
+
+    #[raw(0x4028)]
+    core_power_throttle: u64,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -45,8 +52,8 @@ fn main() -> anyhow::Result<()> {
         count
     })?;
 
-    dbg!(single);
-    dbg!(simd);
+    dbg!(&single);
+    dbg!(&simd);
 
     Ok(())
 }
