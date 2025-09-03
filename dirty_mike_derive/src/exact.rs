@@ -22,9 +22,19 @@ pub fn derive_exact_counter_inner(input: DeriveInput) -> Result<TokenStream, Err
         })
         .collect::<Vec<_>>();
 
+    let field_assignments = cs
+        .iter()
+        .enumerate()
+        .map(|(idx, DesignatedField { name, .. })| {
+            quote! {
+                #name: reading.counts[#idx]
+            }
+        })
+        .collect::<Vec<_>>();
+
     let code = quote! {
         impl #name {
-            pub fn measure<T, F: FnOnce() -> T>(f: F) -> Result<T, ::dirty_mike_core::exact::ExactMeasurementsError> {
+            pub fn measure<T, F: FnOnce() -> T>(f: F) -> Result<(T, Self), ::dirty_mike_core::exact::ExactMeasurementsError> {
                 #imports
 
                 let eb = ExactMeasurements::builder()
@@ -33,7 +43,11 @@ pub fn derive_exact_counter_inner(input: DeriveInput) -> Result<TokenStream, Err
 
                 let (outcome, reading) = eb.measure(f)?;
 
-                Ok(outcome)
+                let me = Self {
+                    #(#field_assignments),*
+                };
+
+                Ok((outcome, me))
             }
         }
     };
