@@ -1,11 +1,5 @@
-use perf_event::Builder;
-use perf_event::Counter;
-use perf_event::Group;
-use perf_event::ReadFormat;
-use perf_event::SampleFlag;
-use perf_event::events::Raw;
-use std::io;
-use std::time::Duration;
+use perf_event::{Builder, Counter, Group, ReadFormat, SampleFlag, events::Raw};
+use std::{io, time::Duration};
 use thiserror::Error;
 
 #[derive(Debug, Error)]

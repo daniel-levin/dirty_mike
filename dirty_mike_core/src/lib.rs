@@ -4,11 +4,8 @@ pub mod pe2 {
     pub use perf_event::*;
 }
 
-use pe2::Builder;
-use pe2::Counter;
-use pe2::events::Event;
-use std::io;
-use std::marker::PhantomData;
+use pe2::{Builder, Counter, events::Event};
+use std::{io, marker::PhantomData};
 
 pub trait Measurements: Send + Sync + 'static {
     fn from_observations(observations: &[u64]) -> Self;

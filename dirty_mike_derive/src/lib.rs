@@ -1,6 +1,5 @@
 use proc_macro::TokenStream;
-use syn::parse_macro_input;
-use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, Meta, Type};
+use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, Meta, Type, parse_macro_input};
 
 mod counter;
 mod exact;

@@ -1,10 +1,11 @@
 use heck::ToUpperCamelCase;
 use quote::quote;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::collections::HashSet;
-use std::path::Path;
-use std::str::FromStr;
+use std::{
+    collections::{HashMap, HashSet},
+    path::Path,
+    str::FromStr,
+};
 
 fn dehex<'de, D: serde::Deserializer<'de>>(d: D) -> Result<u8, D::Error> {
     let s = <&str>::deserialize(d)?;
