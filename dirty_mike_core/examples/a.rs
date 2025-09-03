@@ -3,7 +3,6 @@ use core::arch::x86_64::_mm_loadu_epi8;
 use core::arch::x86_64::_mm_movemask_epi8;
 use core::arch::x86_64::_mm_set1_epi8;
 use core::arch::x86_64::_popcnt32;
-use dirty_mike_core::exact::*;
 use dirty_mike_derive::ExactCounter;
 
 #[derive(Debug, ExactCounter)]
