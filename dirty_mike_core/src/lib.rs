@@ -11,6 +11,7 @@ pub use dirty_mike_derive::Observations;
 #[derive(Debug)]
 pub struct MeasurementDefinition {
     pub name: &'static str,
+    pub code: u64,
 }
 
 #[derive(Debug, Error)]

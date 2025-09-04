@@ -6,16 +6,6 @@ pub(crate) enum ObservableEventSpec {
     Raw(u64),
 }
 
-impl ObservableEventSpec {
-    pub fn unwrap_raw(&self) -> u64 {
-        let Self::Raw(x) = &self else {
-            panic!("");
-        };
-
-        *x
-    }
-}
-
 #[derive(Debug)]
 pub(crate) struct DesignatedField {
     pub name: syn::Ident,

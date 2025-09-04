@@ -1,4 +1,4 @@
-use crate::fields::DesignatedField;
+use crate::fields::{DesignatedField, ObservableEventSpec};
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DeriveInput, Error};
@@ -61,11 +61,22 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
 
     let static_fields = cs
         .iter()
-        .map(|DesignatedField { name, .. }| {
+        .map(|DesignatedField { name, spec }| {
+            let raw_code = match spec {
+                ObservableEventSpec::Raw(r) => quote! { #r },
+                ObservableEventSpec::Hardware(hw) => {
+                    let ident = quote::format_ident!("{}", hw.to_uppercase());
+                    quote! {
+                        ::dirty_mike_core::pe2::events::Hardware::#ident.0
+                    }
+                }
+            };
+
             let name_as_s = name.to_string();
             quote! {
                 ::dirty_mike_core::MeasurementDefinition {
-                    name: #name_as_s
+                    name: #name_as_s,
+                    code: #raw_code,
                 }
             }
         })

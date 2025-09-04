@@ -9,6 +9,23 @@ struct S {
     y: u64,
 }
 
+#[derive(Debug, Observations)]
+struct T {
+    #[hardware(CPU_CYCLES)]
+    cpu_cycles: u64,
+
+    #[raw(0xcd)]
+    other: u64,
+}
+
+#[test]
+fn agreement() {
+    assert_eq!(
+        dirty_mike_core::pe2::events::Hardware::CPU_CYCLES.0,
+        T::fields()[0].code
+    );
+}
+
 #[test]
 fn can_instantiate_from_measurements() {
     let s = S::new(&[50, 100]).unwrap();
