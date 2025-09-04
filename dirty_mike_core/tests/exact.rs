@@ -8,6 +8,12 @@ struct S {
 
     #[raw(0x20010d)]
     int_misc_recovery_cycles_any: u64,
+
+    #[raw(0x2c2)]
+    uops_retired_retire_slots: u64,
+
+    #[raw(0x10e)]
+    uops_issued_any: u64,
 }
 
 fn work(data: &[i32]) -> u64 {

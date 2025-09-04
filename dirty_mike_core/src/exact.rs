@@ -1,6 +1,6 @@
 use crate::Observations;
-use perf_event::{Builder, Counter, Group, ReadFormat, SampleFlag, events::Raw};
-use std::{io, marker::PhantomData, sync::Arc, time::Duration};
+use perf_event::{Builder, Counter, ReadFormat, SampleFlag, events::Raw};
+use std::{io, marker::PhantomData, sync::Arc};
 use thiserror::Error;
 
 #[derive(Debug, Clone, Error)]
