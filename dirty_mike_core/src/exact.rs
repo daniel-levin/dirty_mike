@@ -21,7 +21,7 @@ pub enum ExactMeasurementsError {
     CannotReadGroup(#[source] io::Error),
 
     #[error("cannot disable group")]
-    CannotDisable(#[source] io::Error),
+    CannotDisableGroup(#[source] io::Error),
 
     #[error("cannot enable group")]
     CannotEnableGroup(#[source] io::Error),
@@ -122,12 +122,14 @@ impl<const N: usize, Obs: Observations<N>> ExactMeasurements<N, Obs> {
     }
 
     pub fn measure<T, F: FnOnce() -> T>(f: F) -> Result<(T, Obs), ExactMeasurementsError> {
-        let mut me = Self::new().unwrap();
+        let mut me = Self::new().map_err(ExactMeasurementsError::CannotBuildGroup)?;
 
-        me.enable().unwrap();
+        me.enable()
+            .map_err(ExactMeasurementsError::CannotEnableGroup)?;
         let t = f();
-        me.disable().unwrap();
-        let obs = me.read().unwrap();
+        me.disable()
+            .map_err(ExactMeasurementsError::CannotDisableGroup)?;
+        let obs = me.read().map_err(ExactMeasurementsError::CannotReadGroup)?;
 
         Ok((t, obs))
     }
