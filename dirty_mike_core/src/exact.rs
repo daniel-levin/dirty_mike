@@ -31,12 +31,12 @@ pub enum ExactMeasurementsError {
 }
 
 #[derive(Debug)]
-pub struct ExactMeasurements<const N: usize, Obs: Observations<N>> {
+pub struct ExactMeasurements<Obs: Observations<N>, const N: usize> {
     counters: [Counter; N],
     _pd: PhantomData<Obs>,
 }
 
-impl<const N: usize, Obs: Observations<N>> ExactMeasurements<N, Obs> {
+impl<Obs: Observations<N>, const N: usize> ExactMeasurements<Obs, N> {
     pub fn new() -> Result<Self, ExactMeasurementsBuildError> {
         let rf = ReadFormat::TOTAL_TIME_ENABLED
             | ReadFormat::TOTAL_TIME_RUNNING
