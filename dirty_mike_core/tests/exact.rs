@@ -27,6 +27,7 @@ fn work(data: &[i32]) -> u64 {
 }
 
 #[test]
+#[cfg_attr(feature = "ci", ignore = "requires perf_event_open capabilities")]
 fn take_exact_measurements() {
     let data_size = 32_768_00;
     let mut shuffled_data: Vec<i32> = (0..data_size).collect();
