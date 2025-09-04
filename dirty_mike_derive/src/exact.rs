@@ -49,6 +49,10 @@ pub fn derive_exact_counter_inner(input: DeriveInput) -> Result<TokenStream, Err
 
                 Ok((outcome, me))
             }
+
+            pub fn measure_n<T, F: FnOnce() -> T, G: Fn() -> F>(n: usize, g: G) -> Result<Vec<(T, Self)>, ::dirty_mike_core::exact::ExactMeasurementsError> {
+                (0..n).map(|i| Self::measure(g())).collect()
+            }
         }
     };
 

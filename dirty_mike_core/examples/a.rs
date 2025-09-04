@@ -39,15 +39,17 @@ fn main() -> anyhow::Result<()> {
         count
     })?;
 
-    let single = Metrics::measure(|| {
-        let mut count = 0;
-        for i in include_bytes!("page.txt") {
-            if *i == b'f' {
-                count += 1;
+    let single = Metrics::measure_n(10, || {
+        || {
+            let mut count = 0;
+            for i in include_bytes!("page.txt") {
+                if *i == b'f' {
+                    count += 1;
+                }
             }
-        }
 
-        count
+            count
+        }
     })?;
 
     dbg!(&single);
