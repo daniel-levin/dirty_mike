@@ -34,16 +34,9 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
 
     let trait_impl = quote! {
         impl ::dirty_mike_core::Observations <#n> for #name {
-            fn new(observations: &[u64]) -> Result<Self, ::dirty_mike_core::ObservationsOutOfBounds> {
-                let received: usize = observations.len();
-                let expected: usize = #expected_count;
-
-                if received != expected {
-                    Err(::dirty_mike_core::ObservationsOutOfBounds { received, expected })
-                } else {
-                    Ok(Self {
-                        #(#field_assignments),*
-                    })
+            fn new(observations: [u64; #n]) -> Self {
+                Self {
+                    #(#field_assignments),*
                 }
             }
 
