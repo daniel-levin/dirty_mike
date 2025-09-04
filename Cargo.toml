@@ -1,3 +1,8 @@
 [workspace]
 resolver = "2"
 members = ["dirty_mike", "dirty_mike_core", "dirty_mike_derive", "util/perfmon2rust"]
+
+[patch.crates-io]
+toml = { path = "vendor/toml" }
+toml_parser = { path = "vendor/toml_parser" }
+dirty_mike_core = { path = "dirty_mike_core" }

@@ -4,8 +4,23 @@ pub mod pe2 {
     pub use perf_event::*;
 }
 
+pub use dirty_mike_derive::ExactCounter;
+
 use pe2::{Builder, Counter, events::Event};
 use std::{io, marker::PhantomData};
+
+pub trait Measurable: Sized + Send + Sync + 'static {
+    type Error;
+
+    fn measure<T, F: FnOnce() -> T>(f: F) -> Result<(T, Self), Self::Error>;
+
+    fn measure_n<T, F: FnOnce() -> T, G: Fn() -> F>(
+        n: usize,
+        g: G,
+    ) -> Result<Vec<(T, Self)>, Self::Error> {
+        (0..n).map(|_| Self::measure(g())).collect()
+    }
+}
 
 pub trait Measurements: Send + Sync + 'static {
     fn from_observations(observations: &[u64]) -> Self;

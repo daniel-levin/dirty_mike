@@ -34,6 +34,14 @@ pub fn derive_exact_counter_inner(input: DeriveInput) -> Result<TokenStream, Err
 
     let code = quote! {
         impl #name {
+            pub fn new() -> Result<::dirty_mike_core::exact::ExactMeasurements, ::dirty_mike_core::exact::ExactMeasurementsError> {
+                #imports
+
+                Ok(ExactMeasurements::builder()
+                    #(#enable_measurements)*
+                    .build()?)
+            }
+
             pub fn measure<T, F: FnOnce() -> T>(f: F) -> Result<(T, Self), ::dirty_mike_core::exact::ExactMeasurementsError> {
                 #imports
 
