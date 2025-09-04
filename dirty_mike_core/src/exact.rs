@@ -100,6 +100,26 @@ impl<const N: usize, Obs: Observations<N>> ExactMeasurements<N, Obs> {
             _pd: PhantomData,
         })
     }
+
+    pub fn enable(&mut self) -> io::Result<()> {
+        self.counters[0].enable_group()
+    }
+
+    pub fn disable(&mut self) -> io::Result<()> {
+        self.counters[0].disable_group()
+    }
+
+    pub fn read(&mut self) -> io::Result<Obs> {
+        let mut readings = [0; N];
+
+        let counts = self.counters[0].read_group()?;
+
+        for i in 0..N {
+            readings[i] = counts[&self.counters[i]];
+        }
+
+        Ok(Obs::new(readings))
+    }
 }
 
 /*
