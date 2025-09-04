@@ -15,7 +15,7 @@ pub struct MeasurementDefinition {
 pub trait Observations<const N: usize>: Sized + Send + Sync + 'static {
     fn new(observations: [u64; N]) -> Self;
 
-    fn fields() -> &'static [MeasurementDefinition];
+    fn fields() -> &'static [MeasurementDefinition; N];
 
     fn measurements(&self) -> [u64; N];
 }

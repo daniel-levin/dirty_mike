@@ -40,7 +40,7 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
                 }
             }
 
-            fn fields() -> &'static [dirty_mike_core::MeasurementDefinition] {
+            fn fields() -> &'static [dirty_mike_core::MeasurementDefinition; #n] {
                 & #static_field_name
             }
 

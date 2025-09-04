@@ -1,14 +1,15 @@
+use crate::Observations;
 use perf_event::{Builder, Counter, Group, ReadFormat, SampleFlag, events::Raw};
-use std::{io, time::Duration};
+use std::{io, marker::PhantomData, sync::Arc, time::Duration};
 use thiserror::Error;
 
-#[derive(Debug, Error)]
+#[derive(Debug, Clone, Error)]
 pub enum ExactMeasurementsBuildError {
     #[error("cannot create group leader")]
-    CannotCreateLeader(#[from] std::io::Error),
+    CannotCreateLeader(#[source] Arc<std::io::Error>),
 
     #[error("cannot attach follower 0x{0:x} to group leader")]
-    CannotAttachFollower(u64, #[source] std::io::Error),
+    CannotAttachFollower(u64, #[source] Arc<std::io::Error>),
 
     #[error("no events defined")]
     NoDefinedEvents,
@@ -29,76 +30,84 @@ pub enum ExactMeasurementsError {
     CannotBuildGroup(#[from] ExactMeasurementsBuildError),
 }
 
-#[derive(derive_more::Debug)]
-pub struct ExactMeasurements {
-    #[debug("opaque")]
-    leader: Box<Group>,
-    followers: Vec<Counter>,
+#[derive(Debug)]
+pub struct ExactMeasurements<const N: usize, Obs: Observations<N>> {
+    counters: [Counter; N],
+    _pd: PhantomData<Obs>,
 }
 
-impl ExactMeasurements {
-    pub fn builder() -> ExactMeasurementsBuilder {
-        ExactMeasurementsBuilder::default()
-    }
+impl<const N: usize, Obs: Observations<N>> ExactMeasurements<N, Obs> {
+    pub fn new() -> Result<Self, ExactMeasurementsBuildError> {
+        let rf = ReadFormat::TOTAL_TIME_ENABLED
+            | ReadFormat::TOTAL_TIME_RUNNING
+            | ReadFormat::ID
+            | ReadFormat::GROUP;
 
-    pub fn start(mut self) -> Result<ExactMeasurementsDropGuard, ExactMeasurementsError> {
-        self.leader
-            .enable()
-            .map_err(ExactMeasurementsError::CannotEnableGroup)?;
-        Ok(ExactMeasurementsDropGuard {
-            leader: self.leader,
-            followers: self.followers,
+        let fields = Obs::fields();
+
+        let mut leader = Builder::new(Raw::new(fields[0].code))
+            .sample(SampleFlag::IDENTIFIER)
+            .read_format(rf)
+            .enable_on_exec(true)
+            .exclude_kernel(true)
+            .exclude_hv(true)
+            .exclude_guest(true)
+            .inherit(true)
+            .pinned(true)
+            .exclusive(true)
+            .build_group()
+            .map_err(Arc::new)
+            .map_err(ExactMeasurementsBuildError::CannotCreateLeader)?;
+
+        let mut counters: [Result<Option<Counter>, ExactMeasurementsBuildError>; N] =
+            std::array::from_fn(|i| {
+                if i == 0 {
+                    Ok(None)
+                } else {
+                    let raw_follower_code = fields[i].code;
+                    let mut fb = Builder::new(Raw::new(raw_follower_code));
+                    let fb = fb
+                        .inherit(true)
+                        .exclude_kernel(true)
+                        .exclude_hv(true)
+                        .exclude_guest(true)
+                        .sample(SampleFlag::IDENTIFIER)
+                        .read_format(rf);
+
+                    fb.attrs_mut().set_disabled(0);
+
+                    let follower = leader.add(fb).map_err(|e| {
+                        ExactMeasurementsBuildError::CannotAttachFollower(
+                            raw_follower_code,
+                            Arc::new(e),
+                        )
+                    })?;
+
+                    Ok(Some(follower))
+                }
+            });
+
+        counters[0] = Ok(Some(leader.into_counter()));
+
+        for maybe_faulted in &counters {
+            if let Err(e) = maybe_faulted {
+                return Err(e.clone());
+            }
+        }
+
+        Ok(Self {
+            counters: counters.map(|c| c.unwrap().unwrap()),
+            _pd: PhantomData,
         })
     }
-
-    pub fn measure<T, F: FnOnce() -> T>(
-        self,
-        f: F,
-    ) -> Result<(T, ExactMeasurementsReading), ExactMeasurementsError> {
-        let dg = self.start()?;
-        let result = f();
-        let measurements = dg.stop()?;
-        Ok((result, measurements))
-    }
 }
 
-#[derive(derive_more::Debug)]
-pub struct ExactMeasurementsDropGuard {
-    #[debug("opaque")]
-    leader: Box<Group>,
-    followers: Vec<Counter>,
-}
-
+/*
 #[derive(Debug)]
 pub struct ExactMeasurementsReading {
     pub time_running: Duration,
     pub time_enabled: Duration,
     pub counts: Vec<u64>,
-}
-
-impl ExactMeasurementsDropGuard {
-    pub fn stop(mut self) -> Result<ExactMeasurementsReading, ExactMeasurementsError> {
-        self.leader
-            .disable()
-            .map_err(ExactMeasurementsError::CannotDisable)?;
-        let measurements = self
-            .leader
-            .read()
-            .map_err(ExactMeasurementsError::CannotReadGroup)?;
-
-        let leader_val = measurements[self.leader.as_counter()];
-        let mut counts = vec![leader_val];
-
-        for f in self.followers.iter() {
-            counts.push(measurements[f]);
-        }
-
-        Ok(ExactMeasurementsReading {
-            counts,
-            time_running: measurements.time_running().unwrap(),
-            time_enabled: measurements.time_enabled().unwrap(),
-        })
-    }
 }
 
 #[derive(Debug, Default)]
@@ -164,3 +173,4 @@ impl ExactMeasurementsBuilder {
         })
     }
 }
+*/
