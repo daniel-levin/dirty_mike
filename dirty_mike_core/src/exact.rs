@@ -131,6 +131,13 @@ impl<const N: usize, Obs: Observations<N>> ExactMeasurements<N, Obs> {
 
         Ok((t, obs))
     }
+
+    pub fn measure_k<T, G: Fn() -> F, F: FnOnce() -> T>(
+        k: usize,
+        g: G,
+    ) -> Result<Vec<(T, Obs)>, ExactMeasurementsError> {
+        (0..k).map(|_| Self::measure(g())).collect()
+    }
 }
 
 /*

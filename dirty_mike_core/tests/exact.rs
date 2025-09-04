@@ -33,8 +33,10 @@ fn take_exact_measurements() {
     let mut rng = rand::rng();
     shuffled_data.shuffle(&mut rng);
 
-    let (_, obs) = ExactMeasurements::<_, S>::measure(|| {
-        work(&shuffled_data);
+    let obs = ExactMeasurements::<_, S>::measure_k(10, || {
+        || {
+            work(&shuffled_data);
+        }
     })
     .unwrap();
 
