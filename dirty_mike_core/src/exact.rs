@@ -132,83 +132,10 @@ impl<const N: usize, Obs: Observations<N>> ExactMeasurements<N, Obs> {
         Ok((t, obs))
     }
 
-    pub fn measure_k<T, G: Fn() -> F, F: FnOnce() -> T>(
+    pub fn measure_k<T, G: Fn(usize) -> F, F: FnOnce() -> T>(
         k: usize,
         g: G,
     ) -> Result<Vec<(T, Obs)>, ExactMeasurementsError> {
-        (0..k).map(|_| Self::measure(g())).collect()
+        (0..k).map(|i| Self::measure(g(i))).collect()
     }
 }
-
-/*
-#[derive(Debug)]
-pub struct ExactMeasurementsReading {
-    pub time_running: Duration,
-    pub time_enabled: Duration,
-    pub counts: Vec<u64>,
-}
-
-#[derive(Debug, Default)]
-pub struct ExactMeasurementsBuilder {
-    raw_codes: Vec<u64>,
-}
-
-impl ExactMeasurementsBuilder {
-    pub fn measure(mut self, raw_code: u64) -> Self {
-        self.raw_codes.push(raw_code);
-        self
-    }
-
-    pub fn build(self) -> Result<ExactMeasurements, ExactMeasurementsBuildError> {
-        if self.raw_codes.is_empty() {
-            return Err(ExactMeasurementsBuildError::NoDefinedEvents);
-        }
-
-        let rf = ReadFormat::TOTAL_TIME_ENABLED
-            | ReadFormat::TOTAL_TIME_RUNNING
-            | ReadFormat::ID
-            | ReadFormat::GROUP;
-
-        let leader_raw_code = self.raw_codes[0];
-
-        let mut leader = Builder::new(Raw::new(leader_raw_code))
-            .sample(SampleFlag::IDENTIFIER)
-            .read_format(rf)
-            .enable_on_exec(true)
-            .exclude_kernel(true)
-            .exclude_hv(true)
-            .exclude_guest(true)
-            .inherit(true)
-            .pinned(true)
-            .exclusive(true)
-            .build_group()
-            .map_err(ExactMeasurementsBuildError::CannotCreateLeader)?;
-
-        let mut followers = vec![];
-
-        for raw_follower_code in &self.raw_codes[1..] {
-            let mut fb = Builder::new(Raw::new(*raw_follower_code));
-            let fb = fb
-                .inherit(true)
-                .exclude_kernel(true)
-                .exclude_hv(true)
-                .exclude_guest(true)
-                .sample(SampleFlag::IDENTIFIER)
-                .read_format(rf);
-
-            fb.attrs_mut().set_disabled(0);
-
-            let follower = leader.add(fb).map_err(|e| {
-                ExactMeasurementsBuildError::CannotAttachFollower(*raw_follower_code, e)
-            })?;
-
-            followers.push(follower);
-        }
-
-        Ok(ExactMeasurements {
-            leader: Box::new(leader),
-            followers,
-        })
-    }
-}
-*/
