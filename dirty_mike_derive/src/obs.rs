@@ -30,6 +30,8 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
     let expected_count = cs.len();
     let n = expected_count;
 
+    let static_field_name = quote::format_ident!("MEASUREMENT_DEFNS_{}", &name);
+
     let trait_impl = quote! {
         impl ::dirty_mike_core::Observations <#n> for #name {
             fn new(observations: &[u64]) -> Result<Self, ::dirty_mike_core::ObservationsOutOfBounds> {
@@ -45,6 +47,10 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
                 }
             }
 
+            fn fields() -> &'static [dirty_mike_core::MeasurementDefinition] {
+                & #static_field_name
+            }
+
             fn measurements(&self) -> [u64; #n] {
                 [
                     #(#field_reads),*
@@ -53,5 +59,30 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
         }
     };
 
-    Ok(trait_impl.into())
+    let static_fields = cs
+        .iter()
+        .map(|DesignatedField { name, .. }| {
+            let name_as_s = name.to_string();
+            quote! {
+                ::dirty_mike_core::MeasurementDefinition {
+                    name: #name_as_s
+                }
+            }
+        })
+        .collect::<Vec<_>>();
+
+    let static_field_defn = quote! {
+        #[doc(hidden)]
+        static #static_field_name: [::dirty_mike_core::MeasurementDefinition; #n] = [
+            #(#static_fields),*
+        ];
+    };
+
+    let items = quote! {
+        #static_field_defn
+
+        #trait_impl
+    };
+
+    Ok(items.into())
 }

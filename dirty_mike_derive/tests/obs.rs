@@ -1,4 +1,4 @@
-use dirty_mike_core::{Observations, ObservationsOutOfBounds};
+use dirty_mike_core::{MeasurementDefinition, Observations, ObservationsOutOfBounds};
 
 #[derive(Debug, Observations)]
 struct S {
@@ -43,4 +43,13 @@ fn too_large() {
 fn exact_measurements() {
     let s = S::new(&[50, 100]).unwrap();
     assert_eq!(s.measurements(), [50, 100]);
+}
+
+#[test]
+fn field_definitions() {
+    let MeasurementDefinition { name, .. } = S::fields()[0];
+    assert_eq!(name, "x");
+
+    let MeasurementDefinition { name, .. } = S::fields()[1];
+    assert_eq!(name, "y");
 }

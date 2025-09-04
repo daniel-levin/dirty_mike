@@ -23,7 +23,7 @@ pub struct ObservationsOutOfBounds {
 pub trait Observations<const N: usize>: Sized + Send + Sync + 'static {
     fn new(observations: &[u64]) -> Result<Self, ObservationsOutOfBounds>;
 
-    //fn fields() -> &'static [&'static MeasurementDefinition];
+    fn fields() -> &'static [MeasurementDefinition];
 
     fn measurements(&self) -> [u64; N];
 }
