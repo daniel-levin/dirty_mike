@@ -1,5 +1,4 @@
-use proc_macro::TokenStream;
-use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, Meta, Type, parse_macro_input};
+use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, Meta, Type};
 
 #[derive(Debug)]
 pub(crate) enum ObservableEventSpec {

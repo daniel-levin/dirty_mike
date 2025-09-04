@@ -1,4 +1,4 @@
-use dirty_mike_core::Observations;
+use dirty_mike_core::{Observations, ObservationsOutOfBounds};
 
 #[derive(Debug, Observations)]
 struct S {
@@ -11,8 +11,30 @@ struct S {
 
 #[test]
 fn can_instantiate_from_measurements() {
-    let s = S::new(&[50, 100]);
+    let s = S::new(&[50, 100]).unwrap();
 
     assert_eq!(s.x, 50);
     assert_eq!(s.y, 100);
+}
+
+#[test]
+fn too_small() {
+    assert!(matches!(
+        S::new(&[]),
+        Err(ObservationsOutOfBounds {
+            received: 0,
+            expected: 2
+        })
+    ));
+}
+
+#[test]
+fn too_large() {
+    assert!(matches!(
+        S::new(&[1, 2, 3]),
+        Err(ObservationsOutOfBounds {
+            received: 3,
+            expected: 2
+        })
+    ));
 }

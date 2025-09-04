@@ -1,3 +1,5 @@
+use thiserror::Error;
+
 pub mod exact;
 
 pub mod pe2 {
@@ -11,8 +13,15 @@ pub struct MeasurementDefinition {
     pub name: &'static str,
 }
 
-pub trait Observations: Send + Sync + 'static {
-    fn new(observations: &[u64]) -> Self;
+#[derive(Debug, Error)]
+#[error("observations out of bounds. ({received:}) received ({expected:}) expected")]
+pub struct ObservationsOutOfBounds {
+    pub received: usize,
+    pub expected: usize,
+}
+
+pub trait Observations: Sized + Send + Sync + 'static {
+    fn new(observations: &[u64]) -> Result<Self, ObservationsOutOfBounds>;
 
     //fn fields() -> &'static [&'static MeasurementDefinition];
 

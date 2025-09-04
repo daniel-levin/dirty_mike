@@ -1,5 +1,5 @@
 use proc_macro::TokenStream;
-use syn::{Data, DataStruct, DeriveInput, Error, Field, Fields, Meta, Type, parse_macro_input};
+use syn::{DeriveInput, parse_macro_input};
 
 pub(crate) mod fields;
 mod obs;
