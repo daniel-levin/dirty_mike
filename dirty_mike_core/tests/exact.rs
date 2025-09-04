@@ -33,12 +33,10 @@ fn take_exact_measurements() {
     let mut rng = rand::rng();
     shuffled_data.shuffle(&mut rng);
 
-    let mut m = ExactMeasurements::<_, S>::new().unwrap();
-    m.enable().unwrap();
-    work(&shuffled_data);
-    m.disable().unwrap();
+    let (_, obs) = ExactMeasurements::<_, S>::measure(|| {
+        work(&shuffled_data);
+    })
+    .unwrap();
 
-    let r = m.read().unwrap();
-
-    dbg!(r);
+    dbg!(obs);
 }

@@ -120,6 +120,17 @@ impl<const N: usize, Obs: Observations<N>> ExactMeasurements<N, Obs> {
 
         Ok(Obs::new(readings))
     }
+
+    pub fn measure<T, F: FnOnce() -> T>(f: F) -> Result<(T, Obs), ExactMeasurementsError> {
+        let mut me = Self::new().unwrap();
+
+        me.enable().unwrap();
+        let t = f();
+        me.disable().unwrap();
+        let obs = me.read().unwrap();
+
+        Ok((t, obs))
+    }
 }
 
 /*
