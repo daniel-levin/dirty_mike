@@ -18,10 +18,20 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
         })
         .collect::<Vec<_>>();
 
+    let field_reads = cs
+        .iter()
+        .map(|DesignatedField { name, .. }| {
+            quote! {
+                self . #name
+            }
+        })
+        .collect::<Vec<_>>();
+
     let expected_count = cs.len();
+    let n = expected_count;
 
     let trait_impl = quote! {
-        impl ::dirty_mike_core::Observations for #name {
+        impl ::dirty_mike_core::Observations <#n> for #name {
             fn new(observations: &[u64]) -> Result<Self, ::dirty_mike_core::ObservationsOutOfBounds> {
                 let received: usize = observations.len();
                 let expected: usize = #expected_count;
@@ -33,6 +43,12 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
                         #(#field_assignments),*
                     })
                 }
+            }
+
+            fn measurements(&self) -> [u64; #n] {
+                [
+                    #(#field_reads),*
+                ]
             }
         }
     };

@@ -6,7 +6,7 @@ pub mod pe2 {
     pub use perf_event::*;
 }
 
-pub use dirty_mike_derive::{Observations};
+pub use dirty_mike_derive::Observations;
 
 #[derive(Debug)]
 pub struct MeasurementDefinition {
@@ -20,10 +20,10 @@ pub struct ObservationsOutOfBounds {
     pub expected: usize,
 }
 
-pub trait Observations: Sized + Send + Sync + 'static {
+pub trait Observations<const N: usize>: Sized + Send + Sync + 'static {
     fn new(observations: &[u64]) -> Result<Self, ObservationsOutOfBounds>;
 
     //fn fields() -> &'static [&'static MeasurementDefinition];
 
-    //fn measurements(&self) -> &[u64];
+    fn measurements(&self) -> [u64; N];
 }

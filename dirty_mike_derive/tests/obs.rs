@@ -38,3 +38,9 @@ fn too_large() {
         })
     ));
 }
+
+#[test]
+fn exact_measurements() {
+    let s = S::new(&[50, 100]).unwrap();
+    assert_eq!(s.measurements(), [50, 100]);
+}
