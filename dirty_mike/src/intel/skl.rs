@@ -604,6 +604,7 @@ pub struct Retiring {
     #[doc = "Counts the retirement slots used."]
     #[raw(0x2c2)]
     pub uops_retired_retire_slots: u64,
+
     #[doc = "Core cycles when at least one thread on the physical core is not in halt state."]
     #[raw(0x200200)]
     pub cpu_clk_unhalted_thread_any: u64,
