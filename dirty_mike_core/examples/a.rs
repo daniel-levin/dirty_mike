@@ -1,9 +1,9 @@
 use core::arch::x86_64::{
     _mm_cmpeq_epi8, _mm_loadu_epi8, _mm_movemask_epi8, _mm_set1_epi8, _popcnt32,
 };
-use dirty_mike_derive::ExactCounter;
+use dirty_mike_core::{Observations, exact::*};
 
-#[derive(Debug, ExactCounter)]
+#[derive(Debug, Observations)]
 #[allow(dead_code)]
 struct Metrics {
     #[raw(0x0728)]
@@ -20,7 +20,7 @@ struct Metrics {
 }
 
 fn main() -> anyhow::Result<()> {
-    let simd = Metrics::measure(|| {
+    let simd = ExactMeasurements::<Metrics, _>::measure(|| {
         let mut count = 0;
         let mask = unsafe { _mm_set1_epi8('f' as i8) };
 
@@ -39,17 +39,15 @@ fn main() -> anyhow::Result<()> {
         count
     })?;
 
-    let single = Metrics::measure_n(10, || {
-        || {
-            let mut count = 0;
-            for i in include_bytes!("page.txt") {
-                if *i == b'f' {
-                    count += 1;
-                }
+    let single = ExactMeasurements::<Metrics, _>::measure(|| {
+        let mut count = 0;
+        for i in include_bytes!("page.txt") {
+            if *i == b'f' {
+                count += 1;
             }
-
-            count
         }
+
+        count
     })?;
 
     dbg!(&single);
