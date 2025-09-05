@@ -7,6 +7,27 @@ pub mod pe2 {
 pub use dirty_mike_derive::Observations;
 
 #[derive(Debug)]
+pub enum Event {
+    Raw(u64),
+    Hardware(u64),
+}
+
+impl Event {
+    pub fn code(&self) -> u64 {
+        match self {
+            Self::Raw(c) | Self::Hardware(c) => *c,
+        }
+    }
+
+    pub(crate) fn as_perf_event_builder(&self) -> pe2::Builder {
+        match self {
+            Self::Raw(c) => pe2::Builder::new(pe2::events::Raw::new(*c)),
+            Self::Hardware(c) => pe2::Builder::new(pe2::events::Hardware(*c)),
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct MeasurementDefinition {
     pub name: &'static str,
     pub code: u64,
