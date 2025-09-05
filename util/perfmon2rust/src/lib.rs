@@ -330,13 +330,7 @@ impl CounterSpec {
                 }
 
                 "CPU_CLK_UNHALTED.REF_TSC" => PmcOrFixed::Fixed(FixedCounter::CpuClkUnhaltedRefTsc),
-                "UNC_CLOCK.SOCKET" => PmcOrFixed::Fixed(FixedCounter::CpuClkUnhaltedRefTsc),
-                _ => {
-                    if defn.is_fixed_counter() {
-                        panic!("bad {:#?}", defn);
-                    }
-                    PmcOrFixed::Pmc(defn.raw())
-                }
+                _ => PmcOrFixed::Pmc(defn.raw()),
             };
 
             fields.insert(FieldDefn {
