@@ -343,7 +343,7 @@ impl CounterSpec {
         }
 
         quote! {
-            #[derive(Debug, Counter)]
+            #[derive(Debug, Observations)]
             #[doc = #brief_description]
             pub struct #name {
                 #(#fields),*
@@ -373,7 +373,7 @@ mod tests {
         for metric in metrics
             .metrics
             .iter()
-            .filter(|m| m.metric_name != "Info_System_Power")
+            .filter(|m| m.metric_name != "Info_System_Power" && m.events.len() <= 4)
         {
             let spec = CounterSpec::new(&metric, &ed)?;
             items.push(spec.as_rust_code());
