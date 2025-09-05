@@ -1,25 +1,15 @@
-use dirty_mike::Counter;
-use std::time::Duration;
-
-#[derive(Debug, Counter)]
-pub struct Basic {
-    #[hardware(CPU_CYCLES)]
-    pub cycles: u64,
-
-    #[hardware(INSTRUCTIONS)]
-    pub instructions: u64,
-}
+use dirty_mike::{exact::ExactMeasurements, portable::Ipc};
 
 fn main() {
     let json_size = DATA.len();
     let toml_size = DATA_TOML.len();
 
-    let (_, json_counters) = Basic::measure(|| {
+    let (_, json_counters) = ExactMeasurements::<Ipc, _>::measure(|| {
         let _v: serde_json::Value = serde_json::from_str(DATA).unwrap();
     })
     .unwrap();
 
-    let (_, toml_counters) = Basic::measure(|| {
+    let (_, toml_counters) = ExactMeasurements::<Ipc, _>::measure(|| {
         let _v: toml::Value = toml::from_str(DATA_TOML).unwrap();
     })
     .unwrap();
@@ -29,41 +19,14 @@ fn main() {
     println!("  TOML: {} bytes", toml_size);
     println!();
 
-    println!("Performance metrics:");
-    println!("JSON parsing:");
-    println!(
-        "  cycles/b: {:.2}",
-        json_counters.cycles as f64 / json_size as f64
-    );
-    println!(
-        "  instructions/b: {:.2}",
-        json_counters.instructions as f64 / json_size as f64
-    );
-    println!("  total cycles: {}", json_counters.cycles);
-    println!("  total instructions: {}", json_counters.instructions);
-    println!();
-
-    println!("TOML parsing:");
-    println!(
-        "  cycles/b: {:.2}",
-        toml_counters.cycles as f64 / toml_size as f64
-    );
-    println!(
-        "  instructions/b: {:.2}",
-        toml_counters.instructions as f64 / toml_size as f64
-    );
-    println!("  total cycles: {}", toml_counters.cycles);
-    println!("  total instructions: {}", toml_counters.instructions);
-    println!();
-
     println!("Comparison (JSON vs TOML):");
     println!(
         "  cycles/b (JSON): {:.2}",
-        json_counters.cycles as f64 / json_size as f64
+        json_counters.ref_cpu_cycles as f64 / json_size as f64
     );
     println!(
         "  cycles/b (TOML): {:.2}",
-        toml_counters.cycles as f64 / toml_size as f64
+        toml_counters.ref_cpu_cycles as f64 / toml_size as f64
     );
     println!(
         "  instructions/b (JSON): {:.2}",
@@ -74,10 +37,8 @@ fn main() {
         toml_counters.instructions as f64 / toml_size as f64
     );
 
-    let json_efficiency = json_counters.instructions as f64 / json_counters.cycles as f64;
-    let toml_efficiency = toml_counters.instructions as f64 / toml_counters.cycles as f64;
-    println!("  IPC (JSON): {:.2}", json_efficiency);
-    println!("  IPC (TOML): {:.2}", toml_efficiency);
+    println!("  IPC (JSON): {:.2}", json_counters.ipc());
+    println!("  IPC (TOML): {:.2}", toml_counters.ipc());
 }
 
 static DATA: &str = r#"
