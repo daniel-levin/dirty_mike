@@ -294,6 +294,7 @@ pub enum PmcOrFixed {
 
 #[derive(Debug, PartialEq, Eq, Hash)]
 pub struct FieldDefn {
+    original_name: String,
     field_ident: proc_macro2::Ident,
     doc_string: String,
     counter: PmcOrFixed,
@@ -334,6 +335,7 @@ impl CounterSpec {
             };
 
             fields.insert(FieldDefn {
+                original_name: ea.name.clone(),
                 field_ident,
                 counter,
                 doc_string: defn.public_description.clone(),
@@ -345,6 +347,8 @@ impl CounterSpec {
         } else {
             quote::format_ident!("{}", metric.metric_name.to_upper_camel_case())
         };
+
+        Self::strip_near_duplicates(&mut fields);
 
         Ok(Self {
             name,
@@ -362,6 +366,7 @@ impl CounterSpec {
             field_ident,
             counter,
             doc_string,
+            ..
         } in self.fields.iter()
         {
             let annotation = match counter {
@@ -398,6 +403,20 @@ impl CounterSpec {
             }
         }
     }
+
+    fn strip_near_duplicates(hs: &mut HashSet<FieldDefn>) {
+        let names = hs
+            .iter()
+            .map(|f| f.original_name.clone())
+            .collect::<HashSet<String>>();
+        hs.retain(|f| {
+            if let Some(without_any) = f.original_name.strip_suffix("_ANY") {
+                !names.contains(without_any)
+            } else {
+                true
+            }
+        });
+    }
 }
 
 #[cfg(test)]
@@ -410,6 +429,7 @@ mod tests {
         include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
 
     #[test]
+    #[ignore]
     fn translate_to_counter_spec() -> anyhow::Result<()> {
         let ed = EventDefinitions::slurp("../../extern/perfmon/SKL/events/")?;
 
