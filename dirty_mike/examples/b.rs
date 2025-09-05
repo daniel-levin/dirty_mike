@@ -4,7 +4,7 @@ use toml::Table;
 fn main() {
     let s = include_str!("../Cargo.toml");
 
-    let m = ExactMeasurements::<Retiring, _>::measure_k(25, |_| {
+    let m = ExactMeasurements::<BadSpeculation, _>::measure_k(25, |_| {
         || {
             let _f = s.parse::<Table>().unwrap();
         }

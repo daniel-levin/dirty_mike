@@ -184,9 +184,15 @@ pub struct Event {
 
     #[serde(deserialize_with = "dedecimal")]
     pub counter_mask: u8,
+
+    pub counter: String,
 }
 
 impl Event {
+    pub fn is_fixed_counter(&self) -> bool {
+        self.counter.to_lowercase().contains("fixed")
+    }
+
     /// Vol. 3B 21-9
     /// Layout of IA32_PERFEVTSELx MSRs
     pub fn raw(&self) -> u64 {
@@ -273,10 +279,24 @@ impl EventDefinitions {
 }
 
 #[derive(Debug, PartialEq, Eq, Hash)]
+pub enum FixedCounter {
+    InstRetiredAny,
+    CpuClkUnhaltedThread,
+    CpuClkUnhaltedThreadAny,
+    CpuClkUnhaltedRefTsc,
+}
+
+#[derive(Debug, PartialEq, Eq, Hash)]
+pub enum PmcOrFixed {
+    Pmc(u64),
+    Fixed(FixedCounter),
+}
+
+#[derive(Debug, PartialEq, Eq, Hash)]
 pub struct FieldDefn {
     field_ident: proc_macro2::Ident,
-    raw: u64,
     doc_string: String,
+    counter: PmcOrFixed,
 }
 
 #[derive(Debug)]
@@ -303,9 +323,25 @@ impl CounterSpec {
                 quote::format_ident!("{}", name_to_use)
             };
 
+            let counter = match ea.name.as_str() {
+                "INST_RETIRED.ANY" => PmcOrFixed::Fixed(FixedCounter::InstRetiredAny),
+                "CPU_CLK_UNHALTED.THREAD" | "CPU_CLK_UNHALTED.THREAD_ANY" => {
+                    PmcOrFixed::Fixed(FixedCounter::CpuClkUnhaltedThread)
+                }
+
+                "CPU_CLK_UNHALTED.REF_TSC" => PmcOrFixed::Fixed(FixedCounter::CpuClkUnhaltedRefTsc),
+                "UNC_CLOCK.SOCKET" => PmcOrFixed::Fixed(FixedCounter::CpuClkUnhaltedRefTsc),
+                _ => {
+                    if defn.is_fixed_counter() {
+                        panic!("bad {:#?}", defn);
+                    }
+                    PmcOrFixed::Pmc(defn.raw())
+                }
+            };
+
             fields.insert(FieldDefn {
                 field_ident,
-                raw: defn.raw(),
+                counter,
                 doc_string: defn.public_description.clone(),
             });
         }
@@ -330,14 +366,32 @@ impl CounterSpec {
 
         for FieldDefn {
             field_ident,
-            raw,
+            counter,
             doc_string,
         } in self.fields.iter()
         {
-            let value = proc_macro2::Literal::from_str(&format!("0x{raw:x}")).unwrap();
+            let annotation = match counter {
+                PmcOrFixed::Pmc(raw) => {
+                    let as_hex = proc_macro2::Literal::from_str(&format!("0x{raw:x}")).unwrap();
+                    quote! {
+                        #[raw(#as_hex)]
+                    }
+                }
+                PmcOrFixed::Fixed(FixedCounter::InstRetiredAny) => quote! {
+                    #[hardware(INSTRUCTIONS)]
+                },
+                PmcOrFixed::Fixed(FixedCounter::CpuClkUnhaltedThread) => quote! {
+                    #[hardware(CPU_CYCLES)]
+                },
+                PmcOrFixed::Fixed(FixedCounter::CpuClkUnhaltedRefTsc) => quote! {
+                    #[hardware(REF_CPU_CYCLES)]
+                },
+                _ => todo!(),
+            };
+
             fields.push(quote! {
                 #[doc = #doc_string]
-                #[raw(#value)]
+                #annotation
                 pub #field_ident: u64
             });
         }
@@ -362,7 +416,6 @@ mod tests {
         include_str!("../../../extern/perfmon/SKL/events/skylake_core.json");
 
     #[test]
-    #[ignore]
     fn translate_to_counter_spec() -> anyhow::Result<()> {
         let ed = EventDefinitions::slurp("../../extern/perfmon/SKL/events/")?;
 
@@ -373,7 +426,7 @@ mod tests {
         for metric in metrics
             .metrics
             .iter()
-            .filter(|m| m.metric_name != "Info_System_Power" && m.events.len() <= 4)
+            .filter(|m| m.metric_name != "Info_System_Power")
         {
             let spec = CounterSpec::new(&metric, &ed)?;
             items.push(spec.as_rust_code());
