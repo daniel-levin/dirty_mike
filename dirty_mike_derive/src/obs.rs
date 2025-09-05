@@ -56,11 +56,14 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
         .iter()
         .map(|DesignatedField { name, spec }| {
             let raw_code = match spec {
-                ObservableEventSpec::Raw(r) => quote! { #r },
+                ObservableEventSpec::Raw(r) => quote! {
+                    ::dirty_mike_core::EventCode::Raw(#r)
+                },
                 ObservableEventSpec::Hardware(hw) => {
                     let ident = quote::format_ident!("{}", hw.to_uppercase());
                     quote! {
-                        ::dirty_mike_core::pe2::events::Hardware::#ident.0
+                        ::dirty_mike_core::EventCode::Hardware(
+                        ::dirty_mike_core::pe2::events::Hardware::#ident.0)
                     }
                 }
             };

@@ -3,8 +3,8 @@ use rand::prelude::SliceRandom;
 
 #[derive(Debug, Observations)]
 struct S {
-    #[raw(0x13c)]
-    cpu_clk_unhalted_ref_xclk: u64,
+    #[hardware(CPU_CYCLES)]
+    cpu_cycles: u64,
 
     #[raw(0x20010d)]
     int_misc_recovery_cycles_any: u64,

@@ -22,7 +22,7 @@ struct T {
 fn agreement() {
     assert_eq!(
         dirty_mike_core::pe2::events::Hardware::CPU_CYCLES.0,
-        T::fields()[0].code
+        T::fields()[0].code.code()
     );
 }
 

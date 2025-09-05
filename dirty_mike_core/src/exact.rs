@@ -1,5 +1,5 @@
 use crate::Observations;
-use perf_event::{Builder, Counter, ReadFormat, SampleFlag, events::Raw};
+use perf_event::{Counter, ReadFormat, SampleFlag};
 use std::{io, marker::PhantomData, sync::Arc};
 use thiserror::Error;
 
@@ -45,7 +45,9 @@ impl<Obs: Observations<N>, const N: usize> ExactMeasurements<Obs, N> {
 
         let fields = Obs::fields();
 
-        let mut leader = Builder::new(Raw::new(fields[0].code))
+        let mut leader = fields[0]
+            .code
+            .as_perf_event_builder()
             .sample(SampleFlag::IDENTIFIER)
             .read_format(rf)
             .enable_on_exec(true)
@@ -64,8 +66,7 @@ impl<Obs: Observations<N>, const N: usize> ExactMeasurements<Obs, N> {
                 if i == 0 {
                     Ok(None)
                 } else {
-                    let raw_follower_code = fields[i].code;
-                    let mut fb = Builder::new(Raw::new(raw_follower_code));
+                    let mut fb = fields[i].code.as_perf_event_builder();
                     let fb = fb
                         .inherit(true)
                         .exclude_kernel(true)
@@ -78,7 +79,7 @@ impl<Obs: Observations<N>, const N: usize> ExactMeasurements<Obs, N> {
 
                     let follower = leader.add(fb).map_err(|e| {
                         ExactMeasurementsBuildError::CannotAttachFollower(
-                            raw_follower_code,
+                            fields[i].code.code(),
                             Arc::new(e),
                         )
                     })?;

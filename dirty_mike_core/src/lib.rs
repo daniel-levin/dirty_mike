@@ -7,19 +7,19 @@ pub mod pe2 {
 pub use dirty_mike_derive::Observations;
 
 #[derive(Debug)]
-pub enum Event {
+pub enum EventCode {
     Raw(u64),
     Hardware(u64),
 }
 
-impl Event {
+impl EventCode {
     pub fn code(&self) -> u64 {
         match self {
             Self::Raw(c) | Self::Hardware(c) => *c,
         }
     }
 
-    pub(crate) fn as_perf_event_builder(&self) -> pe2::Builder {
+    pub(crate) fn as_perf_event_builder(&self) -> pe2::Builder<'_> {
         match self {
             Self::Raw(c) => pe2::Builder::new(pe2::events::Raw::new(*c)),
             Self::Hardware(c) => pe2::Builder::new(pe2::events::Hardware(*c)),
@@ -30,7 +30,7 @@ impl Event {
 #[derive(Debug)]
 pub struct MeasurementDefinition {
     pub name: &'static str,
-    pub code: u64,
+    pub code: EventCode,
 }
 
 pub trait Observations<const N: usize>: Sized + Send + Sync + 'static {
