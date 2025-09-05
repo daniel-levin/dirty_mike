@@ -80,6 +80,7 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
 
     let static_field_defn = quote! {
         #[doc(hidden)]
+        #[allow(non_upper_case_globals)]
         static #static_field_name: [::dirty_mike_core::MeasurementDefinition; #n] = [
             #(#static_fields),*
         ];
