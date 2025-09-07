@@ -15,6 +15,7 @@ dirty_mike_derive = { version = "0.1", path = "../dirty_mike_derive" }
 dirty_mike_core = { version = "0.1", path = "../dirty_mike_core" }
 thiserror = "2"
 fxhash = "0.2.1"
+polars = { version = "0.50.0", features = ["lazy"] }
 
 [dev-dependencies]
 rand = "0.9.2"

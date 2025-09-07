@@ -1,4 +1,5 @@
 use dirty_mike::{exact::ExactMeasurements, intel::skl::*};
+use polars::prelude::*;
 use toml::Table;
 
 fn main() {
@@ -13,5 +14,7 @@ fn main() {
 
     let df = m.transpose();
 
-    dbg!(df);
+    let lf = df.lazy().mean().collect();
+
+    dbg!(lf);
 }
