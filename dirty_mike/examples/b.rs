@@ -4,12 +4,14 @@ use toml::Table;
 fn main() {
     let s = include_str!("../Cargo.toml");
 
-    let m = ExactMeasurements::<BadSpeculation, _>::measure_k(25, |_| {
+    let m = ExactMeasurements::<BadSpeculation, _>::measure_k(250, |_| {
         || {
             let _f = s.parse::<Table>().unwrap();
         }
     })
     .unwrap();
 
-    dbg!(m);
+    let df = m.transpose();
+
+    dbg!(df);
 }

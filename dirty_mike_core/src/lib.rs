@@ -48,3 +48,24 @@ pub struct Experiment<const N: usize, Obs: Observations<N>, T> {
     pub results: Vec<T>,
     pub measurements: Vec<Obs>,
 }
+
+impl<const N: usize, Obs: Observations<N>, T> Experiment<N, Obs, T> {
+    pub fn transpose(&self) -> DataFrame {
+        let mut columns = [0; N].map(|_| vec![]);
+
+        for m in self.measurements.iter() {
+            for (i, o) in m.measurements().iter().enumerate() {
+                columns[i].push(*o);
+            }
+        }
+
+        let mut series = vec![];
+        for (i, c) in columns.into_iter().enumerate() {
+            let f = &Obs::fields()[i];
+            let s = UInt64Chunked::new(f.name.into(), c);
+            series.push(s.into_column());
+        }
+
+        DataFrame::new(series).unwrap()
+    }
+}
