@@ -1,4 +1,4 @@
-use crate::Observations;
+use crate::{Experiment, Observations};
 use perf_event::{Counter, ReadFormat, SampleFlag};
 use std::{io, marker::PhantomData, sync::Arc};
 use thiserror::Error;
@@ -138,7 +138,18 @@ impl<Obs: Observations<N>, const N: usize> ExactMeasurements<Obs, N> {
     pub fn measure_k<T, G: Fn(usize) -> F, F: FnOnce() -> T>(
         k: usize,
         g: G,
-    ) -> Result<Vec<(T, Obs)>, ExactMeasurementsError> {
-        (0..k).map(|i| Self::measure(g(i))).collect()
+    ) -> Result<Experiment<N, Obs, T>, ExactMeasurementsError> {
+        let mut results = vec![];
+        let mut measurements = vec![];
+        for i in 0..k {
+            let (t, o) = Self::measure(g(i))?;
+            results.push(t);
+            measurements.push(o);
+        }
+
+        Ok(Experiment {
+            results,
+            measurements,
+        })
     }
 }

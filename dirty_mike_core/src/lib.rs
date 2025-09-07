@@ -1,3 +1,5 @@
+use polars::prelude::*;
+
 pub mod exact;
 
 pub mod pe2 {
@@ -39,4 +41,10 @@ pub trait Observations<const N: usize>: Sized + Send + Sync + 'static {
     fn fields() -> &'static [MeasurementDefinition; N];
 
     fn measurements(&self) -> [u64; N];
+}
+
+#[derive(Debug)]
+pub struct Experiment<const N: usize, Obs: Observations<N>, T> {
+    pub results: Vec<T>,
+    pub measurements: Vec<Obs>,
 }

@@ -15,6 +15,7 @@ dirty_mike_derive = { version = "0.1", path = "../dirty_mike_derive" }
 thiserror = "2"
 derive_more = { version = "2.0.1", features = ["debug"] }
 metrics = "0.24.2"
+polars = "0.50.0"
 
 [dev-dependencies]
 anyhow = "1"
