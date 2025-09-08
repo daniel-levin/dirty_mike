@@ -4,3 +4,6 @@
 [submodule "extern/data"]
 	path = extern/data
 	url = https://github.com/ARM-software/data.git
+[submodule "extern/telemetry-solution"]
+	path = extern/telemetry-solution
+	url = https://git.gitlab.arm.com/telemetry-solution/telemetry-solution.git
