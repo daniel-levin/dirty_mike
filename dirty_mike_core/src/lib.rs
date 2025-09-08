@@ -42,6 +42,20 @@ pub struct MeasurementDefinition {
 /// Normally automatically implemented with the [dirty_mike_derive::Observation] macro.
 /// This defines a set of measurements which should be taken together in order to form a single,
 /// coherent observation.
+///
+/// ```rust
+/// #[derive(Debug, dirty_mike_core::Observation)]
+/// pub struct MispredictsByCycle {
+///     #[hardware(CPU_CYCLES)]
+///     cycles: u64,
+///
+///     #[hardware(BRANCH_MISSES)]
+///     branch_misses: u64,
+///
+///     #[raw(0x10e)]
+///     pub uops_issued: u64,
+/// }
+/// ```
 pub trait Observation<const N: usize>: Sized + Send + Sync + 'static {
     /// Create a single observation comprised of N measurements.
     fn new(measurements: [u64; N]) -> Self;
