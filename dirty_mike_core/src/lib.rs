@@ -4,15 +4,20 @@ pub mod pe2 {
     pub use perf_event::*;
 }
 
-pub use dirty_mike_derive::Observations;
+pub use dirty_mike_derive::Observation;
 
+/// The kind of PMC to schedule on the core.
 #[derive(Debug)]
 pub enum EventCode {
+    /// Model-dependent codes.
     Raw(u64),
+
+    /// Architecture-specific codes that normally refer to "fixed counters".
     Hardware(u64),
 }
 
 impl EventCode {
+    /// The raw unsigned integer we're going to pass to `perf_event_open`.
     pub fn code(&self) -> u64 {
         match self {
             Self::Raw(c) | Self::Hardware(c) => *c,
@@ -27,24 +32,31 @@ impl EventCode {
     }
 }
 
+/// Definition of a PMC which may be scheduled onto the core.
 #[derive(Debug)]
 pub struct MeasurementDefinition {
     pub name: &'static str,
     pub code: EventCode,
 }
 
-pub trait Observations<const N: usize>: Sized + Send + Sync + 'static {
-    fn new(observations: [u64; N]) -> Self;
+/// Normally automatically implemented with the [dirty_mike_derive::Observation] macro.
+/// This defines a set of measurements which should be taken together in order to form a single,
+/// coherent observation.
+pub trait Observation<const N: usize>: Sized + Send + Sync + 'static {
+    /// Create a single observation comprised of N measurements.
+    fn new(measurements: [u64; N]) -> Self;
 
+    /// Defines the meaning of this set of measurements when taken together.
     fn fields() -> &'static [MeasurementDefinition; N];
 
+    /// The N measurements comprising this observation.
     fn measurements(&self) -> [u64; N];
 }
 
 #[derive(Debug)]
-pub struct Experiment<const N: usize, Obs: Observations<N>, T> {
+pub struct Experiment<const N: usize, Obs: Observation<N>, T> {
     pub results: Vec<T>,
     pub measurements: Vec<Obs>,
 }
 
-impl<const N: usize, Obs: Observations<N>, T> Experiment<N, Obs, T> {}
+impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {}

@@ -1,9 +1,9 @@
 use core::arch::x86_64::{
     _mm_cmpeq_epi8, _mm_loadu_epi8, _mm_movemask_epi8, _mm_set1_epi8, _popcnt32,
 };
-use dirty_mike_core::{Observations, exact::*};
+use dirty_mike_core::{Observation, exact::*};
 
-#[derive(Debug, Observations)]
+#[derive(Debug, Observation)]
 #[allow(dead_code)]
 struct Metrics {
     #[raw(0x0728)]

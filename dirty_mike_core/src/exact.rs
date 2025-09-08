@@ -1,4 +1,4 @@
-use crate::{Experiment, Observations};
+use crate::{Experiment, Observation};
 use perf_event::{Counter, ReadFormat, SampleFlag};
 use std::{io, marker::PhantomData, sync::Arc};
 use thiserror::Error;
@@ -30,13 +30,18 @@ pub enum ExactMeasurementsError {
     CannotBuildGroup(#[from] ExactMeasurementsBuildError),
 }
 
+/// Use this to obtain the most precise measurements of CPU counters possible.
+/// The number of PMCs that can be co-scheduled on a particular core is CPU-dependent.
+/// Generally, on x86, one can use four counters if SMT is on, and eight if SMT is off.
+/// We endeavour to use so-called "fixed counters" where possible. Fixed counters do not contribute
+/// to the four/eight PMC limit.
 #[derive(Debug)]
-pub struct ExactMeasurements<Obs: Observations<N>, const N: usize> {
+pub struct ExactMeasurements<Obs: Observation<N>, const N: usize> {
     counters: [Counter; N],
     _pd: PhantomData<Obs>,
 }
 
-impl<Obs: Observations<N>, const N: usize> ExactMeasurements<Obs, N> {
+impl<Obs: Observation<N>, const N: usize> ExactMeasurements<Obs, N> {
     pub fn new() -> Result<Self, ExactMeasurementsBuildError> {
         let rf = ReadFormat::TOTAL_TIME_ENABLED
             | ReadFormat::TOTAL_TIME_RUNNING

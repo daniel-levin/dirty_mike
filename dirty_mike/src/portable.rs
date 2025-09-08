@@ -1,6 +1,6 @@
-use crate::Observations;
+use crate::Observation;
 
-#[derive(Debug, Observations)]
+#[derive(Debug, Observation)]
 pub struct Ipc {
     #[hardware(REF_CPU_CYCLES)]
     pub ref_cpu_cycles: u64,

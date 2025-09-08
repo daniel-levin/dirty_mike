@@ -3,7 +3,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DeriveInput, Error};
 
-pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Error> {
+pub fn derive_observation_inner(input: DeriveInput) -> Result<TokenStream, Error> {
     let name = input.ident.clone();
 
     let cs = DesignatedField::extract_fields(input)?;
@@ -13,7 +13,7 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
         .enumerate()
         .map(|(idx, DesignatedField { name, .. })| {
             quote! {
-                #name: observations[#idx]
+                #name: measurements[#idx]
             }
         })
         .collect::<Vec<_>>();
@@ -33,8 +33,8 @@ pub fn derive_observations_inner(input: DeriveInput) -> Result<TokenStream, Erro
     let static_field_name = quote::format_ident!("MEASUREMENT_DEFNS_{}", &name);
 
     let trait_impl = quote! {
-        impl ::dirty_mike_core::Observations <#n> for #name {
-            fn new(observations: [u64; #n]) -> Self {
+        impl ::dirty_mike_core::Observation <#n> for #name {
+            fn new(measurements: [u64; #n]) -> Self {
                 Self {
                     #(#field_assignments),*
                 }

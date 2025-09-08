@@ -1,7 +1,7 @@
-use dirty_mike_core::{Observations, exact::*};
+use dirty_mike_core::{Observation, exact::*};
 use rand::prelude::SliceRandom;
 
-#[derive(Debug, Observations)]
+#[derive(Debug, Observation)]
 struct S {
     #[hardware(CPU_CYCLES)]
     cpu_cycles: u64,

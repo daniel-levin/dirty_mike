@@ -1,6 +1,6 @@
-use dirty_mike_core::{MeasurementDefinition, Observations};
+use dirty_mike_core::{MeasurementDefinition, Observation};
 
-#[derive(Debug, Observations)]
+#[derive(Debug, Observation)]
 struct S {
     #[raw(0xab)]
     x: u64,
@@ -9,7 +9,7 @@ struct S {
     y: u64,
 }
 
-#[derive(Debug, Observations)]
+#[derive(Debug, Observation)]
 struct T {
     #[hardware(CPU_CYCLES)]
     cpu_cycles: u64,
