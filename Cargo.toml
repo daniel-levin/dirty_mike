@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
-members = ["dirty_mike", "dirty_mike_core", "dirty_mike_derive", "util/perfmon2rust"]
+members = ["dirty_mike", "dirty_mike_core", "dirty_mike_derive", "pmc", "util/perfmon2rust"]
 
 [patch.crates-io]
 dirty_mike_core = { path = "dirty_mike_core" }
+pmc = { path = "pmc" }
