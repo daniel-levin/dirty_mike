@@ -1,3 +1,6 @@
 [submodule "extern/perfmon"]
 	path = extern/perfmon
 	url = https://github.com/intel/perfmon.git
+[submodule "extern/data"]
+	path = extern/data
+	url = https://github.com/ARM-software/data.git
