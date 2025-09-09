@@ -1,34 +1,65 @@
+use core::arch::x86_64::*;
 use dirty_mike::{exact::ExactMeasurements, intel::skl::*};
 
 fn main() {
-    let s = include_str!("../Cargo.toml");
+    let s = include_str!("../../dirty_mike_core/examples/page.txt");
 
-    let m1 = ExactMeasurements::<BranchMispredicts, _>::measure_k(25_000, |_| {
+    let m1 = ExactMeasurements::<BranchMispredicts, _>::measure_k(2500, |_| {
         || {
             let mut a = vec![];
+
             for c in s.chars() {
                 if c != 'g' {
                     a.push(c);
                 }
             }
+
+            a
         }
     })
     .unwrap();
+
+    let m2 = ExactMeasurements::<BranchMispredicts, _>::measure_k(2500, |_| {
+        || unsafe {
+            let mut a: Vec<char> = vec![];
+
+            let mask = _mm_set1_epi8('g' as i8);
+            let bytes = s.as_bytes();
+            let mut i = 0;
+
+            while i + 16 <= bytes.len() {
+                let chunk = _mm_loadu_si128(bytes.as_ptr().add(i) as *const __m128i);
+                let comps = _mm_cmpeq_epi8(mask, chunk);
+                let movemask = _mm_movemask_epi8(comps) as u16;
+
+                for j in 0..16 {
+                    if (movemask & (1 << j)) == 0 {
+                        let byte = bytes[i + j];
+                        if byte.is_ascii() {
+                            a.push(byte as char);
+                        }
+                    }
+                }
+                i += 16;
+            }
+
+            while i < bytes.len() {
+                let byte = bytes[i];
+                if byte != b'g' && byte.is_ascii() {
+                    a.push(byte as char);
+                }
+                i += 1;
+            }
+
+            a
+        }
+    })
+    .unwrap();
+
+    assert_eq!(m2.results, m1.results);
 
     dbg!(m1.mean_timeslice());
     dbg!(m1.mean());
-
-    let m2 = ExactMeasurements::<BranchMispredicts, _>::measure_k(25_000, |_| {
-        || {
-            let mut a = vec![];
-            for (i, c) in s.chars().enumerate() {
-                if c != 'g' {
-                    a.push(c);
-                }
-            }
-        }
-    })
-    .unwrap();
 
     dbg!(m2.mean_timeslice());
     dbg!(m2.mean());
