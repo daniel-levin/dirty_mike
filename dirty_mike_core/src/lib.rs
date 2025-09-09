@@ -1,3 +1,5 @@
+use num_bigint::BigUint;
+
 pub mod exact;
 
 pub mod pe2 {
@@ -73,4 +75,20 @@ pub struct Experiment<const N: usize, Obs: Observation<N>, T> {
     pub measurements: Vec<Obs>,
 }
 
-impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {}
+impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
+    pub fn mean(&self) -> Obs {
+        let mut counters = [BigUint::ZERO; N];
+
+        for m in self.measurements.iter() {
+            for (i, field_value) in m.measurements().iter().enumerate() {
+                counters[i] += *field_value;
+            }
+        }
+
+        for i in 0..N {
+            counters[i] = counters[i].clone() / self.measurements.len();
+        }
+
+        Obs::new(counters.map(|c| c.try_into().unwrap()))
+    }
+}
