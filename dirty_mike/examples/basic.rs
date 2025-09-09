@@ -4,12 +4,12 @@ fn main() {
     let json_size = DATA.len();
     let toml_size = DATA_TOML.len();
 
-    let (_, json_counters) = ExactMeasurements::<Ipc, _>::measure(|| {
+    let (_, json_counters, _) = ExactMeasurements::<Ipc, _>::measure(|| {
         let _v: serde_json::Value = serde_json::from_str(DATA).unwrap();
     })
     .unwrap();
 
-    let (_, toml_counters) = ExactMeasurements::<Ipc, _>::measure(|| {
+    let (_, toml_counters, _) = ExactMeasurements::<Ipc, _>::measure(|| {
         let _v: toml::Value = toml::from_str(DATA_TOML).unwrap();
     })
     .unwrap();

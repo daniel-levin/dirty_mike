@@ -1,4 +1,4 @@
-use crate::{Experiment, Observation};
+use crate::{Experiment, Observation, Timeslice};
 use perf_event::{Counter, ReadFormat, SampleFlag};
 use std::{io, marker::PhantomData, sync::Arc};
 use thiserror::Error;
@@ -115,7 +115,7 @@ impl<Obs: Observation<N>, const N: usize> ExactMeasurements<Obs, N> {
         self.counters[0].disable_group()
     }
 
-    pub fn read(&mut self) -> io::Result<Obs> {
+    pub fn read(&mut self) -> io::Result<(Obs, Timeslice)> {
         let mut readings = [0; N];
 
         let counts = self.counters[0].read_group()?;
@@ -124,10 +124,17 @@ impl<Obs: Observation<N>, const N: usize> ExactMeasurements<Obs, N> {
             readings[i] = counts[&self.counters[i]];
         }
 
-        Ok(Obs::new(readings))
+        let timeslice = Timeslice {
+            running: counts.time_running().unwrap(),
+            enabled: counts.time_enabled().unwrap(),
+        };
+
+        Ok((Obs::new(readings), timeslice))
     }
 
-    pub fn measure<T, F: FnOnce() -> T>(f: F) -> Result<(T, Obs), ExactMeasurementsError> {
+    pub fn measure<T, F: FnOnce() -> T>(
+        f: F,
+    ) -> Result<(T, Obs, Timeslice), ExactMeasurementsError> {
         let mut me = Self::new().map_err(ExactMeasurementsError::CannotBuildGroup)?;
 
         me.enable()
@@ -135,9 +142,9 @@ impl<Obs: Observation<N>, const N: usize> ExactMeasurements<Obs, N> {
         let t = f();
         me.disable()
             .map_err(ExactMeasurementsError::CannotDisableGroup)?;
-        let obs = me.read().map_err(ExactMeasurementsError::CannotReadGroup)?;
+        let (obs, timeslice) = me.read().map_err(ExactMeasurementsError::CannotReadGroup)?;
 
-        Ok((t, obs))
+        Ok((t, obs, timeslice))
     }
 
     pub fn measure_k<T, G: Fn(usize) -> F, F: FnOnce() -> T>(
@@ -146,15 +153,18 @@ impl<Obs: Observation<N>, const N: usize> ExactMeasurements<Obs, N> {
     ) -> Result<Experiment<N, Obs, T>, ExactMeasurementsError> {
         let mut results = vec![];
         let mut measurements = vec![];
+        let mut timeslices = vec![];
         for i in 0..k {
-            let (t, o) = Self::measure(g(i))?;
+            let (t, o, ts) = Self::measure(g(i))?;
             results.push(t);
             measurements.push(o);
+            timeslices.push(ts);
         }
 
         Ok(Experiment {
             results,
             measurements,
+            timeslices,
         })
     }
 }

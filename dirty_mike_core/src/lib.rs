@@ -1,4 +1,5 @@
 use num_bigint::BigUint;
+use std::time::Duration;
 
 pub mod exact;
 
@@ -7,6 +8,12 @@ pub mod pe2 {
 }
 
 pub use dirty_mike_derive::Observation;
+
+#[derive(Debug)]
+pub struct Timeslice {
+    pub enabled: Duration,
+    pub running: Duration,
+}
 
 /// The kind of PMC to schedule on the core.
 #[derive(Debug)]
@@ -72,6 +79,7 @@ pub trait Observation<const N: usize>: Sized + Send + Sync + 'static {
 #[derive(Debug)]
 pub struct Experiment<const N: usize, Obs: Observation<N>, T> {
     pub results: Vec<T>,
+    pub timeslices: Vec<Timeslice>,
     pub measurements: Vec<Obs>,
 }
 
@@ -90,5 +98,23 @@ impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
         }
 
         Obs::new(counters.map(|c| c.try_into().unwrap()))
+    }
+
+    pub fn mean_timeslice(&self) -> Timeslice {
+        let mut enabled_sum = BigUint::ZERO;
+        let mut running_sum = BigUint::ZERO;
+
+        for Timeslice { enabled, running } in self.timeslices.iter() {
+            enabled_sum += enabled.as_nanos();
+            running_sum += running.as_nanos();
+        }
+
+        let enabled: u64 = (enabled_sum / self.timeslices.len()).try_into().unwrap();
+        let running: u64 = (running_sum / self.timeslices.len()).try_into().unwrap();
+
+        Timeslice {
+            enabled: Duration::from_nanos(enabled),
+            running: Duration::from_nanos(running),
+        }
     }
 }

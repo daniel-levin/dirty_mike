@@ -1304,6 +1304,7 @@ pub struct BadSpeculation {
     #[hardware(CPU_CYCLES)]
     pub cpu_clk_unhalted_thread: u64,
 }
+
 #[derive(Debug, Observation)]
 #[doc = "This metric represents fraction of slots the CPU has wasted due to Branch Misprediction.  These slots are either wasted by uops fetched from an incorrectly speculated program path; or stalls when the out-of-order part of the machine needs to recover its state from a speculative path."]
 pub struct BranchMispredicts {
@@ -1326,6 +1327,7 @@ pub struct BranchMispredicts {
     #[raw(0x10001c3)]
     pub machine_clears_count: u64,
 }
+
 #[derive(Debug, Observation)]
 #[doc = "This metric estimates fraction of slots the CPU was stalled due to other cases of misprediction (non-retired x86 branches or other types)."]
 pub struct OtherMispredicts {
