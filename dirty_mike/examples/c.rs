@@ -4,7 +4,7 @@ use dirty_mike::{exact::ExactMeasurements, intel::skl::*, portable};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let s = include_str!("../../dirty_mike_core/examples/page.txt");
 
-    let m1 = ExactMeasurements::<portable::Basic, _>::measure_k(2500, |_| {
+    let m1 = ExactMeasurements::<BadSpeculation, _>::measure_k(2500, |_| {
         || {
             let mut a = vec![];
 
@@ -19,7 +19,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     })
     .unwrap();
 
-    let m2 = ExactMeasurements::<portable::Basic, _>::measure_k(2500, |_| {
+    let m2 = ExactMeasurements::<BadSpeculation, _>::measure_k(2500, |_| {
         || unsafe {
             let mut a: Vec<char> = vec![];
 
