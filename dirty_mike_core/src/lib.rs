@@ -1,5 +1,6 @@
 use num_bigint::BigUint;
 use std::time::Duration;
+use thiserror::Error;
 
 pub mod exact;
 
@@ -76,6 +77,10 @@ pub trait Observation<const N: usize>: Sized + Send + Sync + 'static {
     fn measurements(&self) -> [u64; N];
 }
 
+#[derive(Debug, Error)]
+#[error("invalid fraction {0}")]
+pub struct InvalidFraction(pub f64);
+
 #[derive(Debug)]
 pub struct Experiment<const N: usize, Obs: Observation<N>, T> {
     pub results: Vec<T>,
@@ -98,6 +103,51 @@ impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
         }
 
         Obs::new(counters.map(|c| c.try_into().unwrap()))
+    }
+
+    pub fn p(&self, fraction: f64) -> Result<Obs, InvalidFraction> {
+        if 0f64 <= fraction && fraction <= 1f64 {
+            let pivot = (fraction * (self.measurements.len() - 1) as f64) as usize;
+
+            let mut columns = [const { Vec::new() }; N];
+
+            for m in self.measurements.iter() {
+                for (i, u) in m.measurements().iter().enumerate() {
+                    columns[i].push(*u);
+                }
+            }
+
+            Ok(Obs::new(columns.map(|mut c| {
+                c.sort();
+                c[pivot]
+            })))
+        } else {
+            Err(InvalidFraction(fraction))
+        }
+    }
+
+    pub fn p_timeslice(&self, fraction: f64) -> Result<Timeslice, InvalidFraction> {
+        if 0f64 <= fraction && fraction <= 1f64 {
+            let pivot = (fraction * (self.measurements.len() - 1) as f64) as usize;
+
+            let mut enableds = vec![];
+            let mut runnings = vec![];
+
+            for Timeslice { enabled, running } in self.timeslices.iter() {
+                enableds.push(enabled);
+                runnings.push(running);
+            }
+
+            enableds.sort();
+            runnings.sort();
+
+            Ok(Timeslice {
+                enabled: *enableds[pivot],
+                running: *runnings[pivot],
+            })
+        } else {
+            Err(InvalidFraction(fraction))
+        }
     }
 
     pub fn mean_timeslice(&self) -> Timeslice {

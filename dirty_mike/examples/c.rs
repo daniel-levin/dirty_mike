@@ -1,10 +1,10 @@
 use core::arch::x86_64::*;
-use dirty_mike::{exact::ExactMeasurements, intel::skl::*};
+use dirty_mike::{exact::ExactMeasurements, intel::skl::*, portable};
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let s = include_str!("../../dirty_mike_core/examples/page.txt");
 
-    let m1 = ExactMeasurements::<BranchMispredicts, _>::measure_k(2500, |_| {
+    let m1 = ExactMeasurements::<portable::Basic, _>::measure_k(2500, |_| {
         || {
             let mut a = vec![];
 
@@ -19,7 +19,7 @@ fn main() {
     })
     .unwrap();
 
-    let m2 = ExactMeasurements::<BranchMispredicts, _>::measure_k(2500, |_| {
+    let m2 = ExactMeasurements::<portable::Basic, _>::measure_k(2500, |_| {
         || unsafe {
             let mut a: Vec<char> = vec![];
 
@@ -58,9 +58,19 @@ fn main() {
 
     assert_eq!(m2.results, m1.results);
 
-    dbg!(m1.mean_timeslice());
-    dbg!(m1.mean());
+    dbg!(m1.p_timeslice(0f64)?);
+    dbg!(m1.p(0f64)?);
+    dbg!(m1.p_timeslice(0.5f64)?);
+    dbg!(m1.p(0.5f64)?);
+    dbg!(m1.p_timeslice(1f64)?);
+    dbg!(m1.p(1f64)?);
 
-    dbg!(m2.mean_timeslice());
-    dbg!(m2.mean());
+    dbg!(m2.p_timeslice(0f64)?);
+    dbg!(m2.p(0f64)?);
+    dbg!(m2.p_timeslice(0.5f64)?);
+    dbg!(m2.p(0.5f64)?);
+    dbg!(m2.p_timeslice(1f64)?);
+    dbg!(m2.p(1f64)?);
+
+    Ok(())
 }
