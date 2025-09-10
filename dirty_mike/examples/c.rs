@@ -1,5 +1,5 @@
 use core::arch::x86_64::*;
-use dirty_mike::{exact::ExactMeasurements, intel::skl::*, portable};
+use dirty_mike::{exact::ExactMeasurements, intel::skl::*};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let s = include_str!("../../dirty_mike_core/examples/page.txt");
@@ -60,17 +60,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!(
         "{}",
-        tabled::Table::new([m1.p(0f64).unwrap(), m2.p(0f64).unwrap()]).to_string()
-    );
-
-    println!(
-        "{}",
-        tabled::Table::new([m1.p(0.5f64).unwrap(), m2.p(0.5f64).unwrap()]).to_string()
-    );
-
-    println!(
-        "{}",
-        tabled::Table::new([m1.p(1f64).unwrap(), m2.p(1f64).unwrap()]).to_string()
+        tabled::Table::new([
+            m1.p_row("Scalar p0", 0f64).unwrap(),
+            m2.p_row("SIMD p0", 0f64).unwrap(),
+            m1.p_row("Scalar p50", 0.5f64).unwrap(),
+            m2.p_row("SIMD p50", 0.5f64).unwrap(),
+            m1.p_row("Scalar p100", 1f64).unwrap(),
+            m2.p_row("SIMD p100", 1f64).unwrap()
+        ])
+        .to_string()
     );
 
     Ok(())

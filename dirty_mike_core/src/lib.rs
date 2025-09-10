@@ -108,12 +108,15 @@ impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
         Obs::new(counters.map(|c| c.try_into().unwrap()))
     }
 
-    pub fn p(&self, fraction: f64) -> Result<(Timeslice, Obs), InvalidFraction> {
-        Ok((self.p_timeslice(fraction)?, self.p_obs(fraction)?))
+    pub fn p(&self, fraction: f64) -> Result<TransposedObservation<N, Obs>, InvalidFraction> {
+        Ok(TransposedObservation {
+            timeslice: self.p_timeslice(fraction)?,
+            measurement: self.p_obs(fraction)?,
+        })
     }
 
     pub fn p_obs(&self, fraction: f64) -> Result<Obs, InvalidFraction> {
-        if 0f64 <= fraction && fraction <= 1f64 {
+        if (0f64..=1f64).contains(&fraction) {
             let pivot = (fraction * (self.measurements.len() - 1) as f64) as usize;
 
             let mut columns = [const { Vec::new() }; N];
@@ -134,7 +137,7 @@ impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
     }
 
     pub fn p_timeslice(&self, fraction: f64) -> Result<Timeslice, InvalidFraction> {
-        if 0f64 <= fraction && fraction <= 1f64 {
+        if (0f64..=1f64).contains(&fraction) {
             let pivot = (fraction * (self.measurements.len() - 1) as f64) as usize;
 
             let mut enableds = vec![];
@@ -176,27 +179,39 @@ impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
     }
 }
 
+#[derive(Debug)]
+pub struct TransposedObservation<const N: usize, Obs: Observation<N>> {
+    pub timeslice: Timeslice,
+
+    pub measurement: Obs,
+}
+
 #[derive(Debug, Tabled)]
-pub struct TabulatedObservation<'a, const N: usize, Obs: Observation<N> + Tabled> {
-    #[tabled(inline)]
-    pub timeslice: &'a Timeslice,
+pub struct NamedTransposedObservation<const N: usize, Obs: Observation<N> + Tabled> {
+    pub name: String,
 
     #[tabled(inline)]
-    pub measurement: &'a Obs,
+    pub timeslice: Timeslice,
+
+    #[tabled(inline)]
+    pub measurement: Obs,
 }
 
 impl<const N: usize, Obs: Observation<N> + Tabled, T> Experiment<N, Obs, T> {
-    pub fn as_table(&self) -> tabled::Table {
-        let mut tos = vec![];
+    pub fn p_row(
+        &self,
+        name: &str,
+        fraction: f64,
+    ) -> Result<NamedTransposedObservation<N, Obs>, InvalidFraction> {
+        let TransposedObservation {
+            timeslice,
+            measurement,
+        } = self.p(fraction)?;
 
-        for (i, timeslice) in self.timeslices.iter().enumerate() {
-            let measurement = &self.measurements[i];
-            tos.push(TabulatedObservation {
-                timeslice,
-                measurement,
-            });
-        }
-
-        tabled::Table::new(tos)
+        Ok(NamedTransposedObservation {
+            name: name.to_owned(),
+            timeslice,
+            measurement,
+        })
     }
 }
