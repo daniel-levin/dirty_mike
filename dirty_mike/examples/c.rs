@@ -58,19 +58,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     assert_eq!(m2.results, m1.results);
 
-    dbg!(m1.p_timeslice(0f64)?);
-    dbg!(m1.p(0f64)?);
-    dbg!(m1.p_timeslice(0.5f64)?);
-    dbg!(m1.p(0.5f64)?);
-    dbg!(m1.p_timeslice(1f64)?);
-    dbg!(m1.p(1f64)?);
+    println!(
+        "{}",
+        tabled::Table::new([m1.p(0f64).unwrap(), m2.p(0f64).unwrap()]).to_string()
+    );
 
-    dbg!(m2.p_timeslice(0f64)?);
-    dbg!(m2.p(0f64)?);
-    dbg!(m2.p_timeslice(0.5f64)?);
-    dbg!(m2.p(0.5f64)?);
-    dbg!(m2.p_timeslice(1f64)?);
-    dbg!(m2.p(1f64)?);
+    println!(
+        "{}",
+        tabled::Table::new([m1.p(0.5f64).unwrap(), m2.p(0.5f64).unwrap()]).to_string()
+    );
+
+    println!(
+        "{}",
+        tabled::Table::new([m1.p(1f64).unwrap(), m2.p(1f64).unwrap()]).to_string()
+    );
 
     Ok(())
 }

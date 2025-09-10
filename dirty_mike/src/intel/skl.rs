@@ -1288,7 +1288,7 @@ pub struct Dsb {
     #[raw(0x4001879)]
     pub idq_dsb_cycles_ok: u64,
 }
-#[derive(Debug, Observation)]
+#[derive(Debug, Observation, tabled::Tabled)]
 #[doc = "This category represents fraction of slots wasted due to incorrect speculations. This include slots used to issue uops that do not eventually get retired and slots for which the issue-pipeline was blocked due to recovery from earlier incorrect speculation. For example; wasted work due to miss-predicted branches are categorized under Bad Speculation category. Incorrect data speculation followed by Memory Ordering Nukes is another example."]
 pub struct BadSpeculation {
     #[doc = "Core cycles the Resource allocator was stalled due to recovery from an earlier branch misprediction or machine clear event."]

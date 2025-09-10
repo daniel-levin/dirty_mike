@@ -1,5 +1,6 @@
 use num_bigint::BigUint;
 use std::time::Duration;
+use tabled::Tabled;
 use thiserror::Error;
 
 pub mod exact;
@@ -10,9 +11,11 @@ pub mod pe2 {
 
 pub use dirty_mike_derive::Observation;
 
-#[derive(Debug)]
+#[derive(Debug, Tabled)]
 pub struct Timeslice {
+    #[tabled(format = "{:#?}")]
     pub enabled: Duration,
+    #[tabled(format = "{:#?}")]
     pub running: Duration,
 }
 
@@ -105,7 +108,11 @@ impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
         Obs::new(counters.map(|c| c.try_into().unwrap()))
     }
 
-    pub fn p(&self, fraction: f64) -> Result<Obs, InvalidFraction> {
+    pub fn p(&self, fraction: f64) -> Result<(Timeslice, Obs), InvalidFraction> {
+        Ok((self.p_timeslice(fraction)?, self.p_obs(fraction)?))
+    }
+
+    pub fn p_obs(&self, fraction: f64) -> Result<Obs, InvalidFraction> {
         if 0f64 <= fraction && fraction <= 1f64 {
             let pivot = (fraction * (self.measurements.len() - 1) as f64) as usize;
 
@@ -166,5 +173,30 @@ impl<const N: usize, Obs: Observation<N>, T> Experiment<N, Obs, T> {
             enabled: Duration::from_nanos(enabled),
             running: Duration::from_nanos(running),
         }
+    }
+}
+
+#[derive(Debug, Tabled)]
+pub struct TabulatedObservation<'a, const N: usize, Obs: Observation<N> + Tabled> {
+    #[tabled(inline)]
+    pub timeslice: &'a Timeslice,
+
+    #[tabled(inline)]
+    pub measurement: &'a Obs,
+}
+
+impl<const N: usize, Obs: Observation<N> + Tabled, T> Experiment<N, Obs, T> {
+    pub fn as_table(&self) -> tabled::Table {
+        let mut tos = vec![];
+
+        for (i, timeslice) in self.timeslices.iter().enumerate() {
+            let measurement = &self.measurements[i];
+            tos.push(TabulatedObservation {
+                timeslice,
+                measurement,
+            });
+        }
+
+        tabled::Table::new(tos)
     }
 }
